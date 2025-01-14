@@ -1,4 +1,4 @@
-package com.emcikem;
+package com.emcikem.llm.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;

@@ -14,7 +14,6 @@ import javax.annotation.Resource;
  */
 @RestController
 class AssistantController {
-    https://pan.baidu.com/s/1GGYdHrMcqiV81E7LlqP03Q?pwd=qs8m#list/path=%2Fsharelink2345894990-294148699323841%2F89226-LLM%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E5%B9%B3%E5%8F%B0%E7%89%B9%E8%AE%AD%E8%90%A5%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%E4%B8%AD%EF%BC%89&parentPath=%2Fsharelink2345894990-294148699323841
     Assistant assistant;
     StreamingAssistant streamingAssistant;
 

@@ -1,3 +1,10 @@
+CREATE DATABASE llmops
+CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+use llmops;
+
+
 CREATE TABLE `llmops_chat_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '聊天id',
   `role` tinyint(4) NOT_NULL DEFAULT '1' COMMENT '角色类型，1:assist，2:user',

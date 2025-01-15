@@ -18,6 +18,22 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.emcikem</groupId>
+            <artifactId>llmops-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.emcikem</groupId>
+            <artifactId>llmops-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.emcikem</groupId>
+            <artifactId>llmops-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.emcikem</groupId>
+            <artifactId>llmops-common</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -49,8 +65,8 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.emcikem</groupId>
-            <artifactId>llmops-service</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
     </dependencies>
     <build>

@@ -21,6 +21,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project-sub.version>1.0-SNAPSHOT</project-sub.version>
+        <spring-boot.version>3.2.4</spring-boot.version>
+        <langchain4j.version>1.0.0-alpha1</langchain4j.version>
     </properties>
 
     <dependencyManagement>
@@ -33,12 +36,17 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>2.7.1</version>
+                <version>${spring-boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
-                <version>2.7.1</version>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+                <version>${spring-boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>
@@ -58,17 +66,52 @@
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-spring-boot-starter</artifactId>
-                <version>1.0.0-alpha1</version>
+                <version>${langchain4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
+                <version>${langchain4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j</artifactId>
-                <version>1.0.0-alpha1</version>
+                <version>${langchain4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-open-ai</artifactId>
-                <version>1.0.0-alpha1</version>
+                <version>${langchain4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-reactor</artifactId>
+                <version>${langchain4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.emcikem</groupId>
+                <artifactId>llmops-client</artifactId>
+                <version>${project-sub.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.emcikem</groupId>
+                <artifactId>llmops-dao</artifactId>
+                <version>${project-sub.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.emcikem</groupId>
+                <artifactId>llmops-service</artifactId>
+                <version>${project-sub.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.emcikem</groupId>
+                <artifactId>llmops-web</artifactId>
+                <version>${project-sub.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.emcikem</groupId>
+                <artifactId>llmops-common</artifactId>
+                <version>${project-sub.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

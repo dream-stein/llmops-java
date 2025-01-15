@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0.0
  */
 @Slf4j
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.emcikem.llm")
 public class ApplicationLoader {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(ApplicationLoader.class);

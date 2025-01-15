@@ -4,27 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.emcikem.llm.dao.mapper.LlmOpsChatHistoryDOMapper">
-    <select id="selectById" resultType="com.example.dao.model.LlmopsChatHistory">
+    <select id="selectById" resultType="com.emcikem.llm.dao.entity.LlmOpsChatHistoryDO">
         SELECT * FROM llmops_chat_history WHERE id = #{id}
     </select>
-
-    <select id="selectAll" resultType="com.emcikem.llm.dao.mapper.LlmOpsChatHistoryDOMapper">
-        SELECT * FROM llmops_chat_history
-    </select>
-
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO llmops_chat_history (role, tenant, content, token, creator, operator)
-        VALUES (#{role}, #{tenant}, #{content}, #{token}, #{creator}, #{operator})
-    </insert>
-
-    <update id="update">
-        UPDATE llmops_chat_history
-        SET role = #{role}, tenant = #{tenant}, content = #{content},
-        token = #{token}, creator = #{creator}, operator = #{operator}
-        WHERE id = #{id}
-    </update>
-
-    <delete id="delete">
-        DELETE FROM llmops_chat_history WHERE id = #{id}
-    </delete>
 </mapper>

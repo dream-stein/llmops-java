@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class AssistantConfiguration {
+public class AssistantConfiguration {
 
     /**
      * This chat memory will be used by an {@link Assistant}

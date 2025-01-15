@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 
 @Component
-class AssistantTools {
+public class AssistantTools {
 
     /**
      * This tool is available to {@link Assistant}

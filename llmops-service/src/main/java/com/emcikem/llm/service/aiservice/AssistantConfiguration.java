@@ -13,6 +13,10 @@ public class AssistantConfiguration {
      */
     @Bean
     ChatMemory chatMemory() {
-        return MessageWindowChatMemory.withMaxMessages(10);
+        return MessageWindowChatMemory.builder()
+                .id("12345")
+                .maxMessages(10)
+                .chatMemoryStore(new PersistentChatMemoryStore())
+                .build();
     }
 }

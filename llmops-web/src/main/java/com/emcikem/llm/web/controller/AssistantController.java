@@ -40,10 +40,4 @@ class AssistantController {
             @RequestParam(value = "message", defaultValue = "Tell me an interesting story in 100 words") String message) {
         return streamingAssistant.chat(message);
     }
-
-    @GetMapping(value = "/hello")
-    public String hello() {
-        LlmOpsChatHistoryDO llmOpsChatHistoryDO = llmOpsChatHistoryDOMapper.selectById(1L);
-        return GsonUtil.toJSONString(llmOpsChatHistoryDO);
-    }
 }

@@ -13,6 +13,7 @@ import dev.langchain4j.data.message.ChatMessageSerializer;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.BatchResult;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PersistentChatMemoryStore implements ChatMemoryStore {
 
     @Resource
@@ -39,7 +41,11 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
 
             Page<LlmOpsChatHistoryDO> historyPage = llmOpsChatHistoryDOMapper.selectPage(page, queryWrapper);
             List<LlmOpsChatHistoryDO> records = historyPage.getRecords();
-            return ChatMessageConvert.convert2ChatMessageListFromDO(records);
+            List<LlmOpsChatHistoryDO> collect = records.stream().map(record -> {
+                return GsonUtil.parseList(record.getContent(), LlmOpsChatHistoryDO.class);
+            }).flatMap(List::stream).collect(Collectors.toList());
+
+            return ChatMessageConvert.convert2ChatMessageListFromDO(collect);
         } catch (Exception ex) {
             throw new RuntimeException();
         }
@@ -60,14 +66,26 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
             historyDO.setCtime(new Date());
             historyDO.setToken(12L);
             historyDO.setCreator("122");
-//            historyDO.setId(null);
             return historyDO;
         }).collect(Collectors.toList());
-        llmOpsChatHistoryDOMapper.insert(historyList);
+
+        LlmOpsChatHistoryDO llmOpsChatHistoryDO = new LlmOpsChatHistoryDO();
+        llmOpsChatHistoryDO.setContent(GsonUtil.toJSONString(historyList));
+        llmOpsChatHistoryDO.setDialogId((Long) memoryId);
+        llmOpsChatHistoryDO.setTenant("1");
+        llmOpsChatHistoryDO.setCtime(new Date());
+        llmOpsChatHistoryDO.setToken(12L);
+        llmOpsChatHistoryDO.setCreator("122");
+        llmOpsChatHistoryDO.setRole(1);
+
+        // TODO:
+//        List<LlmOpsChatHistoryDO> llmOpsChatHistoryDOS = historyList.subList(historyList.size() - 1, historyList.size());
+        llmOpsChatHistoryDOMapper.insert(llmOpsChatHistoryDO);
     }
 
     @Override
     public void deleteMessages(Object memoryId) {
+        log.info("delete");
         // TODO: Implement deleting all messages in the persistent store by memory ID.
     }
 }

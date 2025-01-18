@@ -24,6 +24,7 @@ CREATE TABLE `llmops_chat_dialog` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '兑换id',
   `title` varchar(256) NOT NULL COMMENT '对话概要',
   `tenant` varchar(256) NOT NULL COMMENT '租户信息',
+  `content` json DEFAULT NULL COMMENT '对话内容',
   `creator` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '创建人',
   `operator` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '最后修改人',
   `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

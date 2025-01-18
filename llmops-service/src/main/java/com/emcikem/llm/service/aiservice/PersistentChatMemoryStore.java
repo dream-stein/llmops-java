@@ -60,7 +60,7 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
             historyDO.setCtime(new Date());
             historyDO.setToken(12L);
             historyDO.setCreator("122");
-            historyDO.setId(null);
+//            historyDO.setId(null);
             return historyDO;
         }).collect(Collectors.toList());
         llmOpsChatHistoryDOMapper.insert(historyList);

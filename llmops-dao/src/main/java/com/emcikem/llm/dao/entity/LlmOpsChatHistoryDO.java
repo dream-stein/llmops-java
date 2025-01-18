@@ -1,6 +1,8 @@
 package com.emcikem.llm.dao.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -15,6 +17,8 @@ import java.util.Date;
 @Data
 @TableName("llmops_chat_history")
 public class LlmOpsChatHistoryDO {
+    @TableField("id")
+    @TableId(type = IdType.AUTO) // 使用数据库自增主键
     private Long id;
 
     /**

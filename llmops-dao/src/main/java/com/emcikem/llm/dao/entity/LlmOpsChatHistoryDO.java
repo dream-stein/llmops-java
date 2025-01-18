@@ -1,5 +1,6 @@
 package com.emcikem.llm.dao.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -19,35 +20,42 @@ public class LlmOpsChatHistoryDO {
     /**
      * 角色类型，1:assist，2:user
      */
+    @TableField("role")
     private Integer role;
 
     /**
      * 租户信息
      */
+    @TableField("tenant")
     private String tenant;
 
     /**
      * 对话id
      */
+    @TableField("dialog_id")
     private Long dialogId;
 
     /**
      * 对话内容
      */
+    @TableField("content")
     private String content;
 
     /**
      * token数
      */
+    @TableField("token")
     private Long token;
 
     /**
      * 创建人
      */
+    @TableField("creator")
     private String creator;
 
     /**
      * 创建时间
      */
+    @TableField("ctime")
     private Date ctime;
 }

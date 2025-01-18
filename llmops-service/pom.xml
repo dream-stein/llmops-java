@@ -36,6 +36,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.emcikem</groupId>
+            <artifactId>llmops-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.emcikem</groupId>
+            <artifactId>llmops-common</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>

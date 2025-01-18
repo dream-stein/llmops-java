@@ -5,6 +5,7 @@ import com.emcikem.llm.dao.entity.LlmOpsChatHistoryDO;
 import com.google.common.collect.Lists;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.data.message.ChatMessageDeserializer;
 import dev.langchain4j.data.message.UserMessage;
 import org.springframework.util.CollectionUtils;
 
@@ -31,11 +32,6 @@ public class ChatMessageConvert {
         if (historyDO == null) {
             return null;
         }
-        if (ChatMessageRoleTypeEnum.AI.getRole().equals(historyDO.getRole())) {
-            return new AiMessage(historyDO.getContent());
-        } else if (ChatMessageRoleTypeEnum.USER.getRole().equals(historyDO.getRole())) {
-            return new UserMessage(historyDO.getContent());
-        }
-        return null;
+        return ChatMessageDeserializer.messageFromJson(historyDO.getContent());
     }
 }

@@ -1,5 +1,6 @@
 package com.emcikem.llm.dao.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @version 1.0.0
  */
 @Data
+@TableName("llmops_chat_history")
 public class LlmOpsChatHistoryDO {
     private Long id;
 
@@ -23,6 +25,11 @@ public class LlmOpsChatHistoryDO {
      * 租户信息
      */
     private String tenant;
+
+    /**
+     * 对话id
+     */
+    private Long dialogId;
 
     /**
      * 对话内容
@@ -40,17 +47,7 @@ public class LlmOpsChatHistoryDO {
     private String creator;
 
     /**
-     * 最后修改人
-     */
-    private String operator;
-
-    /**
      * 创建时间
      */
     private Date ctime;
-
-    /**
-     * 最后修改时间
-     */
-    private Date utime;
 }

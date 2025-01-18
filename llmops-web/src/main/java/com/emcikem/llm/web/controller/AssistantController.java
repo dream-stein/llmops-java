@@ -1,8 +1,12 @@
 package com.emcikem.llm.web.controller;
 
+import com.emcikem.llm.common.util.GsonUtil;
+import com.emcikem.llm.dao.entity.LlmOpsChatHistoryDO;
+import com.emcikem.llm.dao.mapper.LlmOpsChatHistoryDOMapper;
 import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
 import dev.langchain4j.service.spring.AiService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +19,11 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 @RestController
 class AssistantController {
 
-    Assistant assistant;
-    StreamingAssistant streamingAssistant;
+    @Resource
+    private LlmOpsChatHistoryDOMapper llmOpsChatHistoryDOMapper;
+
+    private Assistant assistant;
+    private StreamingAssistant streamingAssistant;
 
     AssistantController(Assistant assistant, StreamingAssistant streamingAssistant) {
         this.assistant = assistant;
@@ -32,5 +39,11 @@ class AssistantController {
     public Flux<String> streamingAssistant(
             @RequestParam(value = "message", defaultValue = "Tell me an interesting story in 100 words") String message) {
         return streamingAssistant.chat(message);
+    }
+
+    @GetMapping(value = "/hello")
+    public String hello() {
+        LlmOpsChatHistoryDO llmOpsChatHistoryDO = llmOpsChatHistoryDOMapper.selectById(1L);
+        return GsonUtil.toJSONString(llmOpsChatHistoryDO);
     }
 }

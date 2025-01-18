@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.emcikem.llm.dao.entity.LlmOpsChatHistoryDO;
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
-
 /**
  * Create with Emcikem on 2025/1/15
  *
@@ -13,7 +11,8 @@ import java.util.List;
  * @version 1.0.0
  */
 @Mapper
-public interface LlmOpsChatHistoryDOMapper {
+public interface LlmOpsChatHistoryDOMapper extends BaseMapper<LlmOpsChatHistoryDO> {
+
     LlmOpsChatHistoryDO selectById(Long id);
 }
 

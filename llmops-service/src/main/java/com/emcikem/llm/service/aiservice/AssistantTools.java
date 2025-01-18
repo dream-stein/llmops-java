@@ -1,9 +1,7 @@
 package com.emcikem.llm.service.aiservice;
 
-import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
 
 @Component
 public class AssistantTools {

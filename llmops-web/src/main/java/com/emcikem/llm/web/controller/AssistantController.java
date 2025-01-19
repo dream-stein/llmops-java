@@ -5,6 +5,7 @@ import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -13,11 +14,8 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 /**
  * 对话接口
  */
-@RestController("assistant")
-public class AssistantController {
-
-    @Resource
-    private LlmOpsChatHistoryDOMapper llmOpsChatHistoryDOMapper;
+@RestController
+class AssistantController {
 
     private Assistant assistant;
     private StreamingAssistant streamingAssistant;

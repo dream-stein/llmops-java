@@ -1,11 +1,8 @@
 package com.emcikem.llm.web.controller;
 
-import com.emcikem.llm.common.util.GsonUtil;
-import com.emcikem.llm.dao.entity.LlmOpsChatHistoryDO;
 import com.emcikem.llm.dao.mapper.LlmOpsChatHistoryDOMapper;
 import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
-import dev.langchain4j.service.spring.AiService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,10 +11,10 @@ import reactor.core.publisher.Flux;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 
 /**
- * This is an example of using an {@link AiService}, a high-level LangChain4j API.
+ * 对话接口
  */
-@RestController
-class AssistantController {
+@RestController("assistant")
+public class AssistantController {
 
     @Resource
     private LlmOpsChatHistoryDOMapper llmOpsChatHistoryDOMapper;

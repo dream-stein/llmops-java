@@ -18,7 +18,7 @@ public class AssistantConfiguration {
     @Bean
     public ChatMemory chatMemory() {
         return MessageWindowChatMemory.builder()
-                .id(12345L)
+                .id(1L)
                 .maxMessages(10)
                 .chatMemoryStore(persistentChatMemoryStore)
                 .build();

@@ -4,6 +4,7 @@ import com.emcikem.llm.common.entity.BaseResponse;
 import com.emcikem.llm.common.vo.ChatDialogVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  * 对话数据接口
  */
-@RestController("/dialog")
+@RestController
+@RequestMapping("/dialog")
 public class ChatDialogController {
 
     /**

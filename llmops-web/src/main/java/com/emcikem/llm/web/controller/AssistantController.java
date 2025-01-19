@@ -1,11 +1,9 @@
 package com.emcikem.llm.web.controller;
 
-import com.emcikem.llm.dao.mapper.LlmOpsChatHistoryDOMapper;
 import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -15,7 +13,8 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
  * 对话接口
  */
 @RestController
-class AssistantController {
+@RequestMapping("/assistant")
+public class AssistantController {
 
     private Assistant assistant;
     private StreamingAssistant streamingAssistant;
@@ -34,5 +33,9 @@ class AssistantController {
     public Flux<String> streamingAssistant(
             @RequestParam(value = "message", defaultValue = "Tell me an interesting story in 100 words") String message) {
         return streamingAssistant.chat(message);
+    }
+
+    public void chatHistory() {
+        return;
     }
 }

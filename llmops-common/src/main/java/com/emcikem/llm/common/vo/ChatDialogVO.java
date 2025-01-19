@@ -15,5 +15,5 @@ public class ChatDialogVO {
 
     private String name;
 
-    private String tenant;
+    private Long tenantId;
 }

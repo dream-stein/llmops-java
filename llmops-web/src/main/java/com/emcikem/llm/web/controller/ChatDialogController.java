@@ -1,7 +1,7 @@
 package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.BaseResponse;
-import com.emcikem.llm.web.request.DialogEditNameRequest;
+import com.emcikem.llm.common.vo.ChatDialogVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +18,10 @@ public class ChatDialogController {
 
     /**
      * 对话列表页
-     * @param tenant
+     * @param tenantId
      */
     @GetMapping("/list")
-    public void list(String tenant) {
+    public void list(Long tenantId) {
 
     }
 
@@ -40,7 +40,7 @@ public class ChatDialogController {
      * @param request
      */
     @PostMapping("/editName")
-    public BaseResponse<Void> editName(DialogEditNameRequest request) {
+    public BaseResponse<Void> editName(ChatDialogVO request) {
         return new BaseResponse<>();
     }
 

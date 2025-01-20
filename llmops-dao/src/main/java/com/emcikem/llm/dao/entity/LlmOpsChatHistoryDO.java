@@ -1,65 +1,95 @@
 package com.emcikem.llm.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.util.Date;
 
-/**
- * Create with Emcikem on 2025/1/15
- *
- * @author Emcikem
- * @version 1.0.0
- */
-@Data
-@TableName("llmops_chat_history")
 public class LlmOpsChatHistoryDO {
-    @TableField("id")
-    @TableId(type = IdType.AUTO) // 使用数据库自增主键
     private Long id;
 
-    /**
-     * 角色类型，1:assist，2:user
-     */
-    @TableField("role")
     private Integer role;
 
-    /**
-     * 租户信息
-     */
-    @TableField("tenant")
     private String tenant;
 
-    /**
-     * 对话id
-     */
-    @TableField("dialog_id")
-    private Long dialogId;
-
-    /**
-     * 对话内容
-     */
-    @TableField("content")
-    private String content;
-
-    /**
-     * token数
-     */
-    @TableField("token")
     private Long token;
 
-    /**
-     * 创建人
-     */
-    @TableField("creator")
     private String creator;
 
-    /**
-     * 创建时间
-     */
-    @TableField("ctime")
+    private String operator;
+
     private Date ctime;
+
+    private Date utime;
+
+    private String content;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
+    }
+
+    public String getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(String tenant) {
+        this.tenant = tenant == null ? null : tenant.trim();
+    }
+
+    public Long getToken() {
+        return token;
+    }
+
+    public void setToken(Long token) {
+        this.token = token;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator == null ? null : operator.trim();
+    }
+
+    public Date getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(Date ctime) {
+        this.ctime = ctime;
+    }
+
+    public Date getUtime() {
+        return utime;
+    }
+
+    public void setUtime(Date utime) {
+        this.utime = utime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
 }

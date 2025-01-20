@@ -16,12 +16,12 @@ public class ChatVO {
     /**
      * 对话ID
      */
-    private Long chatId;
+    private Long dialogId;
 
     /**
      * 模型名称
      */
-    private String model;
+    private String modelName;
 
     /**
      * 用户输入的prompt

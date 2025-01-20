@@ -31,8 +31,8 @@ public class LlmOpsChatDialogDO {
     /**
      * 租户信息
      */
-    @TableField("tenant")
-    private String tenant;
+    @TableField("tenant_id")
+    private Long tenantId;
 
     /**
      * 对话内容

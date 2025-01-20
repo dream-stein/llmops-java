@@ -26,7 +26,7 @@ public class AssistantController {
 
     @GetMapping("/assistant")
     public String assistant(@RequestParam(value = "message", defaultValue = "What time is it now?") String message) {
-        return assistant.chat(message);
+        return assistant.chat(1L, message);
     }
 
     @GetMapping(value = "/streamingAssistant", produces = TEXT_EVENT_STREAM_VALUE)

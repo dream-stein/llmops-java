@@ -9,16 +9,19 @@ import java.util.Arrays;
  * @version 1.0.0
  */
 public enum ChatModelEnum {
-    DEEP_SEEK(1, "deepSeek"),
+    DEEP_SEEK(1, "deepseek-chat", "https://api.deepseek.com"),
     ;
 
     private final Integer modeId;
 
     private final String modelName;
 
-    ChatModelEnum(Integer modeId, String modelName) {
+    private final String baseUrl;
+
+    ChatModelEnum(Integer modeId, String modelName, String baseUrl) {
         this.modeId = modeId;
         this.modelName = modelName;
+        this.baseUrl = baseUrl;
     }
 
     public Integer getModeId() {
@@ -27,6 +30,10 @@ public enum ChatModelEnum {
 
     public String getModelName() {
         return modelName;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
     public static ChatModelEnum findByModeId(Integer modelId) {

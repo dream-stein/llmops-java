@@ -15,7 +15,7 @@ CREATE TABLE `llmops_chat_history` (
   `creator` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '创建人',
   `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  KEY `idx_tenant` (`tenant`),
+  KEY `idx_tenant_id` (`tenant_id`),
   KEY `idx_role` (`role`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='对话记录表';
 
@@ -30,7 +30,7 @@ CREATE TABLE `llmops_chat_dialog` (
   `ctime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `utime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   PRIMARY KEY (`id`),
-  KEY `idx_tenant` (`tenant`)
+  KEY `idx_tenant_id` (`tenant_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='对话概要表';
 
 

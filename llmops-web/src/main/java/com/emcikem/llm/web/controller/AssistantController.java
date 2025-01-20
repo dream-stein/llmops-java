@@ -1,7 +1,10 @@
 package com.emcikem.llm.web.controller;
 
+import com.emcikem.llm.common.vo.ChatVO;
 import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
+import com.emcikem.llm.service.service.ChatAssistService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,5 +40,19 @@ public class AssistantController {
 
     public void chatHistory() {
         return;
+    }
+
+
+    @Resource
+    private ChatAssistService chatAssistService;
+
+    @GetMapping(value = "/chat")
+    public String chat(@RequestParam(value = "message") String message) {
+        ChatVO chatVO = new ChatVO();
+//        chatVO.setDialogId(2L);
+        chatVO.setModelName("deepseek-chat");
+        chatVO.setPrompt(message);
+        chatVO.setTenantId(1L);
+        return chatAssistService.chat(chatVO);
     }
 }

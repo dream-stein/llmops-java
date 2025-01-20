@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
  */
 @Data
 @TableName("llmops_chat_dialog")
-public class LlmOpsChatDialogDO {
+public class LlmOpsChatDialogDO implements Serializable {
 
     @TableField("id")
     @TableId(type = IdType.AUTO) // 使用数据库自增主键

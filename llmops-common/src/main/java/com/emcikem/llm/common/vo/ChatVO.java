@@ -26,7 +26,7 @@ public class ChatVO {
     /**
      * 用户输入的prompt
      */
-    private Long promptId;
+    private String prompt;
 
     /**
      * 是否联网

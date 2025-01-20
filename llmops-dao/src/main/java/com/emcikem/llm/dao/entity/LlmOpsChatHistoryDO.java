@@ -1,95 +1,37 @@
 package com.emcikem.llm.dao.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class LlmOpsChatHistoryDO {
+@Data
+@TableName("llmops_chat_history")
+public class LlmOpsChatHistoryDO implements Serializable {
+
+    @TableField("id")
+    @TableId(type = IdType.AUTO) // 使用数据库自增主键
     private Long id;
 
+    @TableField("role")
     private Integer role;
 
-    private String tenant;
+    @TableField("tenant_id")
+    private Long tenantId;
 
+    @TableField("token")
     private Long token;
 
+    @TableField("creator")
     private String creator;
 
-    private String operator;
-
+    @TableField("ctime")
     private Date ctime;
 
-    private Date utime;
-
+    @TableField("content")
     private String content;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
-    }
-
-    public String getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(String tenant) {
-        this.tenant = tenant == null ? null : tenant.trim();
-    }
-
-    public Long getToken() {
-        return token;
-    }
-
-    public void setToken(Long token) {
-        this.token = token;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
-    }
-
-    public Date getCtime() {
-        return ctime;
-    }
-
-    public void setCtime(Date ctime) {
-        this.ctime = ctime;
-    }
-
-    public Date getUtime() {
-        return utime;
-    }
-
-    public void setUtime(Date utime) {
-        this.utime = utime;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
 }

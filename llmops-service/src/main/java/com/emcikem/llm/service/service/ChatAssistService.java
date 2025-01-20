@@ -4,6 +4,8 @@ import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.ChatVO;
 import com.emcikem.llm.dao.entity.LlmOpsChatDialogDO;
 import com.emcikem.llm.dao.mapper.LlmOpsChatDialogDOMapper;
+import com.emcikem.llm.service.aiservice.Assistant;
+import com.emcikem.llm.service.aiservice.factory.AssistantFactory;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -22,15 +24,19 @@ public class ChatAssistService {
     @Resource
     private LlmOpsChatDialogDOMapper llmOpsChatDialogDOMapper;
 
+    @Resource
+    private AssistantFactory assistantFactory;
 
-
-    public void chat(ChatVO chatVO) {
+    public String chat(ChatVO chatVO) {
         // 1. 查询或者新建dialog
         LlmOpsChatDialogDO chatDialogDO = getOrQueryDialog(chatVO);
-        // 2. 和ai对话
+        // 2. 找到智能体
+        Assistant assistant = assistantFactory.getAssistant(chatVO.getModelName());
+        // 3. 和ai对话
+        return assistant.chat(chatDialogDO.getId(), chatVO.getPrompt());
+        // 4. 插入history数据
+        // 5. 回写dialog数据
 
-        // 3. 插入history数据
-        // 4. 回写dialog数据
     }
 
     private LlmOpsChatDialogDO getOrQueryDialog(ChatVO chatVO) {

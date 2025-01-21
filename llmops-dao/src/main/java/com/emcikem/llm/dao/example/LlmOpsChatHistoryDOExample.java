@@ -1,50 +1,130 @@
-package com.emcikem.llm.dao.entity;
+package com.emcikem.llm.dao.example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class LlmOpsChatHistoryDOExample {
+    /**
+     * @mbg.generated
+     */
     protected String orderByClause;
 
+    /**
+     * @mbg.generated
+     */
     protected boolean distinct;
 
+    /**
+     * @mbg.generated
+     */
     protected List<Criteria> oredCriteria;
 
+    /**
+     * @mbg.generated
+     */
+    protected Integer offset;
+
+    /**
+     * @mbg.generated
+     */
+    protected Integer rows;
+
+    /**
+     *
+     * @mbg.generated
+     */
     public LlmOpsChatHistoryDOExample() {
-        oredCriteria = new ArrayList<>();
+        oredCriteria = new ArrayList<Criteria>();
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public String getOrderByClause() {
         return orderByClause;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public void setDistinct(boolean distinct) {
         this.distinct = distinct;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public boolean isDistinct() {
         return distinct;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public List<Criteria> getOredCriteria() {
         return oredCriteria;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public void or(Criteria criteria) {
         oredCriteria.add(criteria);
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public Criteria or() {
         Criteria criteria = createCriteriaInternal();
         oredCriteria.add(criteria);
         return criteria;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample orderBy(String orderByClause) {
+        this.setOrderByClause(orderByClause);
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample orderBy(String ... orderByClauses) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < orderByClauses.length; i++) {
+            sb.append(orderByClauses[i]);
+            if (i < orderByClauses.length - 1) {
+                sb.append(" , ");
+            }
+        }
+        this.setOrderByClause(sb.toString());
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
     public Criteria createCriteria() {
         Criteria criteria = createCriteriaInternal();
         if (oredCriteria.size() == 0) {
@@ -53,23 +133,140 @@ public class LlmOpsChatHistoryDOExample {
         return criteria;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
+        Criteria criteria = new Criteria(this);
         return criteria;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public void clear() {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
+        rows = null;
+        offset = null;
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public Integer getOffset() {
+        return this.offset;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public void setRows(Integer rows) {
+        this.rows = rows;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public Integer getRows() {
+        return this.rows;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample limit(Integer rows) {
+        this.rows = rows;
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample limit(Integer offset, Integer rows) {
+        this.offset = offset;
+        this.rows = rows;
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample page(Integer page, Integer pageSize) {
+        this.offset = page * pageSize;
+        this.rows = pageSize;
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public static Criteria newAndCreateCriteria() {
+        LlmOpsChatHistoryDOExample example = new LlmOpsChatHistoryDOExample();
+        return example.createCriteria();
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample when(boolean condition, IExampleWhen then) {
+        if (condition) {
+            then.example(this);
+        }
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample when(boolean condition, IExampleWhen then, IExampleWhen otherwise) {
+        if (condition) {
+            then.example(this);
+        } else {
+            otherwise.example(this);
+        }
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public LlmOpsChatHistoryDOExample distinct(boolean distinct) {
+        this.setDistinct(distinct);
+        return this;
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<>();
+            criteria = new ArrayList<Criterion>();
         }
 
         public boolean isValid() {
@@ -225,73 +422,123 @@ public class LlmOpsChatHistoryDOExample {
             return (Criteria) this;
         }
 
-        public Criteria andTenantIsNull() {
-            addCriterion("tenant is null");
+        public Criteria andTenantIdIsNull() {
+            addCriterion("tenant_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTenantIsNotNull() {
-            addCriterion("tenant is not null");
+        public Criteria andTenantIdIsNotNull() {
+            addCriterion("tenant_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTenantEqualTo(String value) {
-            addCriterion("tenant =", value, "tenant");
+        public Criteria andTenantIdEqualTo(Long value) {
+            addCriterion("tenant_id =", value, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantNotEqualTo(String value) {
-            addCriterion("tenant <>", value, "tenant");
+        public Criteria andTenantIdNotEqualTo(Long value) {
+            addCriterion("tenant_id <>", value, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantGreaterThan(String value) {
-            addCriterion("tenant >", value, "tenant");
+        public Criteria andTenantIdGreaterThan(Long value) {
+            addCriterion("tenant_id >", value, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantGreaterThanOrEqualTo(String value) {
-            addCriterion("tenant >=", value, "tenant");
+        public Criteria andTenantIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("tenant_id >=", value, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantLessThan(String value) {
-            addCriterion("tenant <", value, "tenant");
+        public Criteria andTenantIdLessThan(Long value) {
+            addCriterion("tenant_id <", value, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantLessThanOrEqualTo(String value) {
-            addCriterion("tenant <=", value, "tenant");
+        public Criteria andTenantIdLessThanOrEqualTo(Long value) {
+            addCriterion("tenant_id <=", value, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantLike(String value) {
-            addCriterion("tenant like", value, "tenant");
+        public Criteria andTenantIdIn(List<Long> values) {
+            addCriterion("tenant_id in", values, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantNotLike(String value) {
-            addCriterion("tenant not like", value, "tenant");
+        public Criteria andTenantIdNotIn(List<Long> values) {
+            addCriterion("tenant_id not in", values, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantIn(List<String> values) {
-            addCriterion("tenant in", values, "tenant");
+        public Criteria andTenantIdBetween(Long value1, Long value2) {
+            addCriterion("tenant_id between", value1, value2, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantNotIn(List<String> values) {
-            addCriterion("tenant not in", values, "tenant");
+        public Criteria andTenantIdNotBetween(Long value1, Long value2) {
+            addCriterion("tenant_id not between", value1, value2, "tenantId");
             return (Criteria) this;
         }
 
-        public Criteria andTenantBetween(String value1, String value2) {
-            addCriterion("tenant between", value1, value2, "tenant");
+        public Criteria andDialogIdIsNull() {
+            addCriterion("dialog_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTenantNotBetween(String value1, String value2) {
-            addCriterion("tenant not between", value1, value2, "tenant");
+        public Criteria andDialogIdIsNotNull() {
+            addCriterion("dialog_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdEqualTo(Long value) {
+            addCriterion("dialog_id =", value, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdNotEqualTo(Long value) {
+            addCriterion("dialog_id <>", value, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdGreaterThan(Long value) {
+            addCriterion("dialog_id >", value, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("dialog_id >=", value, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdLessThan(Long value) {
+            addCriterion("dialog_id <", value, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdLessThanOrEqualTo(Long value) {
+            addCriterion("dialog_id <=", value, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdIn(List<Long> values) {
+            addCriterion("dialog_id in", values, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdNotIn(List<Long> values) {
+            addCriterion("dialog_id not in", values, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdBetween(Long value1, Long value2) {
+            addCriterion("dialog_id between", value1, value2, "dialogId");
+            return (Criteria) this;
+        }
+
+        public Criteria andDialogIdNotBetween(Long value1, Long value2) {
+            addCriterion("dialog_id not between", value1, value2, "dialogId");
             return (Criteria) this;
         }
 
@@ -425,76 +672,6 @@ public class LlmOpsChatHistoryDOExample {
             return (Criteria) this;
         }
 
-        public Criteria andOperatorIsNull() {
-            addCriterion("operator is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorIsNotNull() {
-            addCriterion("operator is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorEqualTo(String value) {
-            addCriterion("operator =", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotEqualTo(String value) {
-            addCriterion("operator <>", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorGreaterThan(String value) {
-            addCriterion("operator >", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorGreaterThanOrEqualTo(String value) {
-            addCriterion("operator >=", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorLessThan(String value) {
-            addCriterion("operator <", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorLessThanOrEqualTo(String value) {
-            addCriterion("operator <=", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorLike(String value) {
-            addCriterion("operator like", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotLike(String value) {
-            addCriterion("operator not like", value, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorIn(List<String> values) {
-            addCriterion("operator in", values, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotIn(List<String> values) {
-            addCriterion("operator not in", values, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorBetween(String value1, String value2) {
-            addCriterion("operator between", value1, value2, "operator");
-            return (Criteria) this;
-        }
-
-        public Criteria andOperatorNotBetween(String value1, String value2) {
-            addCriterion("operator not between", value1, value2, "operator");
-            return (Criteria) this;
-        }
-
         public Criteria andCtimeIsNull() {
             addCriterion("ctime is null");
             return (Criteria) this;
@@ -554,74 +731,89 @@ public class LlmOpsChatHistoryDOExample {
             addCriterion("ctime not between", value1, value2, "ctime");
             return (Criteria) this;
         }
-
-        public Criteria andUtimeIsNull() {
-            addCriterion("utime is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeIsNotNull() {
-            addCriterion("utime is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeEqualTo(Date value) {
-            addCriterion("utime =", value, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeNotEqualTo(Date value) {
-            addCriterion("utime <>", value, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeGreaterThan(Date value) {
-            addCriterion("utime >", value, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("utime >=", value, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeLessThan(Date value) {
-            addCriterion("utime <", value, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeLessThanOrEqualTo(Date value) {
-            addCriterion("utime <=", value, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeIn(List<Date> values) {
-            addCriterion("utime in", values, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeNotIn(List<Date> values) {
-            addCriterion("utime not in", values, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeBetween(Date value1, Date value2) {
-            addCriterion("utime between", value1, value2, "utime");
-            return (Criteria) this;
-        }
-
-        public Criteria andUtimeNotBetween(Date value1, Date value2) {
-            addCriterion("utime not between", value1, value2, "utime");
-            return (Criteria) this;
-        }
     }
 
+    /**
+     *
+     * @mbg.generated do_not_delete_during_merge
+     */
     public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
+        /**
+         * @mbg.generated
+         */
+        private LlmOpsChatHistoryDOExample example;
+
+        /**
+         *
+         * @mbg.generated
+         */
+        protected Criteria(LlmOpsChatHistoryDOExample example) {
             super();
+            this.example = example;
+        }
+
+        /**
+         *
+         * @mbg.generated
+         */
+        public LlmOpsChatHistoryDOExample example() {
+            return this.example;
+        }
+
+        /**
+         *
+         * @mbg.generated
+         */
+        @Deprecated
+        public Criteria andIf(boolean ifAdd, ICriteriaAdd add) {
+            if (ifAdd) {
+                add.add(this);
+            }
+            return this;
+        }
+
+        /**
+         *
+         * @mbg.generated
+         */
+        public Criteria when(boolean condition, ICriteriaWhen then) {
+            if (condition) {
+                then.criteria(this);
+            }
+            return this;
+        }
+
+        /**
+         *
+         * @mbg.generated
+         */
+        public Criteria when(boolean condition, ICriteriaWhen then, ICriteriaWhen otherwise) {
+            if (condition) {
+                then.criteria(this);
+            } else {
+                otherwise.criteria(this);
+            }
+            return this;
+        }
+
+        /**
+         *
+         * @mbg.generated
+         */
+        @Deprecated
+        public interface ICriteriaAdd {
+            /**
+             *
+             * @mbg.generated
+             */
+            Criteria add(Criteria add);
         }
     }
 
+    /**
+     *
+     * @mbg.generated
+     */
     public static class Criterion {
         private String condition;
 
@@ -706,5 +898,29 @@ public class LlmOpsChatHistoryDOExample {
         protected Criterion(String condition, Object value, Object secondValue) {
             this(condition, value, secondValue, null);
         }
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public interface ICriteriaWhen {
+        /**
+         *
+         * @mbg.generated
+         */
+        void criteria(Criteria criteria);
+    }
+
+    /**
+     *
+     * @mbg.generated
+     */
+    public interface IExampleWhen {
+        /**
+         *
+         * @mbg.generated
+         */
+        void example(com.emcikem.llm.dao.example.LlmOpsChatHistoryDOExample example);
     }
 }

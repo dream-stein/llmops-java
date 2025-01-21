@@ -1,67 +1,77 @@
 package com.emcikem.llm.dao.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import java.util.Date;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
- * Create with Emcikem on 2025/1/19
+ * Database Table Remarks:
+ *   对话概要表
  *
- * @author Emcikem
- * @version 1.0.0
+ * @mbg.generated do_not_delete_during_merge
  */
 @Data
-@TableName("llmops_chat_dialog")
-public class LlmOpsChatDialogDO implements Serializable {
-
-    @TableField("id")
-    @TableId(type = IdType.AUTO) // 使用数据库自增主键
+public class LlmOpsChatDialogDO {
+    /**
+     * Database Column Remarks:
+     *   兑换id
+     *
+     * @mbg.generated
+     */
     private Long id;
 
     /**
-     * 对话概要
+     * Database Column Remarks:
+     *   对话概要
+     *
+     * @mbg.generated
      */
-    @TableField("title")
     private String title;
 
     /**
-     * 租户信息
+     * Database Column Remarks:
+     *   租户id
+     *
+     * @mbg.generated
      */
-    @TableField("tenant_id")
     private Long tenantId;
 
     /**
-     * 对话内容
+     * Database Column Remarks:
+     *   创建人
+     *
+     * @mbg.generated
      */
-    @TableField("content")
-    private String content;
-
-    /**
-     * 创建人
-     */
-    @TableField("creator")
     private String creator;
 
     /**
-     * 最后修改人
+     * Database Column Remarks:
+     *   最后修改人
+     *
+     * @mbg.generated
      */
-    @TableField("operator")
     private String operator;
 
     /**
-     * 创建时间
+     * Database Column Remarks:
+     *   创建时间
+     *
+     * @mbg.generated
      */
-    @TableField("ctime")
     private Date ctime;
 
     /**
-     * 最后修改时间
+     * Database Column Remarks:
+     *   最后修改时间
+     *
+     * @mbg.generated
      */
-    @TableField("utime")
     private Date utime;
+
+    /**
+     * Database Column Remarks:
+     *   对话内容
+     *
+     * @mbg.generated
+     */
+    private String content;
 }

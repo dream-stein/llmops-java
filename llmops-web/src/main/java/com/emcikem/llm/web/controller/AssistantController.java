@@ -5,10 +5,7 @@ import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
 import com.emcikem.llm.service.service.ChatAssistService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 
@@ -19,17 +16,20 @@ import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 @RequestMapping("/assistant")
 public class AssistantController {
 
-    private Assistant assistant;
     private StreamingAssistant streamingAssistant;
 
-    AssistantController(Assistant assistant, StreamingAssistant streamingAssistant) {
-        this.assistant = assistant;
+    AssistantController(StreamingAssistant streamingAssistant) {
         this.streamingAssistant = streamingAssistant;
     }
 
     @GetMapping("/assistant")
     public String assistant(@RequestParam(value = "message", defaultValue = "What time is it now?") String message) {
-        return assistant.chat(1L, message);
+        ChatVO chatVO = new ChatVO();
+//        chatVO.setDialogId(2L);
+        chatVO.setModelType(1);
+        chatVO.setPrompt(message);
+        chatVO.setTenantId(1L);
+        return chatAssistService.chat(chatVO);
     }
 
     @GetMapping(value = "/streamingAssistant", produces = TEXT_EVENT_STREAM_VALUE)
@@ -46,13 +46,8 @@ public class AssistantController {
     @Resource
     private ChatAssistService chatAssistService;
 
-    @GetMapping(value = "/chat")
-    public String chat(@RequestParam(value = "message") String message) {
-        ChatVO chatVO = new ChatVO();
-//        chatVO.setDialogId(2L);
-        chatVO.setModelName("deepseek-chat");
-        chatVO.setPrompt(message);
-        chatVO.setTenantId(1L);
+    @PostMapping(value = "/chat")
+    public String chat(@RequestBody ChatVO chatVO) {
         return chatAssistService.chat(chatVO);
     }
 }

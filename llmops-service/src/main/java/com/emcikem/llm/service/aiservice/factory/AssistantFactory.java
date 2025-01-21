@@ -29,8 +29,4 @@ public class AssistantFactory {
     public Assistant getAssistant(String modelName) {
         return assistantMap.get(modelName);
     }
-
-    public String chat(Long memoryId, String userMessage, String modelName) {
-        return getAssistant(modelName).chat(memoryId, userMessage);
-    }
 }

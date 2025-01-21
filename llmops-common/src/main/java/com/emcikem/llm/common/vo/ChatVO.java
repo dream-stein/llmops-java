@@ -19,9 +19,9 @@ public class ChatVO {
     private Long dialogId;
 
     /**
-     * 模型名称
+     * 模型类型
      */
-    private String modelName;
+    private Integer modelType;
 
     /**
      * 用户输入的prompt

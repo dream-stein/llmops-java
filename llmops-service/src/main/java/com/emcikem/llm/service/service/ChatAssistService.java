@@ -49,7 +49,7 @@ public class ChatAssistService {
             }
             return llmOpsChatDialogDO;
         }
-        LlmOpsChatDialogDO chatDialogDO = llmOpsChatDialogDOMapper.selectById(chatVO.getDialogId());
+        LlmOpsChatDialogDO chatDialogDO = llmOpsChatDialogDOMapper.selectByPrimaryKey(chatVO.getDialogId());
         if (chatDialogDO == null) {
             throw new RuntimeException();
         }

@@ -24,7 +24,7 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
     public List<ChatMessage> getMessages(Object memoryId) {
         try {
             Long dialogId = (Long) memoryId;
-            LlmOpsChatDialogDO llmOpsChatDialogDO = llmOpsChatDialogDOMapper.selectById(dialogId);
+            LlmOpsChatDialogDO llmOpsChatDialogDO = llmOpsChatDialogDOMapper.selectByPrimaryKey(dialogId);
             if (llmOpsChatDialogDO == null) {
                 return Lists.newArrayList();
             }
@@ -46,7 +46,7 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
             chatDialogDO.setUtime(new Date());
             chatDialogDO.setContent(ChatMessageSerializer.messagesToJson(messages));
 
-            llmOpsChatDialogDOMapper.updateById(chatDialogDO);
+            llmOpsChatDialogDOMapper.updateByPrimaryKey(chatDialogDO);
         } catch (Exception ex) {
             throw new RuntimeException();
         }

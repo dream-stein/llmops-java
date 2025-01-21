@@ -46,7 +46,7 @@ public class PersistentChatMemoryStore implements ChatMemoryStore {
             chatDialogDO.setUtime(new Date());
             chatDialogDO.setContent(ChatMessageSerializer.messagesToJson(messages));
 
-            llmOpsChatDialogDOMapper.updateByPrimaryKey(chatDialogDO);
+            llmOpsChatDialogDOMapper.updateByPrimaryKeySelective(chatDialogDO);
         } catch (Exception ex) {
             throw new RuntimeException();
         }

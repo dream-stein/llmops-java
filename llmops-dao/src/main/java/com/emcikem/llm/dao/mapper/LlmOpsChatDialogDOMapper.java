@@ -3,8 +3,11 @@ package com.emcikem.llm.dao.mapper;
 import com.emcikem.llm.dao.entity.LlmOpsChatDialogDO;
 import com.emcikem.llm.dao.example.LlmOpsChatDialogDOExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface LlmOpsChatDialogDOMapper {
     /**
      *

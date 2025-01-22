@@ -67,6 +67,12 @@ public class ChatAssistService {
             if (userResult < 1 || aiResult < 1) {
                 throw new RuntimeException();
             }
+
+            // 将用户数据回写到dialog中
+            if (chatVO.getDialogId() == null) {
+                //TOOD: 概要
+//                llmOpsChatDialogDOMapper.updateByExampleSelective();
+            }
         } catch (Exception ex) {
             log.error("insertHistory error, chatVO:{}, aiChat:{}, dialog:{}", chatVO, aiChat, dialogId, ex);
         }

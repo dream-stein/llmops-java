@@ -33,5 +33,5 @@ jobs:
     - name: Upload JAR file
       uses: actions/upload-artifact@v4
       with:
-        name: llmops-package
+        name: llmops-package.jar
         path: llmops-web/target/*.jar

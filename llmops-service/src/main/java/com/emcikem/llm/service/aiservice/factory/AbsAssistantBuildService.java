@@ -2,6 +2,7 @@ package com.emcikem.llm.service.aiservice.factory;
 
 import com.emcikem.llm.common.enums.ChatModelEnum;
 import com.emcikem.llm.service.aiservice.Assistant;
+import com.emcikem.llm.service.aiservice.AssistantTools;
 import com.emcikem.llm.service.aiservice.PersistentChatMemoryStore;
 import com.google.common.collect.Lists;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
@@ -22,6 +23,8 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
     @Resource
     private PersistentChatMemoryStore persistentChatMemoryStore;
 
+    @Resource
+    private AssistantTools assistantTools;
     @Override
     public String getModelName() {
         return getChatModelEnum().getModelName();
@@ -40,7 +43,7 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
         return AiServices.builder(Assistant.class)
                 .chatLanguageModel(model)
                 .chatMemoryProvider(chatMemoryProvider)
-                .tools(Lists.newArrayList())
+                .tools(assistantTools)
                 .build();
     }
 

@@ -10,6 +10,7 @@ import java.util.Arrays;
  */
 public enum ChatModelEnum {
     DEEP_SEEK(1, "deepseek-chat", "https://api.deepseek.com"),
+    KIMI(2, "moonshot-v1-8k", "https://api.moonshot.cn/v1"),
     ;
 
     private final Integer modeId;

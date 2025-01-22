@@ -26,7 +26,7 @@ public class AssistantController {
     public String assistant(@RequestParam(value = "message", defaultValue = "What time is it now?") String message) {
         ChatVO chatVO = new ChatVO();
 //        chatVO.setDialogId(2L);
-        chatVO.setModelType(1);
+        chatVO.setModelType(2);
         chatVO.setPrompt(message);
         chatVO.setTenantId(1L);
         return chatAssistService.chat(chatVO);

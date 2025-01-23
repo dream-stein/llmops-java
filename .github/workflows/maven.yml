@@ -38,6 +38,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build  # 依赖 build Job
+    environment: prod
     steps:
       - uses: actions/checkout@v4
 

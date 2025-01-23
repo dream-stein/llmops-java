@@ -67,7 +67,7 @@ jobs:
             echo "starting deploy"
             cd /opt/llmops/llmops-web/target
             ls -l
-            pkill -f llmops-web || true
+            # pkill -f llmops-web || true
             nohup java -jar llmops-web-1.0-SNAPSHOT.jar > app.log 2>&1 &
             echo "end"
       

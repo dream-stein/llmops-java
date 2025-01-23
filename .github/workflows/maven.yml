@@ -67,7 +67,11 @@ jobs:
             echo "starting deploy"
             cd /opt/llmops/llmops-web/target
             ls -l
-            # pkill -f llmops-web || true
+            if pgrep -f llmops-web; then
+              pkill -f llmops-web
+              sleep 5  # 等待 5 秒，确保进程完全终止
+            fi
+            echo "Starting application..."
             nohup java -jar llmops-web-1.0-SNAPSHOT.jar > app.log 2>&1 &
             echo "end"
       

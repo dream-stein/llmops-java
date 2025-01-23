@@ -67,7 +67,7 @@ jobs:
             echo "starting deploy"
             cd /opt/llmops/llmops-web/target
             ls -l
-            if pgrep -f llmops-web; then
+            if pgrep -fa llmops-web; then
               echo "stop application"
               pkill -f llmops-web > /dev/null 2>&1 || true
               sleep 5  # 等待 5 秒，确保进程完全终止

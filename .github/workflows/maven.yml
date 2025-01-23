@@ -57,15 +57,15 @@ jobs:
           source: llmops-web/target/*.jar
           target: /opt/llmops/
 
-      # - name: Start application
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.SERVICE_HOST }}
-      #     username: ${{ secrets.SERVICE_NAME }}
-      #     key: ${{ secrets.SSHKEY_PUBLIC }}
-      #     script: |
-      #       cd /opt/llmops/
-      #       pkill -f llmops-web || true
-      #       nohup java -jar llmops-web-1.0-SNAPSHOT.jar > app.log 2>&1 &
+      - name: Start application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVICE_HOST }}
+          username: ${{ secrets.SERVICE_NAME }}
+          key: ${{ secrets.SSHKEY_PRIVATE }}
+          script: |
+            cd /opt/llmops/llmops-web/target
+            pkill -f llmops-web || true
+            nohup java -jar llmops-web-1.0-SNAPSHOT.jar > app.log 2>&1 &
       
     

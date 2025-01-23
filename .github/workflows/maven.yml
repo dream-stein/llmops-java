@@ -64,8 +64,11 @@ jobs:
           username: ${{ secrets.SERVICE_NAME }}
           key: ${{ secrets.SSHKEY_PRIVATE }}
           script: |
+            echo "starting deploy"
             cd /opt/llmops/llmops-web/target
+            ls -l
             pkill -f llmops-web || true
             nohup java -jar llmops-web-1.0-SNAPSHOT.jar > app.log 2>&1 &
+            echo "end"
       
     

@@ -48,14 +48,15 @@ jobs:
           name: llmops-package.jar
           path: llmops-web/target/
 
-      # - name: Deploy to server
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.SERVICE_HOST }}
-      #     username: ${{ secrets.SERVICE_NAME }}
-      #     key: ${{ secrets.SSHKEY_PRIVATE }}
-      #     source: llmops-web/target/*.jar
-      #     target: /opt/llmops/
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVICE_HOST }}
+          username: ${{ secrets.SERVICE_NAME }}
+          key: ${{ secrets.SSHKEY_PRIVATE }}
+          source: llmops-web/target/*.jar
+          target: /opt/llmops/
+          overwrite: true
 
       - name: Start application
         uses: appleboy/ssh-action@master

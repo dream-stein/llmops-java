@@ -53,7 +53,7 @@ jobs:
         with:
           host: ${{ secrets.SERVICE_HOST }}
           username: ${{ secrets.SERVICE_NAME }}
-          key: ${{ secrets.SSHKEY_PUBLIC }}
+          key: ${{ secrets.SSHKEY_PRIVATE }}
           source: llmops-web/target/*.jar
           target: /opt/llmops/
 

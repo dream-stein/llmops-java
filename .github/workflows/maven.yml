@@ -71,7 +71,7 @@ jobs:
             if pgrep -fa llmops-web; then
               echo "stop application"
               pgrep -f "llmops-web" | grep -v $$ | xargs kill > /dev/null 2>&1 || true
-              sleep 5  # 等待 5 秒，确保进程完全终止
+              sleep 60  
             fi
             echo "Starting application..."
             nohup java -jar llmops-web-1.0-SNAPSHOT.jar > app.log 2>&1 &

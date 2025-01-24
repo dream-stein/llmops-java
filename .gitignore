@@ -20,3 +20,8 @@ MANIFEST.MF
 */.DS_Store
 .DS_Store?
 .Trashes
+# 排除所有日志文件
+*.log
+*.log.*
+# 排除日志目录
+logs/

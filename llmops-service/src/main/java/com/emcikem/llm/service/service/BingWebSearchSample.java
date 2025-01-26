@@ -25,7 +25,7 @@ public class BingWebSearchSample {
     
     public static SearchResults SearchWeb (String searchQuery) throws Exception {
         // Construct the URL.
-        URL url = new URL(host + path + "?q=" +  URLEncoder.encode(searchQuery, "UTF-8") + "&customconfig=6641c52a-f08b-4c15-9707-aa7b951badb6&mkt=en-US");
+        URL url = new URL(host + path + "?q=" +  URLEncoder.encode(searchQuery, "UTF-8") + "&customconfig=6641c52a-f08b-4c15-9707-aa7b951badb6&mkt=zh-CN");
         // Open the connection.
         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
         connection.setRequestProperty("Ocp-Apim-Subscription-Key", subscriptionKey);

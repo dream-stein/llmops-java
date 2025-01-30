@@ -7,8 +7,10 @@ import com.emcikem.llm.service.aiservice.PersistentChatMemoryStore;
 import com.google.common.collect.Lists;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
+import dev.langchain4j.memory.chat.TokenWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.service.AiServices;
 import jakarta.annotation.Resource;
 
@@ -25,6 +27,8 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
 
     @Resource
     private AssistantTools assistantTools;
+    @Resource
+    private OpenAiTokenizer openAiTokenizer;
     @Override
     public String getModelName() {
         return getChatModelEnum().getModelName();
@@ -32,9 +36,9 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
 
     @Override
     public Assistant getAssistant() {
-        ChatMemoryProvider chatMemoryProvider = memoryId -> MessageWindowChatMemory.builder()
+        ChatMemoryProvider chatMemoryProvider = memoryId -> TokenWindowChatMemory.builder()
                 .id(memoryId)
-                .maxMessages(10)
+                .maxTokens(1000, openAiTokenizer)
                 .chatMemoryStore(persistentChatMemoryStore)
                 .build();
 

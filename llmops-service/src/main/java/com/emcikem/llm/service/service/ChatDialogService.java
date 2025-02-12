@@ -6,6 +6,7 @@ import com.emcikem.llm.dao.example.LlmOpsChatDialogDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsChatDialogDOMapper;
 import com.emcikem.llm.service.convert.ChatDialogConvert;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Emcikem
  * @version 1.0.0
  */
+@Service
 public class ChatDialogService {
 
     @Resource

@@ -1,7 +1,8 @@
 package com.emcikem.llm.web.controller;
 
+import com.emcikem.llm.common.entity.ApiResponse;
+import com.emcikem.llm.common.vo.AiChatResponse;
 import com.emcikem.llm.common.vo.ChatVO;
-import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.StreamingAssistant;
 import com.emcikem.llm.service.service.ChatAssistService;
 import jakarta.annotation.Resource;
@@ -38,16 +39,14 @@ public class AssistantController {
         return streamingAssistant.chat(message);
     }
 
-    public void chatHistory() {
-        return;
-    }
-
-
     @Resource
     private ChatAssistService chatAssistService;
 
     @PostMapping(value = "/chat")
-    public String chat(@RequestBody ChatVO chatVO) {
-        return chatAssistService.chat(chatVO);
+    public ApiResponse<AiChatResponse> chat(@RequestBody ChatVO chatVO) {
+        String chat = chatAssistService.chat(chatVO);
+        AiChatResponse response = new AiChatResponse();
+        response.setContent(chat);
+        return ApiResponse.success(response);
     }
 }

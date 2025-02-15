@@ -11,21 +11,21 @@ import org.springframework.stereotype.Service;
  * @author Emcikem
  * @version 1.0.0
  */
-@Service
-public class DeepSeekBuildServiceImpl extends AbsAssistantBuildService {
-
-    @Value("${langchain4j.open-ai.chat-model.api-key}")
-    private String apiKey;
-
-    @Override
-    ChatModelEnum getChatModelEnum() {
-        return ChatModelEnum.DEEP_SEEK;
-    }
-
-    @Override
-    String getApiKey() {
-        return this.apiKey;
-    }
-
-
-}
+//@Service
+//public class DeepSeekBuildServiceImpl extends AbsAssistantBuildService {
+//
+//    @Value("${langchain4j.open-ai.chat-model.api-key}")
+//    private String apiKey;
+//
+//    @Override
+//    ChatModelEnum getChatModelEnum() {
+//        return ChatModelEnum.DEEP_SEEK;
+//    }
+//
+//    @Override
+//    String getApiKey() {
+//        return this.apiKey;
+//    }
+//
+//
+//}

@@ -1,19 +1,14 @@
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-/**
- * Create with Emcikem on {DATE}
- *
- * @author Emcikem
- * @version 1.0.0
- */
 @Data
+@AllArgsConstructor
 public class IpPort {
-
     private String ip;
 
     private Integer port;

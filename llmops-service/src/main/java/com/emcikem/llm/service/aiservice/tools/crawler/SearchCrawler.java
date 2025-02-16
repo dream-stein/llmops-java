@@ -1,23 +1,23 @@
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.jsoup.nodes.Document;
+import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.util.CommonUtil;
+import com.emcikem.llm.service.util.CrawlerUtil;
+import com.emcikem.llm.service.util.FileUtil;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-/**
- * Create with Emcikem on {DATE}
- *
- * @author Emcikem
- * @version 1.0.0
- */
+import static com.emcikem.llm.service.constant.Constant.SEARCH_FAILED;
+
 public class SearchCrawler {
 
-    public static final Map<String, String> searchEngines = new HashMap<>() {{
+    public static final Map<String, String> searchEngines = new HashMap<String, String>() {{
+//        put("google", "https://www.google.com/search?q=");
         put("baidu", "https://www.baidu.com/s?wd=");
         put("sogou", "https://www.sogou.com/web?query=");
         put("360", "https://www.so.com/s?q=");
@@ -25,7 +25,7 @@ public class SearchCrawler {
         put("quark", "https://quark.sm.cn/s?safe=1&q=");
     }};
 
-    public static final List<String> failureMsg = Lists.newArrayList(
+    public static final List<String> failureMsg = Arrays.asList(
             "百度安全验证",
             "验证码",
             "操作过于频繁",
@@ -43,14 +43,14 @@ public class SearchCrawler {
         }
         String webUrl = engines.get(engine);
         if (webUrl == null) {
-            Random random = new Random();
-            engine = keys[random.nextInt(keys.length)];
+            engine = keys[CommonUtil.randomIndex(keys.length)];
             webUrl = engines.get(engine);
         }
-        content = CommonCrawler.crawContent(webUrl + keyword, false);
+        content = CommonCrawler.crawlContent(webUrl + keyword, false);
+//        System.out.println("crawlContent:\n" + content);
         if (failureMsg.stream().anyMatch(content::contains)) {
             failureCache.put(engine, System.currentTimeMillis());
-            content = "SEARCH_FAILED";
+            content = SEARCH_FAILED;
         }
         return content;
     }
@@ -59,7 +59,19 @@ public class SearchCrawler {
         long current = System.currentTimeMillis();
         return SearchCrawler.searchEngines.entrySet()
                 .stream()
-                .filter(entry -> current - filter.getOrDefault(entry.getKey(), current) < 60)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a));
+                .filter(entry -> current - filter.getOrDefault(entry.getKey(), current) < 60 * 1000)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public static void main(String[] args) {
+        FileUtil.mkDir(Constant.FILE_PATH);
+        IpPoolCrawler ipPoolCrawler = new IpPoolCrawler();
+        ipPoolCrawler.refresh();
+        CrawlerUtil.IP_PORT_THREAD_LOCAL.set(ipPoolCrawler.load());
+        try {
+            System.out.println(crawlFromEngine("sogou", "今日双子座运势"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,22 +1,16 @@
-package com.emcikem.llm.service.aiservice.tools.crawler;
+package com.emcikem.llm.service.util;
 
+import com.emcikem.llm.service.aiservice.tools.crawler.IpPort;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Safelist;
 
+import java.io.IOException;
 import java.net.Proxy;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
-/**
- * Create with Emcikem on {DATE}
- *
- * @author Emcikem
- * @version 1.0.0
- */
 public class CrawlerUtil {
-
     public static final List<String> USER_AGENTS = Arrays.asList(
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
@@ -129,27 +123,26 @@ public class CrawlerUtil {
 
     public static final ThreadLocal<List<IpPort>> IP_PORT_THREAD_LOCAL = new ThreadLocal<>();
 
-    public static Document getDocument(final String url) {
+    public static Document getDocument(String url) {
         IpPort ipPort = getIpPort();
         try {
             return Jsoup.connect(url).userAgent(getUserAgent())
                     .proxy(ipPort != null ? ipPort.toProxy() : Proxy.NO_PROXY)
                     .timeout(TIMEOUT).get();
-        } catch (Exception ex) {
-            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Document("");
         }
     }
 
     public static String getUserAgent() {
-        Random random = new Random();
-        return USER_AGENTS.get(random.nextInt(USER_AGENTS.size()));
+        return USER_AGENTS.get(CommonUtil.randomIndex(USER_AGENTS.size()));
     }
 
     public static IpPort getIpPort() {
-        Random random = new Random();
         List<IpPort> ipPorts = IP_PORT_THREAD_LOCAL.get();
-        if (ipPorts != null && !ipPorts.isEmpty()) {
-            return ipPorts.get(random.nextInt(ipPorts.size()));
+        if (ipPorts != null && ipPorts.size() > 0) {
+            return ipPorts.get(CommonUtil.randomIndex(ipPorts.size()));
         }
         return null;
     }

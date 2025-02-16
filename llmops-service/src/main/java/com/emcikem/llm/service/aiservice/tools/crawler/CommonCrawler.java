@@ -1,89 +1,81 @@
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.google.common.collect.Lists;
+import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.util.CrawlerUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Create with Emcikem on {DATE}
- *
- * @author Emcikem
- * @version 1.0.0
- */
 public class CommonCrawler {
-
-    public static String USER_DIR = System.getProperty("user.dir");
-
-    public static String crawContent(String url, boolean isPersist) {
+    public static String crawlContent(String url, boolean isPersist) {
         String rootHtml = "";
         try {
-            // 或取文档
             Document doc = CrawlerUtil.getDocument(url);
-            // 数据清洗
             rootHtml = Jsoup.clean(doc.html(), CrawlerUtil.SAFELIST);
 
-            // 持久化到本地
             if (isPersist) {
-                Path filePath = Paths.get(Paths.get(USER_DIR, "data").toString(), URLEncoder.encode(url, "utf-8") + ".html");
+                Path filePath = Paths.get(Constant.FILE_PATH.toString(), URLEncoder.encode(url, "utf-8") + ".html");
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()))) {
                     writer.write(rootHtml);
                 }
             }
-
-        } catch (Exception ex) {
-            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+//        System.out.println("CommonCrawler: " + rootHtml);
         return rootHtml;
     }
 
     public static List<String> crawlTreeContent(String url, boolean isPersist) {
-        List<String> htmls = Lists.newArrayList();
-        if (!url.startsWith("https://")) {
-            return htmls;
-        }
+        List<String> htmls = new ArrayList<>();
+        if (!url.startsWith("https://")) return htmls;
         try {
             Document doc = CrawlerUtil.getDocument(url);
             String rootHtml = doc.html();
             htmls.add(Jsoup.clean(rootHtml, CrawlerUtil.SAFELIST));
             if (isPersist) {
-                Path filePath = Paths.get(Paths.get(USER_DIR, "data").toString(), URLEncoder.encode(url, "utf-8") + ".html");
+                Path filePath = Paths.get(Constant.FILE_PATH.toString(), URLEncoder.encode(url, "utf-8") + ".html");
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()))) {
                     writer.write(rootHtml);
                 }
             }
             crawlTreeUrls(doc, 2).forEach(item -> {
-                htmls.add(crawContent(item, isPersist));
+//                System.out.println(item);
+                htmls.add(crawlContent(item, isPersist));
             });
-        } catch (Exception ex) {
-            return htmls;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+//        System.out.println(htmls);
         return htmls;
     }
 
+    @NotNull
     public static List<String> crawlTreeUrls(String url, int limit) {
-        List<String> list = Lists.newArrayList();
-        if (!url.startsWith("https://")) {
-            return list;
-        }
+        List<String> list = new ArrayList<>();
+        if (!url.startsWith("https://")) return list;
         try {
             Document doc = CrawlerUtil.getDocument(url);
             list.add(url);
             list = crawlTreeUrls(doc, limit).collect(Collectors.toList());
-        } catch (Exception ex) {
-            return list;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return list;
     }
 
+    @NotNull
     private static Stream<String> crawlTreeUrls(Document doc, int limit) {
         return doc.select("a[href]").stream()
                 .map(link -> link.attr("href"))

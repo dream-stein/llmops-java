@@ -9,6 +9,8 @@ import com.emcikem.llm.dao.example.LlmOpsApiToolProviderDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsApiToolProviderDOMapper;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
+import opennlp.tools.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -34,6 +36,9 @@ public class ApiToolsController {
         LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
         example.setOffset(current_page - 1);
         example.setRows(page_size);
+        if (StringUtils.isNoneEmpty(search_word)) {
+            example.createCriteria().andNameLike("%" + search_word + "%");
+        }
         List<LlmOpsApiToolProviderDO> opsApiToolProviderList = llmOpsApiToolProviderDOMapper.selectByExample(example);
         long count = llmOpsApiToolProviderDOMapper.countByExample(example);
 
@@ -108,7 +113,7 @@ public class ApiToolsController {
         apiToolsDetailVO.setCreated_at(providerDO.getCreatedAt().getTime());
         apiToolsDetailVO.setOpenapi_schema(providerDO.getOpenapiSchema());
 
-        String str = "{\"id\":\"46db3xd1-3199-4e79-a0cd-abf12fa6858f\",\"name\":\"高德工具包\",\"icon\":\"https://www.99it.com.cn/uploads/allimg/220622/114A52915-0.jpg\",\"openapi_schema\":null,\"headers\":[{\"key\":\"Authorization\",\"value\":\"Bearer QQYnRFerJTSEcrfB89fw8proaObmrch8\"}],\"created_at\":1721460914}";
+//        String str = "{\"id\":\"46db3xd1-3199-4e79-a0cd-abf12fa6858f\",\"name\":\"高德工具包\",\"icon\":\"https://www.99it.com.cn/uploads/allimg/220622/114A52915-0.jpg\",\"openapi_schema\":null,\"headers\":[{\"key\":\"Authorization\",\"value\":\"Bearer QQYnRFerJTSEcrfB89fw8proaObmrch8\"}],\"created_at\":1721460914}";
 //        String schema = "{\"description\":\"这是一个查询对应英文单词字典的工具\",\"server\":\"https://dict.youdao.com\",\"paths\":{\"/suggest\":{\"get\":{\"description\":\"根据传递的单词查询其字典信息\",\"operationId\":\"youdaoSuggest\",\"parameters\":[{\"name\":\"q\",\"in\":\"query\",\"description\":\"要检索查询的单词，例如love/computer\",\"required\":true,\"type\":\"str\"},{\"name\":\"doctype\",\"in\":\"query\",\"description\":\"返回的数据类型，支持json和xml两种格式，默认情况下json数据\",\"required\":false,\"type\":\"str\"}]}}}";
 //        apiToolsDetailVO.setOpenapi_schema(schema);
         return ApiResponse.success(apiToolsDetailVO);

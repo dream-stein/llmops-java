@@ -17,7 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApplicationLoader {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(ApplicationLoader.class);
-//        application.setAdditionalProfiles();
+        application.setAdditionalProfiles();
         application.run(args);
         log.info("-------------------------------------------------------------------------------");
         log.info("|                                      |                                      |");

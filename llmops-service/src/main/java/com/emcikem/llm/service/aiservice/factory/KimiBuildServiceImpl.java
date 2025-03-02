@@ -10,21 +10,21 @@ import org.springframework.stereotype.Service;
  * @author Emcikem
  * @version 1.0.0
  */
-@Service
-public class KimiBuildServiceImpl extends AbsAssistantBuildService {
-
-    @Value("${langchain4j.open-ai.chat-model.kimi-api-key}")
-    private String apiKey;
-
-    @Override
-    ChatModelEnum getChatModelEnum() {
-        return ChatModelEnum.KIMI;
-    }
-
-    @Override
-    String getApiKey() {
-        return this.apiKey;
-    }
-
-
-}
+//@Service
+//public class KimiBuildServiceImpl extends AbsAssistantBuildService {
+//
+//    @Value("${langchain4j.open-ai.chat-model.kimi-api-key}")
+//    private String apiKey;
+//
+//    @Override
+//    ChatModelEnum getChatModelEnum() {
+//        return ChatModelEnum.KIMI;
+//    }
+//
+//    @Override
+//    String getApiKey() {
+//        return this.apiKey;
+//    }
+//
+//
+//}

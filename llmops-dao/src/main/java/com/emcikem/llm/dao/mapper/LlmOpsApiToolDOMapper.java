@@ -3,8 +3,11 @@ package com.emcikem.llm.dao.mapper;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolDO;
 import com.emcikem.llm.dao.example.LlmOpsApiToolDOExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface LlmOpsApiToolDOMapper {
     /**
      *

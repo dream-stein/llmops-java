@@ -174,6 +174,11 @@
                 <artifactId>hutool-http</artifactId>
                 <version>5.8.11</version> <!-- 请根据实际情况使用最新版本 -->
             </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-easy-rag</artifactId>
+                <version>1.0.0-beta1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

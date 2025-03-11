@@ -65,6 +65,10 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-http</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-easy-rag</artifactId>
+        </dependency>
     </dependencies>
 
     <properties>

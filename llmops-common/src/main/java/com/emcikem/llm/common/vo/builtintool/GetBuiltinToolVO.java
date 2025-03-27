@@ -25,6 +25,6 @@ public class GetBuiltinToolVO {
 
     private String name;
 
-    // todo:
+    // todo: 模型
 //    private List<> tools;
 }

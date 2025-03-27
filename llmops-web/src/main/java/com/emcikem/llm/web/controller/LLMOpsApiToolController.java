@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api-tools")
-public class LLMOpsToolsController {
+public class LLMOpsApiToolController {
 
     @Resource
     private LlmOpsApiToolProviderDOMapper llmOpsApiToolProviderDOMapper;

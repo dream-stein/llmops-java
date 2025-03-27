@@ -1,6 +1,6 @@
 package com.emcikem.llm.common.vo.dataset;
 
-import com.emcikem.llm.common.vo.apitools.Paginator;
+import com.emcikem.llm.common.entity.Paginator;
 import lombok.Data;
 
 import java.util.List;

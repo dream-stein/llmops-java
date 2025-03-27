@@ -1,4 +1,4 @@
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -11,13 +11,19 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class CreateProviderDetailVO {
+public class ApiProviderVO {
+
+    private String id;
 
     private String name;
 
     private String icon;
 
-    private String openapi_schema;
+    private String description;
+
+    private List<ApiProviderToolVO> tools;
 
     private List<ApiToolHeaderVO> headers;
+
+    private Long created_at;
 }

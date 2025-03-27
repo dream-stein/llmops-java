@@ -625,7 +625,7 @@ public class GsonUtil {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiProviderListVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -648,7 +648,7 @@ public class ApiProviderListVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiProviderToolVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -675,7 +675,7 @@ public class ApiProviderToolVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiProviderVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -708,7 +708,7 @@ public class ApiProviderVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiToolHeaderVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -729,7 +729,7 @@ public class ApiToolHeaderVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiToolInputVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -754,7 +754,7 @@ public class ApiToolInputVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiToolsDetailVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -785,7 +785,7 @@ public class ApiToolsDetailVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/ApiValidateOpenApiSchemaVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -804,7 +804,7 @@ public class ApiValidateOpenApiSchemaVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/CreateProviderDetailVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -831,7 +831,7 @@ public class CreateProviderDetailVO {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/Paginator.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -856,7 +856,7 @@ public class Paginator {
 ================
 File: llmops-common/src/main/java/com/emcikem/llm/common/vo/apitools/UpdateProviderDetailVO.java
 ================
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
@@ -10292,7 +10292,7 @@ package com.emcikem.llm.web.controller;
 import cn.hutool.core.collection.CollectionUtil;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.util.GsonUtil;
-import com.emcikem.llm.common.vo.apitools.*;
+import com.emcikem.llm.common.vo.tools.*;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.dao.example.LlmOpsApiToolProviderDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsApiToolProviderDOMapper;

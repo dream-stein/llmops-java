@@ -1,4 +1,4 @@
-package com.emcikem.llm.common.vo.apitools;
+package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 

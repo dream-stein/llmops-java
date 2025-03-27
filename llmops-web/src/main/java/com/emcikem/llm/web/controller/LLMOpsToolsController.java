@@ -1,9 +1,10 @@
 package com.emcikem.llm.web.controller;
 
-import cn.hutool.core.collection.CollectionUtil;
+import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
+import com.emcikem.llm.common.entity.Paginator;
 import com.emcikem.llm.common.util.GsonUtil;
-import com.emcikem.llm.common.vo.apitools.*;
+import com.emcikem.llm.common.vo.tools.*;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.dao.example.LlmOpsApiToolProviderDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsApiToolProviderDOMapper;
@@ -32,7 +33,7 @@ public class LLMOpsToolsController {
     private LlmOpsApiToolProviderDOMapper llmOpsApiToolProviderDOMapper;
 
     @GetMapping("/list")
-    public ApiResponse<ApiProviderListVO> getAllApiTools(String search_word, Integer current_page, Integer page_size) {
+    public ApiBasePaginatorResponse<ApiProviderVO> getApiToolProvidersWithPage(String search_word, Integer current_page, Integer page_size) {
         LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
         example.setOffset(current_page - 1);
         example.setRows(page_size);
@@ -59,15 +60,16 @@ public class LLMOpsToolsController {
             apiProviderVO.setCreated_at(llmOpsApiToolProviderDO.getCreatedAt().getTime());
             return apiProviderVO;
         }).collect(Collectors.toList());
+        return ApiBasePaginatorResponse.success(apiProviderList, paginator);
+    }
 
-        ApiProviderListVO apiProviderListVO = new ApiProviderListVO();
-        apiProviderListVO.setPaginator(paginator);
-        apiProviderListVO.setList(apiProviderList);
-        return ApiResponse.success(apiProviderListVO);
+    @PostMapping("/validate-openapi-schema")
+    public ApiResponse<Void> validateOpenAPISchema(@RequestBody ApiValidateOpenApiSchemaVO schemaVO) {
+        return ApiResponse.success(null);
     }
 
     @PostMapping("/create")
-    public ApiResponse<Void> createApiTools(@RequestBody CreateProviderDetailVO createProviderDetailVO) {
+    public ApiResponse<Void> createApiToolProvider(@RequestBody CreateProviderDetailVO createProviderDetailVO) {
         LlmOpsApiToolProviderDO providerDO = new LlmOpsApiToolProviderDO();
         providerDO.setCreatedAt(new Date());
         providerDO.setIcon(createProviderDetailVO.getIcon());
@@ -83,7 +85,7 @@ public class LLMOpsToolsController {
     }
 
     @PostMapping("/update/{provider_id}")
-    public ApiResponse<Void> updateApiTools(@PathVariable String provider_id, @RequestBody UpdateProviderDetailVO updateProviderDetailVO) {
+    public ApiResponse<Void> updateApiToolProvider(@PathVariable String provider_id, @RequestBody UpdateProviderDetailVO updateProviderDetailVO) {
         LlmOpsApiToolProviderDO providerDO = new LlmOpsApiToolProviderDO();
         providerDO.setUpdatedAt(new Date());
         providerDO.setOpenapiSchema(updateProviderDetailVO.getOpenapi_schema());
@@ -97,38 +99,21 @@ public class LLMOpsToolsController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/detail/{provider_id}")
-    public ApiResponse<ApiToolsDetailVO> getApiToolsDetail(@PathVariable String provider_id) {
-        LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
-        example.createCriteria().andProviderIdEqualTo(provider_id);
-        List<LlmOpsApiToolProviderDO> opsApiToolProviderList = llmOpsApiToolProviderDOMapper.selectByExample(example);
-        if (CollectionUtil.isEmpty(opsApiToolProviderList)) {
-            return ApiResponse.success(null);
-        }
-        LlmOpsApiToolProviderDO providerDO = opsApiToolProviderList.get(0);
-        ApiToolsDetailVO apiToolsDetailVO = new ApiToolsDetailVO();
-        apiToolsDetailVO.setHeaders(GsonUtil.parseList(providerDO.getHeaders(), ApiToolHeaderVO.class));
-        apiToolsDetailVO.setName(providerDO.getName());
-        apiToolsDetailVO.setIcon(providerDO.getIcon());
-        apiToolsDetailVO.setCreated_at(providerDO.getCreatedAt().getTime());
-        apiToolsDetailVO.setOpenapi_schema(providerDO.getOpenapiSchema());
-
-//        String str = "{\"id\":\"46db3xd1-3199-4e79-a0cd-abf12fa6858f\",\"name\":\"高德工具包\",\"icon\":\"https://www.99it.com.cn/uploads/allimg/220622/114A52915-0.jpg\",\"openapi_schema\":null,\"headers\":[{\"key\":\"Authorization\",\"value\":\"Bearer QQYnRFerJTSEcrfB89fw8proaObmrch8\"}],\"created_at\":1721460914}";
-//        String schema = "{\"description\":\"这是一个查询对应英文单词字典的工具\",\"server\":\"https://dict.youdao.com\",\"paths\":{\"/suggest\":{\"get\":{\"description\":\"根据传递的单词查询其字典信息\",\"operationId\":\"youdaoSuggest\",\"parameters\":[{\"name\":\"q\",\"in\":\"query\",\"description\":\"要检索查询的单词，例如love/computer\",\"required\":true,\"type\":\"str\"},{\"name\":\"doctype\",\"in\":\"query\",\"description\":\"返回的数据类型，支持json和xml两种格式，默认情况下json数据\",\"required\":false,\"type\":\"str\"}]}}}";
-//        apiToolsDetailVO.setOpenapi_schema(schema);
-        return ApiResponse.success(apiToolsDetailVO);
-    }
-
-    @PostMapping("/validate-openapi-schema")
-    public ApiResponse<Void> validateOpenApiSchema(@RequestBody ApiValidateOpenApiSchemaVO schemaVO) {
-        return ApiResponse.success(null);
-    }
-
     @PostMapping("/{provider_id}/delete")
-    public ApiResponse<Void> delete(@PathVariable String provider_id) {
+    public ApiResponse<Void> deleteApiToolProvider(@PathVariable String provider_id) {
         LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
         example.createCriteria().andProviderIdEqualTo(provider_id);
         int i = llmOpsApiToolProviderDOMapper.deleteByExample(example);
+        return ApiResponse.success(null);
+    }
+
+    @PostMapping("/detail/{provider_id}")
+    public ApiResponse<GetApiToolProviderVO> getApiToolProvider(@PathVariable String provider_id) {
+        return ApiResponse.success(null);
+    }
+
+    @GetMapping("/{provider_id}/{tool_name}")
+    public ApiResponse<GetApiToolVO> getApiTool(@PathVariable String provider_id, @PathVariable String tool_name) {
         return ApiResponse.success(null);
     }
 }

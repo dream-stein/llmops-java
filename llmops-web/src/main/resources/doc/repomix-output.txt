@@ -8153,7 +8153,7 @@ File: llmops-service/src/main/java/com/emcikem/llm/service/aiservice/tools/crawl
 ================
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.util.CrawlerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
@@ -8243,7 +8243,7 @@ File: llmops-service/src/main/java/com/emcikem/llm/service/aiservice/tools/crawl
 ================
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -8385,7 +8385,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.emcikem.llm.service.constant.Constant.FILE_PATH;
+import static com.emcikem.llm.service.constant.LLMOpsConstant.FILE_PATH;
 
 @Slf4j
 public class IpPoolCrawler {
@@ -8593,7 +8593,7 @@ File: llmops-service/src/main/java/com/emcikem/llm/service/aiservice/tools/crawl
 ================
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.util.CommonUtil;
 import com.emcikem.llm.service.util.CrawlerUtil;
 import com.emcikem.llm.service.util.FileUtil;
@@ -8605,7 +8605,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.emcikem.llm.service.constant.Constant.SEARCH_FAILED;
+import static com.emcikem.llm.service.constant.LLMOpsConstant.SEARCH_FAILED;
 
 public class SearchCrawler {
 
@@ -9671,7 +9671,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.emcikem.llm.service.constant.Constant.SEARCH_FAILED;
+import static com.emcikem.llm.service.constant.LLMOpsConstant.SEARCH_FAILED;
 
 public class CacheUtil {
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
@@ -9841,7 +9841,7 @@ File: llmops-service/src/main/java/com/emcikem/llm/service/util/ConfigUtil.java
 ================
 package com.emcikem.llm.service.util;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

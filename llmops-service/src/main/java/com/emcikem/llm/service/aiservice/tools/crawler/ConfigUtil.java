@@ -1,6 +1,6 @@
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -48,7 +48,7 @@ public class ConfigUtil {
     public static void loadCustomConfig(String pluginFolder) {
         Yaml yaml = new Yaml();
         String configFilePath = String.format("plugins/%s/%s", pluginFolder, yamlFilePath);
-        File configFile = new File(Constant.USER_DIR, configFilePath);
+        File configFile = new File(LLMOpsConstant.USER_DIR, configFilePath);
         try (FileReader reader = new FileReader(configFile)) {
             Map<String, Object> config = yaml.load(reader);
             String json = gson.toJson(config);

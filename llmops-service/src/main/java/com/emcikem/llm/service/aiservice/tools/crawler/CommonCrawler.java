@@ -1,6 +1,6 @@
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.util.CrawlerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
@@ -25,7 +25,7 @@ public class CommonCrawler {
             rootHtml = Jsoup.clean(doc.html(), CrawlerUtil.SAFELIST);
 
             if (isPersist) {
-                Path filePath = Paths.get(Constant.FILE_PATH.toString(), URLEncoder.encode(url, "utf-8") + ".html");
+                Path filePath = Paths.get(LLMOpsConstant.FILE_PATH.toString(), URLEncoder.encode(url, "utf-8") + ".html");
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()))) {
                     writer.write(rootHtml);
                 }
@@ -45,7 +45,7 @@ public class CommonCrawler {
             String rootHtml = doc.html();
             htmls.add(Jsoup.clean(rootHtml, CrawlerUtil.SAFELIST));
             if (isPersist) {
-                Path filePath = Paths.get(Constant.FILE_PATH.toString(), URLEncoder.encode(url, "utf-8") + ".html");
+                Path filePath = Paths.get(LLMOpsConstant.FILE_PATH.toString(), URLEncoder.encode(url, "utf-8") + ".html");
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()))) {
                     writer.write(rootHtml);
                 }

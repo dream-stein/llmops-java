@@ -3,7 +3,7 @@ package com.emcikem.llm.service.constant;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public interface Constant {
+public interface LLMOpsConstant {
     String USER_DIR = System.getProperty("user.dir");
 
     Path FILE_PATH = Paths.get(USER_DIR, "data");

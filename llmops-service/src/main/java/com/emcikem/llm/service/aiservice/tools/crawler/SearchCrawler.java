@@ -1,6 +1,6 @@
 package com.emcikem.llm.service.aiservice.tools.crawler;
 
-import com.emcikem.llm.service.constant.Constant;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.util.CommonUtil;
 import com.emcikem.llm.service.util.CrawlerUtil;
 import com.emcikem.llm.service.util.FileUtil;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.emcikem.llm.service.constant.Constant.SEARCH_FAILED;
+import static com.emcikem.llm.service.constant.LLMOpsConstant.SEARCH_FAILED;
 
 public class SearchCrawler {
 
@@ -64,7 +64,7 @@ public class SearchCrawler {
     }
 
     public static void main(String[] args) {
-        FileUtil.mkDir(Constant.FILE_PATH);
+        FileUtil.mkDir(LLMOpsConstant.FILE_PATH);
         IpPoolCrawler ipPoolCrawler = new IpPoolCrawler();
         ipPoolCrawler.refresh();
         CrawlerUtil.IP_PORT_THREAD_LOCAL.set(ipPoolCrawler.load());

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.emcikem.llm.service.constant.Constant.SEARCH_FAILED;
+import static com.emcikem.llm.service.constant.LLMOpsConstant.SEARCH_FAILED;
 
 public class CacheUtil {
     private static final Map<String, String> cache = new ConcurrentHashMap<>();

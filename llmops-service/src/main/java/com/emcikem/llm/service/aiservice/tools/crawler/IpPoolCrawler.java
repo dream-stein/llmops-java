@@ -13,7 +13,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.emcikem.llm.service.constant.Constant.FILE_PATH;
+import static com.emcikem.llm.service.constant.LLMOpsConstant.FILE_PATH;
 
 @Slf4j
 public class IpPoolCrawler {

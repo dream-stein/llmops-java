@@ -1,10 +1,8 @@
 package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiResponse;
-import com.emcikem.llm.common.vo.apitools.CreateProviderDetailVO;
 import com.emcikem.llm.common.vo.dataset.CreateDatasetDetailVO;
 import com.emcikem.llm.common.vo.dataset.DatasetListVO;
-import com.google.protobuf.Api;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/datasets")
-public class DatasetController {
+public class LLMOpsDatasetController {
 
     @GetMapping("/list")
     public ApiResponse<DatasetListVO> list(String search_word, Integer current_page, Integer page_size) {

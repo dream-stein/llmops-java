@@ -11,15 +11,15 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class GetApiToolVO {
+public class ApiToolProvider {
 
     private String id;
 
     private String name;
 
+    private String icon;
+
     private String description;
 
-    private ApiToolProvider provider;
-
-    private List<ApiToolInputVO> inputs;
+    private List<ApiToolHeaderVO> headers;
 }

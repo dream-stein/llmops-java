@@ -188,15 +188,15 @@ CREATE TABLE IF NOT EXISTS `llmops_segment` (
     `completed_at` TIMESTAMP NULL DEFAULT NULL COMMENT '构建完成时间',
     `stopped_at` TIMESTAMP NULL DEFAULT NULL COMMENT '停止时间',
     `error` TEXT COMMENT '错误日志',
-    `status` VARCHAR(255) NOT NULL DEFAULT 'waiting' COMMENT '状态（如 waiting/processing/completed）', -- 注释优化
+    `status` VARCHAR(255) NOT NULL DEFAULT 'waiting' COMMENT '状态（如 waiting/processing/completed）',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX `idx_account_id` (`account_id`),
     INDEX `idx_dataset_id` (`dataset_id`),
     INDEX `idx_document_id` (`document_id`),
     INDEX `idx_status` (`status`),
-    INDEX `idx_node_id` (`node_id`), -- 新增高频查询字段索引
-    UNIQUE INDEX `idx_hash` (`hash`) -- 新增哈希唯一性约束
+    INDEX `idx_node_id` (`node_id`),
+    UNIQUE INDEX `idx_hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文档片段';
 
 

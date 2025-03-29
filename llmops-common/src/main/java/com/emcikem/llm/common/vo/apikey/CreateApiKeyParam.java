@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class CreateApiKeyParam {
 
-    private boolean is_active;
+    private Boolean is_active;
 
     private String remark;
 }

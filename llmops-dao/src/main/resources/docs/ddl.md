@@ -294,3 +294,18 @@ CREATE TABLE IF NOT EXISTS `llmops_message_agent_thought` (
     INDEX `idx_app_id` (`app_id`),
     INDEX `idx_message_id` (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='智能体消息推理表';
+
+--------------------------
+apikey
+--------------------------
+CREATE TABLE IF NOT EXISTS `llmops_api_key` (
+    `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
+    `account_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的用户id',
+    `api_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'API密钥',
+    `is_active` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否激活',
+    `remark` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX `idx_account_id` (`account_id`),
+    UNIQUE INDEX `uniq_api_key` (`api_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='API密钥表';

@@ -26,13 +26,14 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-    public ApiResponse(Integer code, T data) {
+    public ApiResponse(Integer code, String message, T data) {
         this.code = code;
+        this.message = message;
         this.data = data;
     }
 
     public static<T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(ResponseStatusEnum.SUCCESS.getCode(), data);
+        return new ApiResponse<>(ResponseStatusEnum.SUCCESS.getCode(), ResponseStatusEnum.SUCCESS.getMsg(), data);
     }
 
     public static <T> ApiResponse<T> error(int code, String msg) {

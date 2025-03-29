@@ -46,7 +46,7 @@ public class LLMOpsApiToolController {
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(current_page);
         paginator.setPage_size(page_size);
-        paginator.setTotal_page((int) ((count + page_size - 1) / page_size));
+        paginator.setTotal_page((count + page_size - 1) / page_size);
         paginator.setTotal_record((int) (count));
 
         List<ApiProviderVO> apiProviderList = opsApiToolProviderList.stream().map(llmOpsApiToolProviderDO -> {

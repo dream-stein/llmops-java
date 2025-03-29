@@ -15,7 +15,7 @@ public class Paginator {
 
     private Integer page_size;
 
-    private Integer total_page;
+    private Long total_page;
 
     private Integer total_record;
 }

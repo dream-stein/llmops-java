@@ -12,36 +12,37 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class ApiBasePaginatorResponse<T> extends ApiResponse<T> {
+public class ApiBasePaginatorResponse<T> {
 
-    private List<T> list;
+    private Integer code;
 
-    private Paginator paginator;
+    private String message;
+
+    private PaginatorListData<T> data;
 
     public ApiBasePaginatorResponse() {
     }
 
     public ApiBasePaginatorResponse(List<T> list, Paginator paginator) {
-        this.list = list;
-        this.paginator = paginator;
+        this.data = new PaginatorListData<>(list, paginator);
     }
 
     public ApiBasePaginatorResponse(ResponseStatusEnum responseStatusEnum, List<T> list, Paginator paginator) {
-        super(responseStatusEnum.getCode(), responseStatusEnum.getMsg());
-        this.list = list;
-        this.paginator = paginator;
+        this.code = responseStatusEnum.getCode();
+        this.message = responseStatusEnum.getMsg();
+        this.data = new PaginatorListData<>(list, paginator);
     }
 
     public ApiBasePaginatorResponse(Integer code, String message, List<T> list, Paginator paginator) {
-        super(code, message);
-        this.list = list;
-        this.paginator = paginator;
+        this.code = code;
+        this.message = message;
+        this.data = new PaginatorListData<>(list, paginator);
     }
 
-    public ApiBasePaginatorResponse(Integer code, T data, List<T> list, Paginator paginator) {
-        super(code, data);
-        this.list = list;
-        this.paginator = paginator;
+    public ApiBasePaginatorResponse(Integer code, List<T> list, Paginator paginator) {
+        this.code = code;
+        this.message = message;
+        this.data = new PaginatorListData<>(list, paginator);
     }
 
     public static<T> ApiBasePaginatorResponse<T> success(List<T> data, Paginator paginator) {

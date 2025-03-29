@@ -15,7 +15,7 @@ public class ApiKeysPageVO {
 
     private String api_key;
 
-    private boolean is_active;
+    private Boolean is_active;
 
     private String remark;
 

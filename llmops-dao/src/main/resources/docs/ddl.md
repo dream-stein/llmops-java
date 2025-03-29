@@ -4,16 +4,17 @@
 CREATE TABLE IF NOT EXISTS `llmops_account` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
     `name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '账号名称',
-    `email` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '绑定邮箱',
-    `password` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码',
+    `email` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '绑定邮箱（唯一）',
+    `password` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码哈希值（非明文）',
     `password_salt` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码盐值',
-    `last_login_at` TIMESTAMP NULL COMMENT '最后登录时间',
-    `last_login_ip` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '最后登录ip',
+    `assistant_conversation_id` VARCHAR(36) DEFAULT NULL COMMENT '关联的辅助会话ID',
+    `last_login_at` TIMESTAMP NULL DEFAULT NULL COMMENT '最后登录时间',
+    `last_login_ip` VARCHAR(45) NOT NULL DEFAULT '' COMMENT '最后登录IP（支持IPv6）',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    UNIQUE INDEX `idx_email` (`email`),
-    INDEX `idx_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='账号表';
+    UNIQUE INDEX `uniq_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户账号表';
+
 
 CREATE TABLE IF NOT EXISTS `llmops_account_oauth` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',

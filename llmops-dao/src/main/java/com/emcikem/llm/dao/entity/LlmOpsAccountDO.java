@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * Database Table Remarks:
- *   账号表
+ *   用户账号表
  *
  * @mbg.generated do_not_delete_during_merge
  */
@@ -29,7 +29,7 @@ public class LlmOpsAccountDO {
 
     /**
      * Database Column Remarks:
-     *   绑定邮箱
+     *   绑定邮箱（唯一）
      *
      * @mbg.generated
      */
@@ -37,7 +37,7 @@ public class LlmOpsAccountDO {
 
     /**
      * Database Column Remarks:
-     *   密码
+     *   密码哈希值（非明文）
      *
      * @mbg.generated
      */
@@ -53,6 +53,14 @@ public class LlmOpsAccountDO {
 
     /**
      * Database Column Remarks:
+     *   关联的辅助会话ID
+     *
+     * @mbg.generated
+     */
+    private String assistantConversationId;
+
+    /**
+     * Database Column Remarks:
      *   最后登录时间
      *
      * @mbg.generated
@@ -61,7 +69,7 @@ public class LlmOpsAccountDO {
 
     /**
      * Database Column Remarks:
-     *   最后登录ip
+     *   最后登录IP（支持IPv6）
      *
      * @mbg.generated
      */

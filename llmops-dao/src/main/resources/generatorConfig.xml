@@ -77,6 +77,9 @@
 <!--        </table>-->
         <table tableName="llmops_account" domainObjectName="LlmOpsAccountDO">
         </table>
+        <table tableName="llmops_dataset" domainObjectName="LlmOpsDatasetDO">
+            <columnOverride column="description" javaType="java.lang.String"/>
+        </table>
         <table tableName="llmops_api_key" domainObjectName="LlmOpsApiKeyDO">
             <columnOverride column="is_active" javaType="java.lang.Integer"/>
         </table>

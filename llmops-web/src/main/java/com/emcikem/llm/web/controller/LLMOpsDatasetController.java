@@ -1,8 +1,11 @@
 package com.emcikem.llm.web.controller;
 
+import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.vo.dataset.CreateDatasetDetailVO;
-import com.emcikem.llm.common.vo.dataset.DatasetListVO;
+import com.emcikem.llm.common.vo.dataset.DatasetVO;
+import com.emcikem.llm.service.service.dataset.LLMOpsDatasetService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,11 +19,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/datasets")
 public class LLMOpsDatasetController {
 
-    @GetMapping("/list")
-    public ApiResponse<DatasetListVO> list(String search_word, Integer current_page, Integer page_size) {
-        DatasetListVO listVO = new DatasetListVO();
+    @Resource
+    private LLMOpsDatasetService llmOpsDatasetService;
 
-        return ApiResponse.success(listVO);
+    @GetMapping
+    public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(@RequestParam(value = "search_word", required = false) String searchWord,
+                                                    @RequestParam("current_page") Integer currentPage,
+                                                    @RequestParam("page_size") Integer pageSize) {
+
+        return llmOpsDatasetService.getDatasetsWithPage(searchWord, currentPage, pageSize);
     }
 
     @PostMapping("/create")

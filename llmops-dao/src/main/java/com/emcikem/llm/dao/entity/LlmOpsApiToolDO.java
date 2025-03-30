@@ -1,8 +1,7 @@
 package com.emcikem.llm.dao.entity;
 
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * Database Table Remarks:
@@ -12,7 +11,6 @@ import java.util.Date;
  */
 @Data
 public class LlmOpsApiToolDO {
-
     /**
      * Database Column Remarks:
      *   API工具自增主键
@@ -60,22 +58,6 @@ public class LlmOpsApiToolDO {
      * @mbg.generated
      */
     private String method;
-
-    /**
-     * Database Column Remarks:
-     *   工具描述
-     *
-     * @mbg.generated
-     */
-    private String description;
-
-    /**
-     * Database Column Remarks:
-     *   工具参数
-     *
-     * @mbg.generated
-     */
-    private String parameters;
 
     /**
      * Database Column Remarks:

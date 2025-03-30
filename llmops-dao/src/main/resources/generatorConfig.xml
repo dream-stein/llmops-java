@@ -83,5 +83,7 @@
         <table tableName="llmops_api_key" domainObjectName="LlmOpsApiKeyDO">
             <columnOverride column="is_active" javaType="java.lang.Integer"/>
         </table>
+        <table tableName="llmops_api_tool" domainObjectName="LlmOpsApiToolDO">
+        </table>
     </context>
 </generatorConfiguration>

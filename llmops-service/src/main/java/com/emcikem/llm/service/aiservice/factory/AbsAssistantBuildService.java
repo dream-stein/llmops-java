@@ -66,7 +66,7 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
                 .chatLanguageModel(model)
                 .chatMemoryProvider(chatMemoryProvider)
                 .tools(assistantTools)
-                .contentRetriever(getContentRetriever())
+//                .contentRetriever(getContentRetriever())
                 .build();
     }
 

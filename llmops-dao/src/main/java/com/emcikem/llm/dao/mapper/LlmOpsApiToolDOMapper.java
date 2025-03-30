@@ -1,13 +1,11 @@
 package com.emcikem.llm.dao.mapper;
 
 import com.emcikem.llm.dao.entity.LlmOpsApiToolDO;
+import com.emcikem.llm.dao.entity.LlmOpsApiToolDOWithBLOBs;
 import com.emcikem.llm.dao.example.LlmOpsApiToolDOExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-@Mapper
 public interface LlmOpsApiToolDOMapper {
     /**
      *
@@ -31,19 +29,19 @@ public interface LlmOpsApiToolDOMapper {
      *
      * @mbg.generated
      */
-    int insert(LlmOpsApiToolDO record);
+    int insert(LlmOpsApiToolDOWithBLOBs record);
 
     /**
      *
      * @mbg.generated
      */
-    int insertSelective(LlmOpsApiToolDO record);
+    int insertSelective(LlmOpsApiToolDOWithBLOBs record);
 
     /**
      *
      * @mbg.generated
      */
-    List<LlmOpsApiToolDO> selectByExampleWithBLOBs(LlmOpsApiToolDOExample example);
+    List<LlmOpsApiToolDOWithBLOBs> selectByExampleWithBLOBs(LlmOpsApiToolDOExample example);
 
     /**
      *
@@ -55,19 +53,19 @@ public interface LlmOpsApiToolDOMapper {
      *
      * @mbg.generated
      */
-    LlmOpsApiToolDO selectByPrimaryKey(Long id);
+    LlmOpsApiToolDOWithBLOBs selectByPrimaryKey(Long id);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleSelective(@Param("record") LlmOpsApiToolDO record, @Param("example") LlmOpsApiToolDOExample example);
+    int updateByExampleSelective(@Param("record") LlmOpsApiToolDOWithBLOBs record, @Param("example") LlmOpsApiToolDOExample example);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleWithBLOBs(@Param("record") LlmOpsApiToolDO record, @Param("example") LlmOpsApiToolDOExample example);
+    int updateByExampleWithBLOBs(@Param("record") LlmOpsApiToolDOWithBLOBs record, @Param("example") LlmOpsApiToolDOExample example);
 
     /**
      *
@@ -79,13 +77,13 @@ public interface LlmOpsApiToolDOMapper {
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeySelective(LlmOpsApiToolDO record);
+    int updateByPrimaryKeySelective(LlmOpsApiToolDOWithBLOBs record);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeyWithBLOBs(LlmOpsApiToolDO record);
+    int updateByPrimaryKeyWithBLOBs(LlmOpsApiToolDOWithBLOBs record);
 
     /**
      *

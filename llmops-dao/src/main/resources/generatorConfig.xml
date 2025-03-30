@@ -85,5 +85,7 @@
         </table>
         <table tableName="llmops_app" domainObjectName="LlmOpsAppDO">
         </table>
+        <table tableName="llmops_workflow" domainObjectName="LlmOpsWorkflowDO">
+        </table>
     </context>
 </generatorConfiguration>

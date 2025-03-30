@@ -24,8 +24,8 @@ public class LLMOpsDatasetController {
 
     @GetMapping
     public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(@RequestParam(value = "search_word", required = false) String searchWord,
-                                                    @RequestParam("current_page") Integer currentPage,
-                                                    @RequestParam("page_size") Integer pageSize) {
+                                                                   @RequestParam("current_page") Integer currentPage,
+                                                                   @RequestParam("page_size") Integer pageSize) {
 
         return llmOpsDatasetService.getDatasetsWithPage(searchWord, currentPage, pageSize);
     }

@@ -51,10 +51,10 @@ public class LLMOpsApiToolController {
 
         List<ApiProviderVO> apiProviderList = opsApiToolProviderList.stream().map(llmOpsApiToolProviderDO -> {
             ApiProviderVO apiProviderVO = new ApiProviderVO();
-            apiProviderVO.setDescription(llmOpsApiToolProviderDO.getDescription());
+//            apiProviderVO.setDescription(llmOpsApiToolProviderDO.getDescription());
             apiProviderVO.setIcon(llmOpsApiToolProviderDO.getIcon());
             apiProviderVO.setId(llmOpsApiToolProviderDO.getProviderId());
-            apiProviderVO.setHeaders(GsonUtil.parseList(llmOpsApiToolProviderDO.getHeaders(), ApiToolHeaderVO.class));
+//            apiProviderVO.setHeaders(GsonUtil.parseList(llmOpsApiToolProviderDO.getHeaders(), ApiToolHeaderVO.class));
             apiProviderVO.setTools(Lists.newArrayList());
             apiProviderVO.setName(llmOpsApiToolProviderDO.getName());
             apiProviderVO.setCreated_at(llmOpsApiToolProviderDO.getCreatedAt().getTime());
@@ -75,12 +75,12 @@ public class LLMOpsApiToolController {
         providerDO.setIcon(createProviderDetailVO.getIcon());
         providerDO.setUpdatedAt(new Date());
         providerDO.setProviderId(UUID.randomUUID().toString());
-        providerDO.setOpenapiSchema(createProviderDetailVO.getOpenapi_schema());
+//        providerDO.setOpenapiSchema(createProviderDetailVO.getOpenapi_schema());
         providerDO.setAccountId(UUID.randomUUID().toString());
-        providerDO.setHeaders(GsonUtil.toJSONString(createProviderDetailVO.getHeaders()));
-        providerDO.setDescription("");
+//        providerDO.setHeaders(GsonUtil.toJSONString(createProviderDetailVO.getHeaders()));
+//        providerDO.setDescription("");
         providerDO.setName(createProviderDetailVO.getName());
-        int insert = llmOpsApiToolProviderDOMapper.insert(providerDO);
+//        int insert = llmOpsApiToolProviderDOMapper.insert(providerDO);
         return ApiResponse.success(null);
     }
 
@@ -88,14 +88,14 @@ public class LLMOpsApiToolController {
     public ApiResponse<Void> updateApiToolProvider(@PathVariable String provider_id, @RequestBody UpdateProviderDetailVO updateProviderDetailVO) {
         LlmOpsApiToolProviderDO providerDO = new LlmOpsApiToolProviderDO();
         providerDO.setUpdatedAt(new Date());
-        providerDO.setOpenapiSchema(updateProviderDetailVO.getOpenapi_schema());
+//        providerDO.setOpenapiSchema(updateProviderDetailVO.getOpenapi_schema());
         providerDO.setIcon(updateProviderDetailVO.getIcon());
         providerDO.setName(updateProviderDetailVO.getName());
         providerDO.setProviderId(provider_id);
-        providerDO.setHeaders(GsonUtil.toJSONString(updateProviderDetailVO.getHeaders()));
+//        providerDO.setHeaders(GsonUtil.toJSONString(updateProviderDetailVO.getHeaders()));
         LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
         example.createCriteria().andProviderIdEqualTo(provider_id);
-        int i = llmOpsApiToolProviderDOMapper.updateByExampleSelective(providerDO, example);
+//        int i = llmOpsApiToolProviderDOMapper.updateByExampleSelective(providerDO, example);
         return ApiResponse.success(null);
     }
 

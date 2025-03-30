@@ -1,13 +1,11 @@
 package com.emcikem.llm.dao.mapper;
 
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
+import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDOWithBLOBs;
 import com.emcikem.llm.dao.example.LlmOpsApiToolProviderDOExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-@Mapper
 public interface LlmOpsApiToolProviderDOMapper {
     /**
      *
@@ -31,19 +29,19 @@ public interface LlmOpsApiToolProviderDOMapper {
      *
      * @mbg.generated
      */
-    int insert(LlmOpsApiToolProviderDO record);
+    int insert(LlmOpsApiToolProviderDOWithBLOBs record);
 
     /**
      *
      * @mbg.generated
      */
-    int insertSelective(LlmOpsApiToolProviderDO record);
+    int insertSelective(LlmOpsApiToolProviderDOWithBLOBs record);
 
     /**
      *
      * @mbg.generated
      */
-    List<LlmOpsApiToolProviderDO> selectByExampleWithBLOBs(LlmOpsApiToolProviderDOExample example);
+    List<LlmOpsApiToolProviderDOWithBLOBs> selectByExampleWithBLOBs(LlmOpsApiToolProviderDOExample example);
 
     /**
      *
@@ -55,19 +53,19 @@ public interface LlmOpsApiToolProviderDOMapper {
      *
      * @mbg.generated
      */
-    LlmOpsApiToolProviderDO selectByPrimaryKey(Long id);
+    LlmOpsApiToolProviderDOWithBLOBs selectByPrimaryKey(Long id);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleSelective(@Param("record") LlmOpsApiToolProviderDO record, @Param("example") LlmOpsApiToolProviderDOExample example);
+    int updateByExampleSelective(@Param("record") LlmOpsApiToolProviderDOWithBLOBs record, @Param("example") LlmOpsApiToolProviderDOExample example);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleWithBLOBs(@Param("record") LlmOpsApiToolProviderDO record, @Param("example") LlmOpsApiToolProviderDOExample example);
+    int updateByExampleWithBLOBs(@Param("record") LlmOpsApiToolProviderDOWithBLOBs record, @Param("example") LlmOpsApiToolProviderDOExample example);
 
     /**
      *
@@ -79,13 +77,13 @@ public interface LlmOpsApiToolProviderDOMapper {
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeySelective(LlmOpsApiToolProviderDO record);
+    int updateByPrimaryKeySelective(LlmOpsApiToolProviderDOWithBLOBs record);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeyWithBLOBs(LlmOpsApiToolProviderDO record);
+    int updateByPrimaryKeyWithBLOBs(LlmOpsApiToolProviderDOWithBLOBs record);
 
     /**
      *

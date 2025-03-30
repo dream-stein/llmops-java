@@ -83,5 +83,7 @@
         </table>
         <table tableName="llmops_api_tool_provider" domainObjectName="LlmOpsApiToolProviderDO">
         </table>
+        <table tableName="llmops_app" domainObjectName="LlmOpsAppDO">
+        </table>
     </context>
 </generatorConfiguration>

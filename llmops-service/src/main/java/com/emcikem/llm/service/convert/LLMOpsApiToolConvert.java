@@ -33,9 +33,9 @@ public class LLMOpsApiToolConvert {
         apiToolVO.setName(apiToolDO.getName());
         apiToolVO.setIcon(apiToolDO.getUrl());
         apiToolVO.setCreated_at(apiToolDO.getCreatedAt().getTime());
-//        apiToolVO.setDescription(apiToolDO.get)
-//        apiToolVO.setTools();
-//        apiToolVO.setHeaders();
+        apiToolVO.setDescription("测试描述");
+        apiToolVO.setTools(Lists.newArrayList());
+        apiToolVO.setHeaders(Lists.newArrayList());
         return apiToolVO;
     }
 }

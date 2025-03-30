@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * Database Table Remarks:
- *   API工具表
+ *   API工具
  *
  * @mbg.generated do_not_delete_during_merge
  */
@@ -13,11 +13,11 @@ import lombok.Data;
 public class LlmOpsApiToolDO {
     /**
      * Database Column Remarks:
-     *   API工具自增主键
+     *   主键UUID
      *
      * @mbg.generated
      */
-    private Long id;
+    private String id;
 
     /**
      * Database Column Remarks:
@@ -53,19 +53,11 @@ public class LlmOpsApiToolDO {
 
     /**
      * Database Column Remarks:
-     *   调用方法
+     *   路由方法
      *
      * @mbg.generated
      */
     private String method;
-
-    /**
-     * Database Column Remarks:
-     *   最后更新时间
-     *
-     * @mbg.generated
-     */
-    private Date updatedAt;
 
     /**
      * Database Column Remarks:
@@ -74,4 +66,12 @@ public class LlmOpsApiToolDO {
      * @mbg.generated
      */
     private Date createdAt;
+
+    /**
+     * Database Column Remarks:
+     *   更新时间
+     *
+     * @mbg.generated
+     */
+    private Date updatedAt;
 }

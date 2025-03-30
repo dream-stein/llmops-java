@@ -8,6 +8,7 @@ import com.emcikem.llm.common.vo.tools.*;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.dao.example.LlmOpsApiToolProviderDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsApiToolProviderDOMapper;
+import com.emcikem.llm.service.service.apitool.LLMOpsApiToolService;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -32,35 +33,14 @@ public class LLMOpsApiToolController {
     @Resource
     private LlmOpsApiToolProviderDOMapper llmOpsApiToolProviderDOMapper;
 
+    @Resource
+    private LLMOpsApiToolService llmOpsApiToolService;
+
     @GetMapping("/list")
-    public ApiBasePaginatorResponse<ApiProviderVO> getApiToolProvidersWithPage(String search_word, Integer current_page, Integer page_size) {
-        LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
-        example.setOffset(current_page - 1);
-        example.setRows(page_size);
-        if (StringUtils.isNoneEmpty(search_word)) {
-            example.createCriteria().andNameLike("%" + search_word + "%");
-        }
-        List<LlmOpsApiToolProviderDO> opsApiToolProviderList = llmOpsApiToolProviderDOMapper.selectByExample(example);
-        long count = llmOpsApiToolProviderDOMapper.countByExample(example);
-
-        Paginator paginator = new Paginator();
-        paginator.setCurrent_page(current_page);
-        paginator.setPage_size(page_size);
-        paginator.setTotal_page((count + page_size - 1) / page_size);
-        paginator.setTotal_record((int) (count));
-
-        List<ApiProviderVO> apiProviderList = opsApiToolProviderList.stream().map(llmOpsApiToolProviderDO -> {
-            ApiProviderVO apiProviderVO = new ApiProviderVO();
-//            apiProviderVO.setDescription(llmOpsApiToolProviderDO.getDescription());
-            apiProviderVO.setIcon(llmOpsApiToolProviderDO.getIcon());
-            apiProviderVO.setId(llmOpsApiToolProviderDO.getProviderId());
-//            apiProviderVO.setHeaders(GsonUtil.parseList(llmOpsApiToolProviderDO.getHeaders(), ApiToolHeaderVO.class));
-            apiProviderVO.setTools(Lists.newArrayList());
-            apiProviderVO.setName(llmOpsApiToolProviderDO.getName());
-            apiProviderVO.setCreated_at(llmOpsApiToolProviderDO.getCreatedAt().getTime());
-            return apiProviderVO;
-        }).collect(Collectors.toList());
-        return ApiBasePaginatorResponse.success(apiProviderList, paginator);
+    public ApiBasePaginatorResponse<ApiToolVO> getApiToolProvidersWithPage(@RequestParam("search_word") String searchWord,
+                                                                               @RequestParam("current_page") Integer currentPage,
+                                                                               @RequestParam("page_size") Integer pageSize) {
+        return llmOpsApiToolService.getApiToolProvidersWithPage(searchWord, currentPage, pageSize);
     }
 
     @PostMapping("/validate-openapi-schema")

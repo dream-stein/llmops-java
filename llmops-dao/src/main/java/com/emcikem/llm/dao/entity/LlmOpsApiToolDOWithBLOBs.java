@@ -6,7 +6,7 @@ import lombok.ToString;
 
 /**
  * Database Table Remarks:
- *   API工具表
+ *   API工具
  *
  * @mbg.generated do_not_delete_during_merge
  */

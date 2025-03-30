@@ -71,10 +71,6 @@
 <!--        </table>-->
 <!--        <table tableName="llmops_chat_dialog" domainObjectName="LlmOpsChatDialogDO">-->
 <!--        </table>-->
-<!--        <table tableName="llmops_api_tool_provider" domainObjectName="LlmOpsApiToolProviderDO">-->
-<!--        </table>-->
-<!--        <table tableName="llmops_api_tool" domainObjectName="LlmOpsApiToolDO">-->
-<!--        </table>-->
         <table tableName="llmops_account" domainObjectName="LlmOpsAccountDO">
         </table>
         <table tableName="llmops_dataset" domainObjectName="LlmOpsDatasetDO">
@@ -84,6 +80,8 @@
             <columnOverride column="is_active" javaType="java.lang.Integer"/>
         </table>
         <table tableName="llmops_api_tool" domainObjectName="LlmOpsApiToolDO">
+        </table>
+        <table tableName="llmops_api_tool_provider" domainObjectName="LlmOpsApiToolProviderDO">
         </table>
     </context>
 </generatorConfiguration>

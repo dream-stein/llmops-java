@@ -49,15 +49,49 @@ CREATE TABLE IF NOT EXISTS `llmops_upload_file` (
 --------------------------
 CREATE TABLE IF NOT EXISTS `llmops_app_config` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
-    `app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '应用id',
-    `model_config` JSON COMMENT '模型配置',
-    `memory_mode` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '记忆类型',
-    `status` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '状态',
+    `app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的应用id',
+    `model_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '模型配置（默认空对象）',
+    `dialog_round` INT NOT NULL DEFAULT 0 COMMENT '上下文对话轮数',
+    `preset_prompt` TEXT NOT NULL DEFAULT '' COMMENT '人设与回复逻辑（默认空）',
+    `tools` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联工具列表（默认空数组）',
+    `workflows` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联工作流列表（默认空数组）',
+    `retrieval_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '知识库检索配置（默认空对象）',
+    `long_term_memory` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '长期记忆配置（默认空对象）',
+    `opening_statement` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '对话开场白',
+    `opening_questions` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '开场建议问题（默认空数组）',
+    `suggested_after_answer` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '回答后建议问题（默认空数组）',
+    `speech_to_text` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '语音转文本配置（默认空对象）',
+    `text_to_speech` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '文本转语音配置（默认空对象）',
+    `review_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '内容审核配置（默认空对象）',
+    `config_type` ENUM('release', 'draft') NOT NULL DEFAULT 'draft' COMMENT '配置类型',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    INDEX `idx_app_id` (`app_id`),
-    INDEX `idx_status` (`status`)
+    INDEX `idx_app_config_type` (`app_id`, `config_type`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='应用配置表';
+
+CREATE TABLE IF NOT EXISTS `llmops_app_config_version` (
+    `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
+    `app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的应用id',
+    `model_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '模型配置（默认空对象）',
+    `dialog_round` INT NOT NULL DEFAULT 0 COMMENT '上下文对话轮数', 
+    `preset_prompt` TEXT NOT NULL COMMENT '人设与回复逻辑',
+    `tools` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联工具列表（默认空数组）',
+    `workflows` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联工作流列表（默认空数组）',
+    `datasets` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联知识库列表（默认空数组）',
+    `retrieval_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '知识库检索配置（默认空对象）',
+    `long_term_memory` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '长期记忆配置（默认空对象）',
+    `opening_statement` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '对话开场白',
+    `opening_questions` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '开场建议问题（默认空数组）',
+    `suggested_after_answer` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '回答后建议问题（默认空数组）',
+    `speech_to_text` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '语音转文本配置（默认空对象）',
+    `text_to_speech` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '文本转语音配置（默认空对象）',
+    `review_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '内容审核配置（默认空对象）',
+    `version` INT NOT NULL DEFAULT 0 COMMENT '版本号（递增）',
+    `config_type` VARCHAR(64) NOT NULL DEFAULT 'release' COMMENT '配置类型（release/draft）',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', 
+    INDEX `idx_app_version` (`app_id`, `version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='应用配置版本管理表';
 
 CREATE TABLE IF NOT EXISTS `llmops_app` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
@@ -74,6 +108,14 @@ CREATE TABLE IF NOT EXISTS `llmops_app` (
     INDEX `idx_status` (`status`),
     INDEX `idx_name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AI应用表';
+
+CREATE TABLE IF NOT EXISTS `llmops_end_user` (
+`id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
+`tenant_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '终端用户归属账号id',
+`app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '终端用户归属应用id',
+`created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+`updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='终端用户端';
 
 --------------------------
 知识库
@@ -107,13 +149,11 @@ CREATE TABLE IF NOT EXISTS `llmops_dataset_query` (
 CREATE TABLE IF NOT EXISTS `llmops_keyword_table` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
     `dataset_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的知识库id',
-    `keyword_table` JSON COMMENT '关键词表',
+    `keyword_table` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '关键词表',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX `idx_dataset_id` (`dataset_id`),
-    INDEX `idx_source_app_id` (`source_app_id`),
-    INDEX `idx_created_at` (`created_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='关键词表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='关键词配置表';
 
 CREATE TABLE IF NOT EXISTS `llmops_process_rule` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
@@ -310,3 +350,39 @@ CREATE TABLE IF NOT EXISTS `llmops_api_key` (
     INDEX `idx_account_id` (`account_id`),
     UNIQUE INDEX `uniq_api_key` (`api_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='API密钥表';
+
+--------------------------
+工作流
+--------------------------
+CREATE TABLE IF NOT EXISTS `llmops_workflow` (
+    `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
+    `account_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的用户id',
+    `name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '工作流名称',
+    `tool_call_name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '工作流调用名称',
+    `icon` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '工作流图标',
+    `description` TEXT COMMENT '工作流描述',
+    `graph` JSON NOT NULL COMMENT '工作流图结构信息',
+    `draft_graph` JSON NOT NULL COMMENT '工作流草稿图',
+    `is_debug_passed` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '调试是否通过',
+    `status` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '工作流状态',
+    `published_at` TIMESTAMP NULL DEFAULT NULL COMMENT '发布时间',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX `idx_account_id` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作流模型';
+
+CREATE TABLE IF NOT EXISTS `llmops_workflow_result` (
+    `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
+    `account_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的用户id',
+    `app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的应用id',
+    `workflow_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '结果关联的工作流id',
+    `graph` JSON NOT NULL COMMENT '运行该结果的图结构',
+    `state` JSON NOT NULL COMMENT '工作流的最终结果状态',
+    `latency` FLOAT NOT NULL DEFAULT 0 COMMENT '工作流的整体耗时（单位：秒）',
+    `status` VARCHAR(64) NOT NULL DEFAULT 'pending' COMMENT '状态（pending/running/success/failed）',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX `idx_workflow_id` (`workflow_id`),
+    INDEX `idx_app_id` (`app_id`),
+    INDEX `idx_account_id` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='工作流村粗结果模型';

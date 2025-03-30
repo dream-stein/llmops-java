@@ -35,8 +35,8 @@ public class LLMOpsApiToolService {
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(currentPage);
         paginator.setPage_size(pageSize);
-        paginator.setTotal_page(count);
-        paginator.setTotal_record((int) ((count + pageSize - 1) / pageSize));
+        paginator.setTotal_record(count);
+        paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
 
         return ApiBasePaginatorResponse.success(LLMOpsApiToolConvert.convert(apiToolList), paginator);
     }

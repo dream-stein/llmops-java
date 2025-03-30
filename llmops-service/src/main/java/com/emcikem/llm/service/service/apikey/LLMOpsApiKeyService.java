@@ -115,8 +115,8 @@ public class LLMOpsApiKeyService {
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(request.getCurrent_page());
         paginator.setPage_size(request.getPage_size());
-        paginator.setTotal_page(count);
-        paginator.setTotal_record((int) ((count + request.getPage_size() - 1) / request.getPage_size()));
+        paginator.setTotal_record(count);
+        paginator.setTotal_page((int) ((count + request.getPage_size() - 1) / request.getPage_size()));
 
         return ApiBasePaginatorResponse.success(LLMOpsApiKeyConvert.convert(apiKeyList), paginator);
     }

@@ -1,6 +1,7 @@
 package com.emcikem.llm.service.convert;
 
 import com.emcikem.llm.common.vo.apps.AppVO;
+import com.emcikem.llm.common.vo.apps.ModelConfigVO;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
@@ -31,13 +32,17 @@ public class LLMOpsAppConvert {
         AppVO appVO = new AppVO();
         appVO.setId(appDO.getId());
         appVO.setName(appDO.getName());
-        appVO.setDescription(appDO.getDescription());
+        appVO.setDescription("122112");
         appVO.setStatus(appDO.getStatus());
         appVO.setIcon(appDO.getIcon());
-//        appVO.setPreset_prompt(appDO.get);
+        appVO.setPreset_prompt("2121");
         appVO.setCreated_at(appDO.getCreatedAt().getTime());
         appVO.setUpdated_at(appDO.getUpdatedAt().getTime());
-//        appVO.setModel_config(appDO.get);
+        ModelConfigVO modelConfigVO = new ModelConfigVO();
+        modelConfigVO.setModel("deepseek");
+        modelConfigVO.setProvider("月之暗面");
+        appVO.setModel_config(modelConfigVO);
+
         return appVO;
     }
 }

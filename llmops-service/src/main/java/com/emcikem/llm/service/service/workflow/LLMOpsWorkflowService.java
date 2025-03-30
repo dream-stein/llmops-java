@@ -41,7 +41,6 @@ public class LLMOpsWorkflowService {
         paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
 
         return ApiBasePaginatorResponse.success(LLMOpsWorkflowConvert.convert(workflowList), paginator);
-
     }
 
     private String getAccountId() {

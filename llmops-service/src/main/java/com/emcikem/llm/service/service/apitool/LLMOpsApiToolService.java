@@ -30,7 +30,7 @@ public class LLMOpsApiToolService {
 
         // 2. 数据查询
         Long count = llmOpsApiToolProvider.countApiToolList(accountId, searchWord);
-        Integer offset = (pageSize - 1) * pageSize;
+        Integer offset = (currentPage - 1) * pageSize;
         List<LlmOpsApiToolDO> apiToolList = llmOpsApiToolProvider.getApiToolProviderList(searchWord, pageSize, offset, accountId);
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(currentPage);

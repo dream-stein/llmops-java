@@ -3,6 +3,7 @@ package com.emcikem.llm.service.service.apitool;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
 import com.emcikem.llm.common.vo.tools.ApiToolProviderVO;
+import com.emcikem.llm.common.vo.tools.ApiToolProviderDetailVO;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.service.convert.LLMOpsApiToolConvert;
 import com.emcikem.llm.service.provider.LLMOpsApiToolProvider;
@@ -18,7 +19,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Service
-public class LLMOpsApiToolService {
+public class LLMOpsApiToolProviderService {
 
     @Resource
     private LLMOpsApiToolProvider llmOpsApiToolProvider;
@@ -28,7 +29,7 @@ public class LLMOpsApiToolService {
         String accountId = getAccountId();
 
         // 2. 数据查询
-        Long count = llmOpsApiToolProvider.countApiToolList(accountId, searchWord);
+        Long count = llmOpsApiToolProvider.countApiToolProviderList(accountId, searchWord);
         Integer offset = (currentPage - 1) * pageSize;
         List<LlmOpsApiToolProviderDO> apiToolProviderList = llmOpsApiToolProvider.getApiToolProviderList(searchWord, pageSize, offset, accountId);
         Paginator paginator = new Paginator();
@@ -38,6 +39,15 @@ public class LLMOpsApiToolService {
         paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
 
         return ApiBasePaginatorResponse.success(LLMOpsApiToolConvert.convert2ApiProviderList(apiToolProviderList), paginator);
+    }
+
+    public ApiToolProviderDetailVO getApiToolProvider(String providerId) {
+        // 1. 获取当前账号
+        String accountId = getAccountId();
+
+        // 2. 查询数据
+        LlmOpsApiToolProviderDO apiToolProvider = llmOpsApiToolProvider.getApiToolProvider(accountId, providerId);
+        return LLMOpsApiToolConvert.convert2ApiProviderDetail(apiToolProvider);
     }
 
     private String getAccountId() {

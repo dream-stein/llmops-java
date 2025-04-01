@@ -1,10 +1,6 @@
 package com.emcikem.llm.service.convert;
 
-import com.emcikem.llm.common.vo.tools.ApiProviderToolVO;
-import com.emcikem.llm.common.vo.tools.ApiToolHeaderVO;
-import com.emcikem.llm.common.vo.tools.ApiToolInputVO;
-import com.emcikem.llm.common.vo.tools.ApiToolProviderVO;
-import com.emcikem.llm.dao.entity.LlmOpsApiToolDO;
+import com.emcikem.llm.common.vo.tools.*;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
@@ -62,5 +58,20 @@ public class LLMOpsApiToolConvert {
         apiToolProviderVO.setTools(Lists.newArrayList(apiProviderToolVO1, apiProviderToolVO2));
         apiToolProviderVO.setHeaders(Lists.newArrayList(apiToolHeaderVO));
         return apiToolProviderVO;
+    }
+
+    public static ApiToolProviderDetailVO convert2ApiProviderDetail(LlmOpsApiToolProviderDO apiToolProvider) {
+        if (apiToolProvider == null) {
+            return null;
+        }
+        ApiToolProviderDetailVO apiToolProviderDetailVO = new ApiToolProviderDetailVO();
+        apiToolProviderDetailVO.setId(apiToolProvider.getId());
+        apiToolProviderDetailVO.setName(apiToolProvider.getName());
+        apiToolProviderDetailVO.setIcon(apiToolProvider.getIcon());
+        apiToolProviderDetailVO.setCreated_at(apiToolProvider.getCreatedAt().getTime());
+        apiToolProviderDetailVO.setHeaders(Lists.newArrayList());
+        apiToolProviderDetailVO.setOpenapi_schema("{\"description\":\"这是一个查询对应英文单词字典的工具\",\"server\":\"https://dict.youdao.com\",\"paths\":{\"/suggest\":{\"get\":{\"description\":\"根据传递的单词查询其字典信息\",\"operationId\":\"YoudaoSuggest\",\"parameters\":[{\"name\":\"q\",\"in\":\"query\",\"description\":\"要检索查询的单词，例如love/computer\",\"required\":true,\"type\":\"str\"},{\"name\":\"doctype\",\"in\":\"query\",\"description\":\"返回的数据类型，支持json和xml两种格式，默认情况下json数据\",\"required\":false,\"type\":\"str\"}]}}}}");
+
+        return apiToolProviderDetailVO;
     }
 }

@@ -3,15 +3,11 @@ package com.emcikem.llm.web.controller;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.vo.tools.*;
-import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
-import com.emcikem.llm.dao.example.LlmOpsApiToolProviderDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsApiToolProviderDOMapper;
-import com.emcikem.llm.service.service.apitool.LLMOpsApiToolService;
+import com.emcikem.llm.service.service.apitool.LLMOpsApiToolProviderService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * Create with Emcikem on 2025/3/2
@@ -28,13 +24,13 @@ public class LLMOpsApiToolController {
     private LlmOpsApiToolProviderDOMapper llmOpsApiToolProviderDOMapper;
 
     @Resource
-    private LLMOpsApiToolService llmOpsApiToolService;
+    private LLMOpsApiToolProviderService llmOpsApiToolProviderService;
 
     @GetMapping("/list")
     public ApiBasePaginatorResponse<ApiToolProviderVO> getApiToolProvidersWithPage(@RequestParam("search_word") String searchWord,
                                                                                    @RequestParam("current_page") Integer currentPage,
                                                                                    @RequestParam("page_size") Integer pageSize) {
-        return llmOpsApiToolService.getApiToolProvidersWithPage(searchWord, currentPage, pageSize);
+        return llmOpsApiToolProviderService.getApiToolProvidersWithPage(searchWord, currentPage, pageSize);
     }
 
     @PostMapping("/validate-openapi-schema")
@@ -57,9 +53,9 @@ public class LLMOpsApiToolController {
         return ApiResponse.success(null);
     }
 
-    @PostMapping("/detail/{provider_id}")
-    public ApiResponse<GetApiToolProviderVO> getApiToolProvider(@PathVariable String provider_id) {
-        return ApiResponse.success(null);
+    @GetMapping("/detail/{provider_id}")
+    public ApiResponse<ApiToolProviderDetailVO> getApiToolProvider(@PathVariable("provider_id") String providerId) {
+        return ApiResponse.success(llmOpsApiToolProviderService.getApiToolProvider(providerId));
     }
 
     @GetMapping("/{provider_id}/{tool_name}")

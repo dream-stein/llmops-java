@@ -1,5 +1,6 @@
 package com.emcikem.llm.service.convert;
 
+import com.emcikem.llm.common.vo.apps.AppDetailVO;
 import com.emcikem.llm.common.vo.apps.AppVO;
 import com.emcikem.llm.common.vo.apps.ModelConfigVO;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
@@ -8,6 +9,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -44,5 +46,22 @@ public class LLMOpsAppConvert {
         appVO.setModel_config(modelConfigVO);
 
         return appVO;
+    }
+
+    public static AppDetailVO convert2DetailVO(LlmOpsAppDO appDO) {
+        if (appDO == null) {
+            return null;
+        }
+        AppDetailVO detailVO = new AppDetailVO();
+        detailVO.setId(appDO.getId());
+        detailVO.setName(appDO.getName());
+        detailVO.setDescription("122112");
+        detailVO.setStatus(appDO.getStatus());
+        detailVO.setIcon(appDO.getIcon());
+        detailVO.setCreated_at(appDO.getCreatedAt().getTime());
+        detailVO.setUpdated_at(appDO.getUpdatedAt().getTime());
+        detailVO.setDebug_conversation_id("111");
+        detailVO.setDraft_updated_at(2121121212L);
+        return detailVO;
     }
 }

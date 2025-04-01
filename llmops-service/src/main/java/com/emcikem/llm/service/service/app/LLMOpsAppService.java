@@ -2,6 +2,7 @@ package com.emcikem.llm.service.service.app;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.vo.apps.AppDetailVO;
 import com.emcikem.llm.common.vo.apps.AppVO;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
 import com.emcikem.llm.service.convert.LLMOpsAppConvert;
@@ -40,6 +41,16 @@ public class LLMOpsAppService {
 
         return ApiBasePaginatorResponse.success(LLMOpsAppConvert.convert(appList), paginator);
 
+    }
+
+    public AppDetailVO getApp(String appId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 查询数据
+        LlmOpsAppDO llmOpsAppDO = llmOpsAppProvider.getApp(appId, accountId);
+
+        return LLMOpsAppConvert.convert2DetailVO(llmOpsAppDO);
     }
 
     private String getAccountId() {

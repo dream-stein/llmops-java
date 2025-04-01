@@ -1,14 +1,13 @@
 package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
+import com.emcikem.llm.common.entity.ApiResponse;
+import com.emcikem.llm.common.vo.apps.AppDetailVO;
 import com.emcikem.llm.common.vo.apps.AppVO;
 import com.emcikem.llm.common.vo.dataset.DatasetVO;
 import com.emcikem.llm.service.service.app.LLMOpsAppService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.RegEx;
 
@@ -30,5 +29,10 @@ public class LLMOpsAppController {
                                                                @RequestParam("current_page") Integer currentPage,
                                                                @RequestParam("page_size") Integer pageSize) {
         return llmOpsAppService.getDatasetsWithPage(searchWord, currentPage, pageSize);
+    }
+
+    @GetMapping("/{app_id}")
+    public ApiResponse<AppDetailVO> getApp(@PathVariable("app_id") String appId) {
+        return ApiResponse.success(llmOpsAppService.getApp(appId));
     }
 }

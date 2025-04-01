@@ -8,6 +8,7 @@ import com.emcikem.llm.dao.example.LlmOpsAppDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDatasetDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsAppDOMapper;
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,18 @@ public class LLMOpsAppProvider {
 
     @Resource
     private LlmOpsAppDOMapper llmOpsAppDOMapper;
+
+    public LlmOpsAppDO getApp(String appId, String accountId) {
+        LlmOpsAppDOExample example = new LlmOpsAppDOExample();
+        LlmOpsAppDOExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(appId);
+        criteria.andAccountIdEqualTo(accountId);
+        List<LlmOpsAppDO> llmOpsAppList = llmOpsAppDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(llmOpsAppList)) {
+            return null;
+        }
+        return llmOpsAppList.get(0);
+    }
 
     public Long countAppList(String accountId, String searchWord) {
         LlmOpsAppDOExample example = new LlmOpsAppDOExample();

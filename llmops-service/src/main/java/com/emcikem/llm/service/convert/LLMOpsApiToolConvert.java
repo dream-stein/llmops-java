@@ -38,24 +38,24 @@ public class LLMOpsApiToolConvert {
         apiToolProviderHeaderVO.setKey("a");
         apiToolProviderHeaderVO.setValue("b");;
 
-        ApiProviderToolVO apiProviderToolVO1 = new ApiProviderToolVO();
-        apiProviderToolVO1.setId("2121");
-        apiProviderToolVO1.setName("谷歌Serper搜索");
-        apiProviderToolVO1.setDescription("一个用于执行Google SERP搜索并提取片段和网页的工具。输入应该是一个搜索查询。\n");
-        ApiToolInputVO apiToolInputVO = new ApiToolInputVO();
-        apiToolInputVO.setType("string");
-        apiToolInputVO.setRequired(true);
-        apiToolInputVO.setName("提示词");
-        apiToolInputVO.setDescription("图像提示词，您可以查看 DallE 3 的官方文档");
-        apiProviderToolVO1.setInputs(Lists.newArrayList(apiToolInputVO));
+        ApiToolProviderToolVO apiToolProviderToolVO1 = new ApiToolProviderToolVO();
+        apiToolProviderToolVO1.setId("2121");
+        apiToolProviderToolVO1.setName("谷歌Serper搜索");
+        apiToolProviderToolVO1.setDescription("一个用于执行Google SERP搜索并提取片段和网页的工具。输入应该是一个搜索查询。\n");
+        ApiToolProviderInputVO apiToolProviderInputVO = new ApiToolProviderInputVO();
+        apiToolProviderInputVO.setType("string");
+        apiToolProviderInputVO.setRequired(true);
+        apiToolProviderInputVO.setName("提示词");
+        apiToolProviderInputVO.setDescription("图像提示词，您可以查看 DallE 3 的官方文档");
+        apiToolProviderToolVO1.setInputs(Lists.newArrayList(apiToolProviderInputVO));
 
-        ApiProviderToolVO apiProviderToolVO2 = new ApiProviderToolVO();
-        apiProviderToolVO2.setId("2121");
-        apiProviderToolVO2.setName("谷歌新闻");
-        apiProviderToolVO2.setDescription("谷新闻搜索引擎可以帮助你按关键字搜索新闻。");
-        apiProviderToolVO2.setInputs(Lists.newArrayList());
+        ApiToolProviderToolVO apiToolProviderToolVO2 = new ApiToolProviderToolVO();
+        apiToolProviderToolVO2.setId("2121");
+        apiToolProviderToolVO2.setName("谷歌新闻");
+        apiToolProviderToolVO2.setDescription("谷新闻搜索引擎可以帮助你按关键字搜索新闻。");
+        apiToolProviderToolVO2.setInputs(Lists.newArrayList());
 
-        apiToolProviderVO.setTools(Lists.newArrayList(apiProviderToolVO1, apiProviderToolVO2));
+        apiToolProviderVO.setTools(Lists.newArrayList(apiToolProviderToolVO1, apiToolProviderToolVO2));
         apiToolProviderVO.setHeaders(Lists.newArrayList(apiToolProviderHeaderVO));
         return apiToolProviderVO;
     }

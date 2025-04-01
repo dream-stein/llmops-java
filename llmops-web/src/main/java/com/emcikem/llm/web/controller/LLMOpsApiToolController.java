@@ -39,7 +39,7 @@ public class LLMOpsApiToolController {
     }
 
     @PostMapping("/create")
-    public ApiResponse<Void> createApiToolProvider(@RequestBody CreateProviderDetailVO createProviderDetailVO) {
+    public ApiResponse<Void> createApiToolProvider(@RequestBody CreateToolProviderDetailVO createToolProviderDetailVO) {
         return ApiResponse.success(null);
     }
 

@@ -11,19 +11,13 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class ApiProviderVO {
-
-    private String id;
+public class CreateToolProviderDetailVO {
 
     private String name;
 
     private String icon;
 
-    private String description;
-
-    private List<ApiProviderToolVO> tools;
+    private String openapi_schema;
 
     private List<ApiToolProviderHeaderVO> headers;
-
-    private Long created_at;
 }

@@ -2,8 +2,6 @@ package com.emcikem.llm.common.vo.tools;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * Create with Emcikem on 2025/3/2
  *
@@ -11,13 +9,13 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class ApiProviderToolVO {
+public class ApiToolProviderInputVO {
 
-    private String id;
+    private String type;
 
-    private String description;
+    private boolean required;
 
     private String name;
 
-    private List<ApiToolInputVO> inputs;
+    private String description;
 }

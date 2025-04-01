@@ -10356,17 +10356,17 @@ public class ApiToolsController {
     }
 
     @PostMapping("/create")
-    public ApiResponse<Void> createApiTools(@RequestBody CreateProviderDetailVO createProviderDetailVO) {
+    public ApiResponse<Void> createApiTools(@RequestBody CreateProviderDetailVO createToolProviderDetailVO) {
         LlmOpsApiToolProviderDO providerDO = new LlmOpsApiToolProviderDO();
         providerDO.setCreatedAt(new Date());
-        providerDO.setIcon(createProviderDetailVO.getIcon());
+        providerDO.setIcon(createToolProviderDetailVO.getIcon());
         providerDO.setUpdatedAt(new Date());
         providerDO.setProviderId(UUID.randomUUID().toString());
-        providerDO.setOpenapiSchema(createProviderDetailVO.getOpenapi_schema());
+        providerDO.setOpenapiSchema(createToolProviderDetailVO.getOpenapi_schema());
         providerDO.setAccountId(UUID.randomUUID().toString());
-        providerDO.setHeaders(GsonUtil.toJSONString(createProviderDetailVO.getHeaders()));
+        providerDO.setHeaders(GsonUtil.toJSONString(createToolProviderDetailVO.getHeaders()));
         providerDO.setDescription("");
-        providerDO.setName(createProviderDetailVO.getName());
+        providerDO.setName(createToolProviderDetailVO.getName());
         int insert = llmOpsApiToolProviderDOMapper.insert(providerDO);
         return ApiResponse.success(null);
     }

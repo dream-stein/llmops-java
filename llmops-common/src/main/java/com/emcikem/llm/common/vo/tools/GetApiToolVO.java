@@ -21,5 +21,5 @@ public class GetApiToolVO {
 
     private ApiToolProvider provider;
 
-    private List<ApiToolInputVO> inputs;
+    private List<ApiToolProviderInputVO> inputs;
 }

@@ -21,7 +21,7 @@ public class ApiToolProviderVO {
 
     private String description;
 
-    private List<ApiProviderToolVO> tools;
+    private List<ApiToolProviderToolVO> tools;
 
     private List<ApiToolProviderHeaderVO> headers;
 

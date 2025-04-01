@@ -34,9 +34,9 @@ public class LLMOpsApiToolConvert {
         apiToolProviderVO.setIcon(apiToolProviderDO.getIcon());
         apiToolProviderVO.setCreated_at(apiToolProviderDO.getCreatedAt().getTime());
         apiToolProviderVO.setDescription("测试描述");
-        ApiToolHeaderVO apiToolHeaderVO = new ApiToolHeaderVO();
-        apiToolHeaderVO.setKey("a");
-        apiToolHeaderVO.setValue("b");;
+        ApiToolProviderHeaderVO apiToolProviderHeaderVO = new ApiToolProviderHeaderVO();
+        apiToolProviderHeaderVO.setKey("a");
+        apiToolProviderHeaderVO.setValue("b");;
 
         ApiProviderToolVO apiProviderToolVO1 = new ApiProviderToolVO();
         apiProviderToolVO1.setId("2121");
@@ -56,7 +56,7 @@ public class LLMOpsApiToolConvert {
         apiProviderToolVO2.setInputs(Lists.newArrayList());
 
         apiToolProviderVO.setTools(Lists.newArrayList(apiProviderToolVO1, apiProviderToolVO2));
-        apiToolProviderVO.setHeaders(Lists.newArrayList(apiToolHeaderVO));
+        apiToolProviderVO.setHeaders(Lists.newArrayList(apiToolProviderHeaderVO));
         return apiToolProviderVO;
     }
 
@@ -69,7 +69,10 @@ public class LLMOpsApiToolConvert {
         apiToolProviderDetailVO.setName(apiToolProvider.getName());
         apiToolProviderDetailVO.setIcon(apiToolProvider.getIcon());
         apiToolProviderDetailVO.setCreated_at(apiToolProvider.getCreatedAt().getTime());
-        apiToolProviderDetailVO.setHeaders(Lists.newArrayList());
+        ApiToolProviderHeaderVO apiToolProviderHeaderVO = new ApiToolProviderHeaderVO();
+        apiToolProviderHeaderVO.setKey("Authorization");
+        apiToolProviderHeaderVO.setValue("Bearer q9g1JtkaDOGRzteXLTwwcpK1MS");
+        apiToolProviderDetailVO.setHeaders(Lists.newArrayList(apiToolProviderHeaderVO));
         apiToolProviderDetailVO.setOpenapi_schema("{\"description\":\"这是一个查询对应英文单词字典的工具\",\"server\":\"https://dict.youdao.com\",\"paths\":{\"/suggest\":{\"get\":{\"description\":\"根据传递的单词查询其字典信息\",\"operationId\":\"YoudaoSuggest\",\"parameters\":[{\"name\":\"q\",\"in\":\"query\",\"description\":\"要检索查询的单词，例如love/computer\",\"required\":true,\"type\":\"str\"},{\"name\":\"doctype\",\"in\":\"query\",\"description\":\"返回的数据类型，支持json和xml两种格式，默认情况下json数据\",\"required\":false,\"type\":\"str\"}]}}}}");
 
         return apiToolProviderDetailVO;

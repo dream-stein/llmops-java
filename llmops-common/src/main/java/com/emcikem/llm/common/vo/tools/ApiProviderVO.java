@@ -23,7 +23,7 @@ public class ApiProviderVO {
 
     private List<ApiProviderToolVO> tools;
 
-    private List<ApiToolHeaderVO> headers;
+    private List<ApiToolProviderHeaderVO> headers;
 
     private Long created_at;
 }

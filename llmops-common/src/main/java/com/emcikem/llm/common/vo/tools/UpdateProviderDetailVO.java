@@ -19,5 +19,5 @@ public class UpdateProviderDetailVO {
 
     private String openapi_schema;
 
-    private List<ApiToolHeaderVO> headers;
+    private List<ApiToolProviderHeaderVO> headers;
 }

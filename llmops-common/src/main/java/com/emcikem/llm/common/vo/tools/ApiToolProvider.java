@@ -21,5 +21,5 @@ public class ApiToolProvider {
 
     private String description;
 
-    private List<ApiToolHeaderVO> headers;
+    private List<ApiToolProviderHeaderVO> headers;
 }

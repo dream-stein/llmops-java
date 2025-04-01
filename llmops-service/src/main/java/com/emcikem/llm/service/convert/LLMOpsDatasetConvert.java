@@ -38,7 +38,7 @@ public class LLMOpsDatasetConvert {
         datasetVO.setUpdated_at(datasetDO.getUpdatedAt().getTime());
         datasetVO.setCharacter_count(2);
         datasetVO.setDocument_count(3);
-        datasetVO.setRelation_app_count(4);
+        datasetVO.setRelated_app_count(4);
         return datasetVO;
     }
 
@@ -55,7 +55,7 @@ public class LLMOpsDatasetConvert {
         datasetDetailVO.setUpdated_at(datasetDO.getUpdatedAt().getTime());
         datasetDetailVO.setCharacter_count(2);
         datasetDetailVO.setDocument_count(3);
-        datasetDetailVO.setRelation_app_count(4);
+        datasetDetailVO.setRelated_app_count(4);
         datasetDetailVO.setHit_count(1);
         return datasetDetailVO;
     }

@@ -25,7 +25,7 @@ public class DatasetDetailVO {
 
     private Integer character_count;
 
-    private Integer relation_app_count;
+    private Integer related_app_count;
 
     private Long updated_at;
 

@@ -23,7 +23,7 @@ public interface LlmOpsApiToolProviderDOMapper {
      *
      * @mbg.generated
      */
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     /**
      *
@@ -53,7 +53,7 @@ public interface LlmOpsApiToolProviderDOMapper {
      *
      * @mbg.generated
      */
-    LlmOpsApiToolProviderDOWithBLOBs selectByPrimaryKey(Long id);
+    LlmOpsApiToolProviderDOWithBLOBs selectByPrimaryKey(String id);
 
     /**
      *

@@ -6,7 +6,7 @@ import lombok.ToString;
 
 /**
  * Database Table Remarks:
- *   API工具提供者表
+ *   API工具提供者
  *
  * @mbg.generated do_not_delete_during_merge
  */
@@ -16,7 +16,7 @@ import lombok.ToString;
 public class LlmOpsApiToolProviderDOWithBLOBs extends LlmOpsApiToolProviderDO {
     /**
      * Database Column Remarks:
-     *   提供商描述
+     *   应用描述
      *
      * @mbg.generated
      */
@@ -24,7 +24,7 @@ public class LlmOpsApiToolProviderDOWithBLOBs extends LlmOpsApiToolProviderDO {
 
     /**
      * Database Column Remarks:
-     *   规范描述
+     *   描述规范
      *
      * @mbg.generated
      */

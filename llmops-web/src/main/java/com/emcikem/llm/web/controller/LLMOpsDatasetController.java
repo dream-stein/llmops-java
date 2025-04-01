@@ -3,6 +3,7 @@ package com.emcikem.llm.web.controller;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.vo.dataset.CreateDatasetDetailVO;
+import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
 import com.emcikem.llm.common.vo.dataset.DatasetVO;
 import com.emcikem.llm.service.service.dataset.LLMOpsDatasetService;
 import jakarta.annotation.Resource;
@@ -28,6 +29,11 @@ public class LLMOpsDatasetController {
                                                                    @RequestParam("page_size") Integer pageSize) {
 
         return llmOpsDatasetService.getDatasetsWithPage(searchWord, currentPage, pageSize);
+    }
+
+    @GetMapping("/{dataset_id}")
+    public ApiResponse<DatasetDetailVO> getDataset(@PathVariable("dataset_id") String datasetId) {
+        return ApiResponse.success(llmOpsDatasetService.getDataset(datasetId));
     }
 
     @PostMapping("/create")

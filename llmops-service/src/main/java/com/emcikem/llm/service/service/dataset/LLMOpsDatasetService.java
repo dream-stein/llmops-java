@@ -2,6 +2,7 @@ package com.emcikem.llm.service.service.dataset;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
 import com.emcikem.llm.common.vo.dataset.DatasetVO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.service.convert.LLMOpsDatasetConvert;
@@ -41,6 +42,15 @@ public class LLMOpsDatasetService {
         return ApiBasePaginatorResponse.success(LLMOpsDatasetConvert.convert(datasetList), paginator);
     }
 
+    public DatasetDetailVO getDataset(String datasetId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 查询数据
+        LlmOpsDatasetDO llmOpsDatasetDO = llmOpsDatasetProvider.getDataset(datasetId, accountId);
+
+        return LLMOpsDatasetConvert.convert2DetailVO(llmOpsDatasetDO);
+    }
 
     private String getAccountId() {
         return "1";

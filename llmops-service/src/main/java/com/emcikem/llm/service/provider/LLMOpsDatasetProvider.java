@@ -6,6 +6,7 @@ import com.emcikem.llm.dao.example.LlmOpsApiKeyDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDatasetDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsDatasetDOMapper;
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,18 @@ public class LLMOpsDatasetProvider {
 
     @Resource
     private LlmOpsDatasetDOMapper llmOpsDatasetDOMapper;
+
+    public LlmOpsDatasetDO getDataset(String datasetId, String accountId) {
+        LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
+        LlmOpsDatasetDOExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(datasetId);
+        criteria.andAccountIdEqualTo(accountId);
+        List<LlmOpsDatasetDO> llmOpsDatasetList = llmOpsDatasetDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(llmOpsDatasetList)) {
+            return null;
+        }
+        return llmOpsDatasetList.get(0);
+    }
 
     public Long countDatasetList(String accountId, String searchWord) {
         LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();

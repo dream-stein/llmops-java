@@ -2,6 +2,7 @@ package com.emcikem.llm.service.service.workflow;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.vo.workflow.WorkflowDetailVO;
 import com.emcikem.llm.common.vo.workflow.WorkflowVO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsWorkflowDO;
@@ -43,14 +44,14 @@ public class LLMOpsWorkflowService {
         return ApiBasePaginatorResponse.success(LLMOpsWorkflowConvert.convert(workflowList), paginator);
     }
 
-    public WorkflowVO getWorkflow(String workflowId) {
+    public WorkflowDetailVO getWorkflow(String workflowId) {
         // 1. 查询当前账号
         String accountId = getAccountId();
 
         // 2. 查询数据
         LlmOpsWorkflowDO workflow = llmOpsWorkflowProvider.getWorkflow(workflowId, accountId);
 
-        return LLMOpsWorkflowConvert.convert(workflow);
+        return LLMOpsWorkflowConvert.convert2DetailVO(workflow);
     }
 
     private String getAccountId() {

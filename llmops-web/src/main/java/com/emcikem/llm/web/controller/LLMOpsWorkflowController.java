@@ -2,6 +2,7 @@ package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
+import com.emcikem.llm.common.vo.workflow.WorkflowDetailVO;
 import com.emcikem.llm.common.vo.workflow.WorkflowVO;
 import com.emcikem.llm.service.service.workflow.LLMOpsWorkflowService;
 import jakarta.annotation.Resource;
@@ -29,7 +30,7 @@ public class LLMOpsWorkflowController {
     }
 
     @GetMapping("/{workflow_id}")
-    public ApiResponse<WorkflowVO> getWorkflow(@PathVariable("workflow_id") String workflowId) {
+    public ApiResponse<WorkflowDetailVO> getWorkflow(@PathVariable("workflow_id") String workflowId) {
         return ApiResponse.success(llmOpsWorkflowService.getWorkflow(workflowId));
     }
 }

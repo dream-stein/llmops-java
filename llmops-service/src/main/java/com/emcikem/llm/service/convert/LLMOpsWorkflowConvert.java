@@ -1,8 +1,7 @@
 package com.emcikem.llm.service.convert;
 
-import com.emcikem.llm.common.vo.dataset.DatasetVO;
+import com.emcikem.llm.common.vo.workflow.WorkflowDetailVO;
 import com.emcikem.llm.common.vo.workflow.WorkflowVO;
-import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsWorkflowDO;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
@@ -43,5 +42,24 @@ public class LLMOpsWorkflowConvert {
         workflowVO.setTool_call_name(datasetDO.getToolCallName());
         workflowVO.setPublished_at(datasetDO.getPublishedAt().getTime());
         return workflowVO;
+    }
+
+    public static WorkflowDetailVO convert2DetailVO(LlmOpsWorkflowDO datasetDO) {
+        if (datasetDO == null) {
+            return null;
+        }
+        WorkflowDetailVO workflowDetailVO = new WorkflowDetailVO();
+        workflowDetailVO.setId(datasetDO.getId());
+        workflowDetailVO.setName(datasetDO.getName());
+//        workflowDetailVO.setDescription(da);
+        workflowDetailVO.setIcon(datasetDO.getIcon());
+        workflowDetailVO.setStatus(datasetDO.getStatus());
+        workflowDetailVO.setUpdated_at(datasetDO.getUpdatedAt().getTime());
+        workflowDetailVO.setCreated_at(datasetDO.getCreatedAt().getTime());
+        workflowDetailVO.setIs_debug_passed(datasetDO.getIsDebugPassed());
+//        workflowDetailVO.setNode_count();
+        workflowDetailVO.setTool_call_name(datasetDO.getToolCallName());
+        workflowDetailVO.setPublished_at(datasetDO.getPublishedAt().getTime());
+        return workflowDetailVO;
     }
 }

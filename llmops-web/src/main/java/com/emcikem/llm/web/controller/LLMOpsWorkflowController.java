@@ -1,13 +1,11 @@
 package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
+import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.vo.workflow.WorkflowVO;
 import com.emcikem.llm.service.service.workflow.LLMOpsWorkflowService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Create with Emcikem on 2025/3/28
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.0
  */
 @RestController
-@RequestMapping("/workflow")
+@RequestMapping("/workflows")
 public class LLMOpsWorkflowController {
 
     @Resource
@@ -25,7 +23,13 @@ public class LLMOpsWorkflowController {
     @GetMapping
     public ApiBasePaginatorResponse<WorkflowVO> getWorkflowsWithPage(@RequestParam(value = "search_word", required = false) String searchWord,
                                                                      @RequestParam("current_page") Integer currentPage,
-                                                                     @RequestParam("page_size") Integer pageSize) {
-        return llmOpsWorkflowService.getWorkflowsWithPage(searchWord, currentPage, pageSize);
+                                                                     @RequestParam("page_size") Integer pageSize,
+                                                                     @RequestParam("status") String status) {
+        return llmOpsWorkflowService.getWorkflowsWithPage(searchWord, currentPage, pageSize, status);
+    }
+
+    @GetMapping("/{workflow_id}")
+    public ApiResponse<WorkflowVO> getWorkflow(@PathVariable("workflow_id") String workflowId) {
+        return ApiResponse.success(llmOpsWorkflowService.getWorkflow(workflowId));
     }
 }

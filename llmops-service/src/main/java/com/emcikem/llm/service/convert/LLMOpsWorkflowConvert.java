@@ -40,7 +40,7 @@ public class LLMOpsWorkflowConvert {
         workflowVO.setCreated_at(datasetDO.getCreatedAt().getTime());
         workflowVO.setIs_debug_passed(datasetDO.getIsDebugPassed());
 //        workflowVO.setNode_count();
-//        workflowVO.setTool_call_name();
+        workflowVO.setTool_call_name(datasetDO.getToolCallName());
         workflowVO.setPublished_at(datasetDO.getPublishedAt().getTime());
         return workflowVO;
     }

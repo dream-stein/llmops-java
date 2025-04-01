@@ -25,14 +25,14 @@ public class LLMOpsWorkflowService {
     @Resource
     private LLMOpsWorkflowProvider llmOpsWorkflowProvider;
 
-    public ApiBasePaginatorResponse<WorkflowVO> getWorkflowsWithPage(String searchWord, Integer currentPage, Integer pageSize) {
+    public ApiBasePaginatorResponse<WorkflowVO> getWorkflowsWithPage(String searchWord, Integer currentPage, Integer pageSize, String status) {
         // 1. 查询当前账号
         String accountId = getAccountId();
 
         // 2. 数据查询
-        Long count = llmOpsWorkflowProvider.countWorkflowList(accountId, searchWord);
+        Long count = llmOpsWorkflowProvider.countWorkflowList(accountId, searchWord, status);
         Integer offset = (currentPage - 1) * pageSize;
-        List<LlmOpsWorkflowDO> workflowList = llmOpsWorkflowProvider.getWorkflowList(pageSize, offset, accountId, searchWord);
+        List<LlmOpsWorkflowDO> workflowList = llmOpsWorkflowProvider.getWorkflowList(pageSize, offset, accountId, searchWord, status);
 
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(currentPage);
@@ -41,6 +41,16 @@ public class LLMOpsWorkflowService {
         paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
 
         return ApiBasePaginatorResponse.success(LLMOpsWorkflowConvert.convert(workflowList), paginator);
+    }
+
+    public WorkflowVO getWorkflow(String workflowId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 查询数据
+        LlmOpsWorkflowDO workflow = llmOpsWorkflowProvider.getWorkflow(workflowId, accountId);
+
+        return LLMOpsWorkflowConvert.convert(workflow);
     }
 
     private String getAccountId() {

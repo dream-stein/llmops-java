@@ -58,4 +58,28 @@ public class LlmOpsApiToolProviderDO {
      * @mbg.generated
      */
     private Date updatedAt;
+
+    /**
+     * Database Column Remarks:
+     *   应用描述
+     *
+     * @mbg.generated
+     */
+    private String description;
+
+    /**
+     * Database Column Remarks:
+     *   描述规范
+     *
+     * @mbg.generated
+     */
+    private String openapiSchema;
+
+    /**
+     * Database Column Remarks:
+     *   提供商对应的请求头
+     *
+     * @mbg.generated
+     */
+    private String headers;
 }

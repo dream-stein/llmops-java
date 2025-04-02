@@ -1,7 +1,6 @@
 package com.emcikem.llm.dao.mapper;
 
 import com.emcikem.llm.dao.entity.LlmOpsApiToolDO;
-import com.emcikem.llm.dao.entity.LlmOpsApiToolDOWithBLOBs;
 import com.emcikem.llm.dao.example.LlmOpsApiToolDOExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -29,19 +28,19 @@ public interface LlmOpsApiToolDOMapper {
      *
      * @mbg.generated
      */
-    int insert(LlmOpsApiToolDOWithBLOBs record);
+    int insert(LlmOpsApiToolDO record);
 
     /**
      *
      * @mbg.generated
      */
-    int insertSelective(LlmOpsApiToolDOWithBLOBs record);
+    int insertSelective(LlmOpsApiToolDO record);
 
     /**
      *
      * @mbg.generated
      */
-    List<LlmOpsApiToolDOWithBLOBs> selectByExampleWithBLOBs(LlmOpsApiToolDOExample example);
+    List<LlmOpsApiToolDO> selectByExampleWithBLOBs(LlmOpsApiToolDOExample example);
 
     /**
      *
@@ -53,19 +52,19 @@ public interface LlmOpsApiToolDOMapper {
      *
      * @mbg.generated
      */
-    LlmOpsApiToolDOWithBLOBs selectByPrimaryKey(String id);
+    LlmOpsApiToolDO selectByPrimaryKey(String id);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleSelective(@Param("record") LlmOpsApiToolDOWithBLOBs record, @Param("example") LlmOpsApiToolDOExample example);
+    int updateByExampleSelective(@Param("record") LlmOpsApiToolDO record, @Param("example") LlmOpsApiToolDOExample example);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleWithBLOBs(@Param("record") LlmOpsApiToolDOWithBLOBs record, @Param("example") LlmOpsApiToolDOExample example);
+    int updateByExampleWithBLOBs(@Param("record") LlmOpsApiToolDO record, @Param("example") LlmOpsApiToolDOExample example);
 
     /**
      *
@@ -77,13 +76,13 @@ public interface LlmOpsApiToolDOMapper {
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeySelective(LlmOpsApiToolDOWithBLOBs record);
+    int updateByPrimaryKeySelective(LlmOpsApiToolDO record);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeyWithBLOBs(LlmOpsApiToolDOWithBLOBs record);
+    int updateByPrimaryKeyWithBLOBs(LlmOpsApiToolDO record);
 
     /**
      *

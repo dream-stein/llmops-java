@@ -74,4 +74,20 @@ public class LlmOpsApiToolDO {
      * @mbg.generated
      */
     private Date updatedAt;
+
+    /**
+     * Database Column Remarks:
+     *   工具描述
+     *
+     * @mbg.generated
+     */
+    private String description;
+
+    /**
+     * Database Column Remarks:
+     *   工具参数
+     *
+     * @mbg.generated
+     */
+    private String parameters;
 }

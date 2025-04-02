@@ -1,7 +1,6 @@
 package com.emcikem.llm.dao.mapper;
 
 import com.emcikem.llm.dao.entity.LlmOpsWorkflowDO;
-import com.emcikem.llm.dao.entity.LlmOpsWorkflowDOWithBLOBs;
 import com.emcikem.llm.dao.example.LlmOpsWorkflowDOExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -29,19 +28,19 @@ public interface LlmOpsWorkflowDOMapper {
      *
      * @mbg.generated
      */
-    int insert(LlmOpsWorkflowDOWithBLOBs record);
+    int insert(LlmOpsWorkflowDO record);
 
     /**
      *
      * @mbg.generated
      */
-    int insertSelective(LlmOpsWorkflowDOWithBLOBs record);
+    int insertSelective(LlmOpsWorkflowDO record);
 
     /**
      *
      * @mbg.generated
      */
-    List<LlmOpsWorkflowDOWithBLOBs> selectByExampleWithBLOBs(LlmOpsWorkflowDOExample example);
+    List<LlmOpsWorkflowDO> selectByExampleWithBLOBs(LlmOpsWorkflowDOExample example);
 
     /**
      *
@@ -53,19 +52,19 @@ public interface LlmOpsWorkflowDOMapper {
      *
      * @mbg.generated
      */
-    LlmOpsWorkflowDOWithBLOBs selectByPrimaryKey(String id);
+    LlmOpsWorkflowDO selectByPrimaryKey(String id);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleSelective(@Param("record") LlmOpsWorkflowDOWithBLOBs record, @Param("example") LlmOpsWorkflowDOExample example);
+    int updateByExampleSelective(@Param("record") LlmOpsWorkflowDO record, @Param("example") LlmOpsWorkflowDOExample example);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByExampleWithBLOBs(@Param("record") LlmOpsWorkflowDOWithBLOBs record, @Param("example") LlmOpsWorkflowDOExample example);
+    int updateByExampleWithBLOBs(@Param("record") LlmOpsWorkflowDO record, @Param("example") LlmOpsWorkflowDOExample example);
 
     /**
      *
@@ -77,13 +76,13 @@ public interface LlmOpsWorkflowDOMapper {
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeySelective(LlmOpsWorkflowDOWithBLOBs record);
+    int updateByPrimaryKeySelective(LlmOpsWorkflowDO record);
 
     /**
      *
      * @mbg.generated
      */
-    int updateByPrimaryKeyWithBLOBs(LlmOpsWorkflowDOWithBLOBs record);
+    int updateByPrimaryKeyWithBLOBs(LlmOpsWorkflowDO record);
 
     /**
      *

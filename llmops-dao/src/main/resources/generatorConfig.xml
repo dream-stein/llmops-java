@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <context id="mysqlTables" targetRuntime="MyBatis3">
+    <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- MySQL分页插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.LimitPlugin">
             <!-- 通过配置startPage影响Example中的page方法开始分页的页码，默认分页从0开始 -->

@@ -2,9 +2,7 @@ package com.emcikem.llm.service.service.dataset;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
-import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
-import com.emcikem.llm.common.vo.dataset.DatasetQueryVO;
-import com.emcikem.llm.common.vo.dataset.DatasetVO;
+import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
 import com.emcikem.llm.service.convert.LLMOpsDatasetConvert;
@@ -13,7 +11,9 @@ import com.emcikem.llm.service.provider.LLMOpsDatasetQueryProvider;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Create with Emcikem on 2025/3/28
@@ -63,6 +63,44 @@ public class LLMOpsDatasetService {
 
         return LLMOpsDatasetConvert.convert2QueryList(datasetQueryList);
     }
+
+    public void deleteDataset(String datasetId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        boolean result = llmOpsDatasetProvider.deleteDataset(accountId, datasetId);
+    }
+
+    public void updateDataset(String datasetId, UpdateDatasetParam updateDatasetParam) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 更新数据
+        LlmOpsDatasetDO llmOpsDatasetDO = new LlmOpsDatasetDO();
+        llmOpsDatasetDO.setIcon(updateDatasetParam.getIcon());
+        llmOpsDatasetDO.setDescription(updateDatasetParam.getDescription());
+        llmOpsDatasetDO.setName(updateDatasetParam.getName());
+        llmOpsDatasetDO.setUpdatedAt(new Date());
+        llmOpsDatasetProvider.updateDataset(datasetId, accountId, llmOpsDatasetDO);
+
+    }
+
+    public void createDataset(CreateDatasetParam createDatasetParam) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 创建数据
+        LlmOpsDatasetDO llmOpsDatasetDO = new LlmOpsDatasetDO();
+        llmOpsDatasetDO.setCreatedAt(new Date());
+        llmOpsDatasetDO.setId(UUID.randomUUID().toString());
+        llmOpsDatasetDO.setAccountId(accountId);
+        llmOpsDatasetDO.setUpdatedAt(new Date());
+        llmOpsDatasetDO.setName(createDatasetParam.getName());
+        llmOpsDatasetDO.setDescription(createDatasetParam.getDescription());
+        llmOpsDatasetDO.setIcon(createDatasetParam.getIcon());
+        llmOpsDatasetProvider.createDataset(llmOpsDatasetDO);
+    }
+
 
     private String getAccountId() {
         return "1";

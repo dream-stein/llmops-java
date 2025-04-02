@@ -9,7 +9,7 @@ import lombok.Data;
  * @version 1.0.0
  */
 @Data
-public class CreateDatasetDetailVO {
+public class CreateDatasetParam {
 
     private String name;
 

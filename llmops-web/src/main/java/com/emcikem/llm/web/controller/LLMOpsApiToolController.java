@@ -3,7 +3,6 @@ package com.emcikem.llm.web.controller;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.vo.tools.*;
-import com.emcikem.llm.dao.mapper.LlmOpsApiToolProviderDOMapper;
 import com.emcikem.llm.service.service.apitool.LLMOpsApiToolProviderService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api-tools")
 public class LLMOpsApiToolController {
-
-    @Resource
-    private LlmOpsApiToolProviderDOMapper llmOpsApiToolProviderDOMapper;
 
     @Resource
     private LLMOpsApiToolProviderService llmOpsApiToolProviderService;
@@ -44,12 +40,14 @@ public class LLMOpsApiToolController {
     }
 
     @PostMapping("/update/{provider_id}")
-    public ApiResponse<Void> updateApiToolProvider(@PathVariable String provider_id, @RequestBody UpdateProviderDetailVO updateProviderDetailVO) {
+    public ApiResponse<Void> updateApiToolProvider(@PathVariable("provider_id") String providerId,
+                                                   @RequestBody UpdateProviderDetailVO updateProviderDetailVO) {
         return ApiResponse.success(null);
     }
 
     @PostMapping("/{provider_id}/delete")
-    public ApiResponse<Void> deleteApiToolProvider(@PathVariable String provider_id) {
+    public ApiResponse<Void> deleteApiToolProvider(@PathVariable("provider_id") String providerId) {
+        llmOpsApiToolProviderService.deleteApiToolProvider(providerId);
         return ApiResponse.success(null);
     }
 
@@ -59,7 +57,8 @@ public class LLMOpsApiToolController {
     }
 
     @GetMapping("/{provider_id}/{tool_name}")
-    public ApiResponse<GetApiToolVO> getApiTool(@PathVariable String provider_id, @PathVariable String tool_name) {
-        return ApiResponse.success(null);
+    public ApiResponse<GetApiToolVO> getApiTool(@PathVariable("provider_id") String providerId,
+                                                @PathVariable("tool_name") String toolName) {
+        return ApiResponse.success(llmOpsApiToolProviderService.getApiTool(providerId, toolName));
     }
 }

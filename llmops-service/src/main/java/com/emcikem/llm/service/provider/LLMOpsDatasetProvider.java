@@ -57,4 +57,24 @@ public class LLMOpsDatasetProvider {
         }
         return llmOpsDatasetDOMapper.selectByExample(example);
     }
+
+    public boolean deleteDataset(String accountId, String datasetId) {
+        LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
+        LlmOpsDatasetDOExample.Criteria criteria = example.createCriteria();
+        criteria.andAccountIdEqualTo(accountId);
+        criteria.andIdEqualTo(datasetId);
+        return llmOpsDatasetDOMapper.deleteByExample(example) == 1;
+    }
+
+    public boolean createDataset(LlmOpsDatasetDO llmOpsDatasetDO) {
+        return llmOpsDatasetDOMapper.insert(llmOpsDatasetDO) == 1;
+    }
+
+    public boolean updateDataset(String datasetId, String accountId, LlmOpsDatasetDO llmOpsDatasetDO) {
+        LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
+        LlmOpsDatasetDOExample.Criteria criteria = example.createCriteria();
+        criteria.andIdEqualTo(datasetId);
+        criteria.andAccountIdEqualTo(accountId);
+        return llmOpsDatasetDOMapper.updateByExampleSelective(llmOpsDatasetDO, example) == 1;
+    }
 }

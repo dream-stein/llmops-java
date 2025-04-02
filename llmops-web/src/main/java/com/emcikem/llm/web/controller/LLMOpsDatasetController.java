@@ -2,13 +2,9 @@ package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
-import com.emcikem.llm.common.vo.dataset.CreateDatasetDetailVO;
-import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
-import com.emcikem.llm.common.vo.dataset.DatasetQueryVO;
-import com.emcikem.llm.common.vo.dataset.DatasetVO;
+import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.service.service.dataset.LLMOpsDatasetService;
 import jakarta.annotation.Resource;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,17 +37,26 @@ public class LLMOpsDatasetController {
     }
 
     @PostMapping("/create")
-    public ApiResponse<Void> createDataset(@RequestBody CreateDatasetDetailVO createDatasetDetailVO) {
+    public ApiResponse<Void> createDataset(@RequestBody CreateDatasetParam createDatasetParam) {
+        llmOpsDatasetService.createDataset(createDatasetParam);
         return ApiResponse.success(null);
     }
 
-    @PostMapping("/update")
-    public ApiResponse<Void> updateDataset() {
+    @PostMapping("/{dataset_id}")
+    public ApiResponse<Void> updateDataset(@PathVariable("dataset_id") String datasetId,
+                                           @RequestBody UpdateDatasetParam updateDatasetParam) {
+        llmOpsDatasetService.updateDataset(datasetId, updateDatasetParam);
         return ApiResponse.success(null);
     }
 
     @GetMapping("/{dataset_id}/queries")
     public ApiResponse<List<DatasetQueryVO>> getDatasetQueries(@PathVariable("dataset_id") String datasetId) {
         return ApiResponse.success(llmOpsDatasetService.getDatasetQueries(datasetId));
+    }
+
+    @PostMapping("/{dataset_id}/delete")
+    public ApiResponse<Void> deleteDataset(@PathVariable("dataset_id") String datasetId) {
+        llmOpsDatasetService.deleteDataset(datasetId);
+        return ApiResponse.success(null);
     }
 }

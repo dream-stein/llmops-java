@@ -60,4 +60,13 @@ public class LLMOpsApiToolProvider {
         }
         return llmOpsApiToolProviderDOMapper.selectByExample(example);
     }
+
+    public void deleteApiToolProvider(String accountId, String providerId) {
+        LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
+        LlmOpsApiToolProviderDOExample.Criteria criteria = example.createCriteria();
+        criteria.andAccountIdEqualTo(accountId);
+        criteria.andIdEqualTo(providerId);
+
+        llmOpsApiToolProviderDOMapper.deleteByExample(example);
+    }
 }

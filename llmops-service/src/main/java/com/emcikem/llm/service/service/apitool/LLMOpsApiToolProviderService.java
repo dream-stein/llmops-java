@@ -4,6 +4,7 @@ import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
 import com.emcikem.llm.common.vo.tools.ApiToolProviderVO;
 import com.emcikem.llm.common.vo.tools.ApiToolProviderDetailVO;
+import com.emcikem.llm.common.vo.tools.GetApiToolVO;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.service.convert.LLMOpsApiToolConvert;
 import com.emcikem.llm.service.provider.LLMOpsApiToolProvider;
@@ -50,7 +51,19 @@ public class LLMOpsApiToolProviderService {
         return LLMOpsApiToolConvert.convert2ApiProviderDetail(apiToolProvider);
     }
 
+    public void deleteApiToolProvider(String providerId) {
+        // 1. 获取当前账号
+        String accountId = getAccountId();
+
+        // 2. 删除数据
+        llmOpsApiToolProvider.deleteApiToolProvider(accountId, providerId);
+    }
+
     private String getAccountId() {
         return "1";
+    }
+
+    public GetApiToolVO getApiTool(String providerId, String toolName) {
+        return null;
     }
 }

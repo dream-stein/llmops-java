@@ -3,11 +3,14 @@ package com.emcikem.llm.service.provider;
 import com.emcikem.llm.dao.entity.LlmOpsApiKeyDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
+import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.dao.example.LlmOpsApiKeyDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDatasetDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDocumentDOExample;
+import com.emcikem.llm.dao.example.LlmOpsSegmentDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsDatasetDOMapper;
 import com.emcikem.llm.dao.mapper.LlmOpsDocumentDOMapper;
+import com.emcikem.llm.dao.mapper.LlmOpsSegmentDOMapper;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +33,9 @@ public class LLMOpsDatasetProvider {
 
     @Resource
     private LlmOpsDocumentDOMapper llmOpsDocumentDOMapper;
+
+    @Resource
+    private LlmOpsSegmentDOMapper llmOpsSegmentDOMapper;
 
     public LlmOpsDatasetDO getDataset(String datasetId, String accountId) {
         LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
@@ -136,5 +142,32 @@ public class LLMOpsDatasetProvider {
             return null;
         }
         return llmOpsDocumentList.get(0);
+    }
+
+    public Long countSegmentList(String datasetId, String documentId, String accountId, String searchWord) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        LlmOpsSegmentDOExample.Criteria criteria = example.createCriteria();
+        criteria.andDatasetIdEqualTo(datasetId);
+        criteria.andAccountIdEqualTo(accountId);
+        criteria.andDocumentIdEqualTo(documentId);
+//        if (StringUtils.isNoneBlank(searchWord)) {
+//            criteria.andCon
+//        }
+        return llmOpsSegmentDOMapper.countByExample(example);
+    }
+
+
+    public List<LlmOpsSegmentDO> getSegmentList(Integer pageSize, Integer offset, String accountId, String searchWord, String datasetId, String documentId) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        example.setOffset(offset);
+        example.setRows(pageSize);
+        LlmOpsSegmentDOExample.Criteria criteria = example.createCriteria();
+        criteria.andDatasetIdEqualTo(datasetId);
+        criteria.andAccountIdEqualTo(accountId);
+        criteria.andDocumentIdEqualTo(documentId);
+//        if (StringUtils.isNoneBlank(searchWord)) {
+//            criteria.andCon
+//        }
+        return llmOpsSegmentDOMapper.selectByExampleWithBLOBs(example);
     }
 }

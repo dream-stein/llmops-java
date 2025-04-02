@@ -1,9 +1,11 @@
 package com.emcikem.llm.service.convert;
 
+import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
+import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -123,5 +125,36 @@ public class LLMOpsDatasetConvert {
         documentDetailVO.setSegment_count(10);
         documentDetailVO.setPosition(documentDO.getPosition());
         return documentDetailVO;
+    }
+
+    public static List<SegmentVO> convertSegmentList(List<LlmOpsSegmentDO> segmentList) {
+        if (CollectionUtils.isEmpty(segmentList)) {
+            return Lists.newArrayList();
+        }
+        return segmentList.stream().map(LLMOpsDatasetConvert::convertSegment).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static SegmentVO convertSegment(LlmOpsSegmentDO segmentDO) {
+        if (segmentDO == null) {
+            return null;
+        }
+
+        SegmentVO segmentVO = new SegmentVO();
+        segmentVO.setId(segmentDO.getId());
+        segmentVO.setEnabled(segmentDO.getEnabled());
+        segmentVO.setContent(segmentDO.getContent());
+        segmentVO.setError(segmentDO.getError());
+        segmentVO.setStatus(segmentDO.getStatus());
+        segmentVO.setDisabled_at(segmentDO.getDisabledAt().getTime());
+        segmentVO.setCreated_at(segmentDO.getCreatedAt().getTime());
+        segmentVO.setUpdated_at(segmentDO.getUpdatedAt().getTime());
+        segmentVO.setKeywords(GsonUtil.parseList(segmentDO.getKeywords(), String.class));
+        segmentVO.setCharacter_count(segmentDO.getCharacterCount());
+        segmentVO.setPosition(segmentDO.getPosition());
+        segmentVO.setHit_count(1);
+        segmentVO.setToken_count(segmentDO.getTokenCount());
+        segmentVO.setDocument_id(segmentDO.getDocumentId());
+        segmentVO.setDataset_id(segmentDO.getDatasetId());
+        return segmentVO;
     }
 }

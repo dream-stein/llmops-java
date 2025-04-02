@@ -6,6 +6,7 @@ import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
+import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.service.convert.LLMOpsDatasetConvert;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetQueryProvider;
@@ -157,6 +158,24 @@ public class LLMOpsDatasetService {
         paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
 
         return ApiBasePaginatorResponse.success(LLMOpsDatasetConvert.convertDocumentList(documentList), paginator);
+    }
+
+    public ApiBasePaginatorResponse<SegmentVO> getSegmentsWithPage(String datasetId, String documentId, String searchWord, Integer currentPage, Integer pageSize) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 数据查询
+        Long count = llmOpsDatasetProvider.countSegmentList(datasetId, documentId, accountId, searchWord);
+        Integer offset = (currentPage - 1) * pageSize;
+        List<LlmOpsSegmentDO> segmentList = llmOpsDatasetProvider.getSegmentList(pageSize, offset, accountId, searchWord, datasetId, documentId);
+
+        Paginator paginator = new Paginator();
+        paginator.setCurrent_page(currentPage);
+        paginator.setPage_size(pageSize);
+        paginator.setTotal_record(count);
+        paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
+
+        return ApiBasePaginatorResponse.success(LLMOpsDatasetConvert.convertSegmentList(segmentList), paginator);
     }
 
     private String getAccountId() {

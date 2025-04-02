@@ -163,4 +163,13 @@ public class LLMOpsDatasetController {
         llmOpsDatasetService.updateDocumentName(datasetId, documentId, param);
         return ApiResponse.success(null);
     }
+
+    @GetMapping("/{dataset_id}/documents/{document_id}/segments")
+    public ApiBasePaginatorResponse<SegmentVO> getSegmentsWithPage(@PathVariable("dataset_id") String datasetId,
+                                                                   @PathVariable("document_id") String documentId,
+                                                                   @RequestParam(value = "search_word", required = false) String searchWord,
+                                                                   @RequestParam("current_page") Integer currentPage,
+                                                                   @RequestParam("page_size") Integer pageSize) {
+        return llmOpsDatasetService.getSegmentsWithPage(datasetId, documentId, searchWord, currentPage, pageSize);
+    }
 }

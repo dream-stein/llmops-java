@@ -2,6 +2,7 @@ package com.emcikem.llm.service.service.apitool;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.tools.*;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.service.convert.LLMOpsApiToolConvert;
@@ -82,8 +83,11 @@ public class LLMOpsApiToolProviderService {
         LlmOpsApiToolProviderDO llmOpsApiToolProviderDO = new LlmOpsApiToolProviderDO();
         llmOpsApiToolProviderDO.setIcon(updateProviderParam.getIcon());
         llmOpsApiToolProviderDO.setName(updateProviderParam.getName());
+        llmOpsApiToolProviderDO.setOpenapiSchema(updateProviderParam.getOpenapi_schema());
+        llmOpsApiToolProviderDO.setDescription("");
+        llmOpsApiToolProviderDO.setHeaders(GsonUtil.toJSONString(updateProviderParam.getHeaders()));
 
-//        llmOpsApiToolProvider.updateApiToolProvider(providerId, accountId, llmOpsApiToolProviderDO);
+        llmOpsApiToolProvider.updateApiToolProvider(providerId, accountId, llmOpsApiToolProviderDO);
     }
 
     private String getAccountId() {

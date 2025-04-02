@@ -71,7 +71,15 @@ public class LLMOpsApiToolProvider {
     }
 
     public boolean createApiToolProvider(LlmOpsApiToolProviderDO llmOpsApiToolProviderDO) {
-//        return llmOpsApiToolProviderDOMapper.insert(llmOpsApiToolProviderDO) == 1;
-        return true;
+        return llmOpsApiToolProviderDOMapper.insert(llmOpsApiToolProviderDO) == 1;
+    }
+
+    public boolean updateApiToolProvider(String providerId, String accountId, LlmOpsApiToolProviderDO llmOpsApiToolProviderDO) {
+        LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
+        LlmOpsApiToolProviderDOExample.Criteria criteria = example.createCriteria();
+        criteria.andAccountIdEqualTo(accountId);
+        criteria.andIdEqualTo(providerId);
+
+        return llmOpsApiToolProviderDOMapper.updateByExampleSelective(llmOpsApiToolProviderDO, example) == 1;
     }
 }

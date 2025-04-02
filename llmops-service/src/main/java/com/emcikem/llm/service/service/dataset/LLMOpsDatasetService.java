@@ -5,6 +5,7 @@ import com.emcikem.llm.common.entity.Paginator;
 import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
+import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.service.convert.LLMOpsDatasetConvert;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetQueryProvider;
@@ -101,6 +102,61 @@ public class LLMOpsDatasetService {
         llmOpsDatasetProvider.createDataset(llmOpsDatasetDO);
     }
 
+    public void updateDocumentName(String datasetId, String documentId, UpdateDocumentNameParam param) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 更新文档名称
+        LlmOpsDocumentDO llmOpsDocumentDO = new LlmOpsDocumentDO();
+        llmOpsDocumentDO.setName(param.getName());
+        llmOpsDocumentDO.setUpdatedAt(new Date());
+        llmOpsDatasetProvider.updateDocument(datasetId, documentId, accountId, llmOpsDocumentDO);
+    }
+
+    public void deleteDocument(String datasetId, String documentId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 删除文档
+        llmOpsDatasetProvider.deleteDocument(datasetId, documentId, accountId);
+    }
+
+    public void updateDocumentEnabled(String datasetId, String documentId, UpdateDocumentEnabledParam param) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 更新文档状态
+        LlmOpsDocumentDO llmOpsDocumentDO = new LlmOpsDocumentDO();
+        llmOpsDocumentDO.setEnabled(param.getEnabled());
+        llmOpsDocumentDO.setUpdatedAt(new Date());
+        llmOpsDatasetProvider.updateDocument(datasetId, documentId, accountId, llmOpsDocumentDO);
+    }
+
+    public DocumentDetailVO getDocument(String datasetId, String documentId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 查询文档
+        return null;
+    }
+
+    public ApiBasePaginatorResponse<DocumentVO> getDocumentsWithPage(String datasetId, String searchWord, Integer currentPage, Integer pageSize) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 数据查询
+        Long count = llmOpsDatasetProvider.countDocumentList(accountId, searchWord);
+        Integer offset = (currentPage - 1) * pageSize;
+        List<LlmOpsDocumentDO> documentList = llmOpsDatasetProvider.getDocumentList(pageSize, offset, accountId, searchWord);
+
+        Paginator paginator = new Paginator();
+        paginator.setCurrent_page(currentPage);
+        paginator.setPage_size(pageSize);
+        paginator.setTotal_record(count);
+        paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
+
+        return ApiBasePaginatorResponse.success(LLMOpsDatasetConvert.convertDocumentList(documentList), paginator);
+    }
 
     private String getAccountId() {
         return "1";

@@ -89,5 +89,7 @@
         </table>
         <table tableName="llmops_dataset_query" domainObjectName="LlmOpsDatasetQueryDO">
         </table>
+        <table tableName="llmops_document" domainObjectName="LlmOpsDocumentDO">
+        </table>
     </context>
 </generatorConfiguration>

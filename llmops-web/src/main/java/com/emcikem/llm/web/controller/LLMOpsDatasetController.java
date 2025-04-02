@@ -23,6 +23,13 @@ public class LLMOpsDatasetController {
     @Resource
     private LLMOpsDatasetService llmOpsDatasetService;
 
+    /**
+     * 获取知识库分页列表数据
+     * @param searchWord
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
     @GetMapping
     public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(@RequestParam(value = "search_word", required = false) String searchWord,
                                                                    @RequestParam("current_page") Integer currentPage,
@@ -31,17 +38,33 @@ public class LLMOpsDatasetController {
         return llmOpsDatasetService.getDatasetsWithPage(searchWord, currentPage, pageSize);
     }
 
+    /**
+     * 获取知识库详情
+     * @param datasetId
+     * @return
+     */
     @GetMapping("/{dataset_id}")
     public ApiResponse<DatasetDetailVO> getDataset(@PathVariable("dataset_id") String datasetId) {
         return ApiResponse.success(llmOpsDatasetService.getDataset(datasetId));
     }
 
+    /**
+     * 新增知识库
+     * @param createDatasetParam
+     * @return
+     */
     @PostMapping("/create")
     public ApiResponse<Void> createDataset(@RequestBody CreateDatasetParam createDatasetParam) {
         llmOpsDatasetService.createDataset(createDatasetParam);
         return ApiResponse.success(null);
     }
 
+    /**
+     * 更新知识库
+     * @param datasetId
+     * @param updateDatasetParam
+     * @return
+     */
     @PostMapping("/{dataset_id}")
     public ApiResponse<Void> updateDataset(@PathVariable("dataset_id") String datasetId,
                                            @RequestBody UpdateDatasetParam updateDatasetParam) {
@@ -49,14 +72,95 @@ public class LLMOpsDatasetController {
         return ApiResponse.success(null);
     }
 
+    /**
+     * 最近查询记录
+     * @param datasetId
+     * @return
+     */
     @GetMapping("/{dataset_id}/queries")
     public ApiResponse<List<DatasetQueryVO>> getDatasetQueries(@PathVariable("dataset_id") String datasetId) {
         return ApiResponse.success(llmOpsDatasetService.getDatasetQueries(datasetId));
     }
 
+    /**
+     * 删除知识库请求
+     * @param datasetId
+     * @return
+     */
     @PostMapping("/{dataset_id}/delete")
     public ApiResponse<Void> deleteDataset(@PathVariable("dataset_id") String datasetId) {
         llmOpsDatasetService.deleteDataset(datasetId);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * 获取文档分页列表数据
+     * @param datasetId
+     * @param searchWord
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/{dataset_id}/documents")
+    public ApiBasePaginatorResponse<DocumentVO> getDocumentsWithPage(@PathVariable("dataset_id") String datasetId,
+                                                                     @RequestParam(value = "search_word", required = false) String searchWord,
+                                                                     @RequestParam("current_page") Integer currentPage,
+                                                                     @RequestParam("page_size") Integer pageSize) {
+        return llmOpsDatasetService.getDocumentsWithPage(datasetId, searchWord, currentPage, pageSize);
+    }
+
+    /**
+     * 获取指定文档详情
+     * @param datasetId
+     * @param documentId
+     * @return
+     */
+    @GetMapping("/{dataset_id}/documents/{document_id}")
+    public ApiResponse<DocumentDetailVO> getDocument(@PathVariable("dataset_id") String datasetId,
+                                                     @PathVariable("document_id") String documentId) {
+        return ApiResponse.success(llmOpsDatasetService.getDocument(datasetId, documentId));
+    }
+
+    /**
+     * 更改指定文档的启用状态
+     * @param datasetId
+     * @param documentId
+     * @param param
+     * @return
+     */
+    @PostMapping("/{dataset_id}/documents/{document_id}/enabled")
+    public ApiResponse<Void> updateDocumentEnabled(@PathVariable("dataset_id") String datasetId,
+                                                   @PathVariable("document_id") String documentId,
+                                                   @RequestBody UpdateDocumentEnabledParam param) {
+        llmOpsDatasetService.updateDocumentEnabled(datasetId, documentId, param);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * 删除指定文档消息
+     * @param datasetId
+     * @param documentId
+     * @return
+     */
+    @PostMapping("/{dataset_id}/documents/{document_id}/delete")
+    public ApiResponse<Void> deleteDocument(@PathVariable("dataset_id") String datasetId,
+                                            @PathVariable("document_id") String documentId) {
+        llmOpsDatasetService.deleteDocument(datasetId, documentId);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * 更新文档名字
+     * @param datasetId
+     * @param documentId
+     * @param param
+     * @return
+     */
+    @PostMapping("/{dataset_id}/documents/{document_id}")
+    public ApiResponse<Void> updateDocumentName(@PathVariable("dataset_id") String datasetId,
+                                                @PathVariable("document_id") String documentId,
+                                                @RequestBody UpdateDocumentNameParam param) {
+        llmOpsDatasetService.updateDocumentName(datasetId, documentId, param);
         return ApiResponse.success(null);
     }
 }

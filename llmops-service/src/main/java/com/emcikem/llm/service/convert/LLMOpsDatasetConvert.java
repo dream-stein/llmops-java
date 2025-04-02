@@ -3,8 +3,10 @@ package com.emcikem.llm.service.convert;
 import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
 import com.emcikem.llm.common.vo.dataset.DatasetQueryVO;
 import com.emcikem.llm.common.vo.dataset.DatasetVO;
+import com.emcikem.llm.common.vo.dataset.DocumentVO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
+import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -80,5 +82,30 @@ public class LLMOpsDatasetConvert {
         datasetQueryVO.setSource(datasetQueryDO.getSource());
         datasetQueryVO.setId(datasetQueryDO.getId());
         return datasetQueryVO;
+    }
+
+    public static List<DocumentVO> convertDocumentList(List<LlmOpsDocumentDO> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return Lists.newArrayList();
+        }
+        return list.stream().map(LLMOpsDatasetConvert::convertDocument).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public static DocumentVO convertDocument(LlmOpsDocumentDO documentDO) {
+        if (documentDO == null) {
+            return null;
+        }
+        DocumentVO documentVO = new DocumentVO();
+        documentVO.setId(documentDO.getId());
+        documentVO.setEnabled(documentDO.getEnabled());
+        documentVO.setName(documentDO.getName());
+        documentVO.setCreated_at(documentDO.getCreatedAt().getTime());
+        documentVO.setUpdated_at(documentDO.getUpdatedAt().getTime());
+        documentVO.setEnabled(documentDO.getEnabled());
+        documentVO.setStatus(documentDO.getStatus());
+        documentVO.setCharacter_count(documentDO.getCharacterCount());
+//        documentVO.setHit_count(documentDO.get());
+        documentVO.setPosition(documentDO.getPosition());
+        return documentVO;
     }
 }

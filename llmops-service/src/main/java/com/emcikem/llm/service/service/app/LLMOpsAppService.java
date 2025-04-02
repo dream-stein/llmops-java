@@ -2,15 +2,16 @@ package com.emcikem.llm.service.service.app;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
-import com.emcikem.llm.common.vo.apps.AppDetailVO;
-import com.emcikem.llm.common.vo.apps.AppVO;
+import com.emcikem.llm.common.vo.apps.*;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
 import com.emcikem.llm.service.convert.LLMOpsAppConvert;
 import com.emcikem.llm.service.provider.LLMOpsAppProvider;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Create with Emcikem on 2025/3/28
@@ -53,7 +54,50 @@ public class LLMOpsAppService {
         return LLMOpsAppConvert.convert2DetailVO(llmOpsAppDO);
     }
 
+    public void deleteApp(String appId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 删除数据
+        llmOpsAppProvider.deleteApp(accountId, appId);
+    }
+
+    public void updateApp(String appId, UpdateAppParam updateAppParam) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+        LlmOpsAppDO llmOpsAppDO = new LlmOpsAppDO();
+        llmOpsAppDO.setUpdatedAt(new Date());
+        llmOpsAppDO.setName(updateAppParam.getName());
+        llmOpsAppDO.setDescription(updateAppParam.getDescription());
+        llmOpsAppDO.setIcon(updateAppParam.getIcon());
+
+        llmOpsAppProvider.updateApp(accountId, appId, llmOpsAppDO);
+    }
+
+    public CreateAppVO createApp(CreateAppParam createAppParam) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        LlmOpsAppDO llmOpsAppDO = new LlmOpsAppDO();
+        llmOpsAppDO.setCreatedAt(new Date());
+        llmOpsAppDO.setUpdatedAt(new Date());
+        llmOpsAppDO.setId(UUID.randomUUID().toString());
+        llmOpsAppDO.setDraftedAppConfigId(null);
+        llmOpsAppDO.setPublishedAppConfigId(null);
+        llmOpsAppDO.setIcon(createAppParam.getIcon());
+        llmOpsAppDO.setName(createAppParam.getName());
+        llmOpsAppDO.setDescription(createAppParam.getDescription());
+        llmOpsAppDO.setAccountId(accountId);
+        llmOpsAppDO.setStatus("draft");
+        llmOpsAppProvider.createApp(llmOpsAppDO);
+
+        CreateAppVO createAppVO = new CreateAppVO();
+        createAppVO.setId(llmOpsAppDO.getId());
+        return createAppVO;
+    }
+
     private String getAccountId() {
         return "1";
     }
+
 }

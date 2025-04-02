@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class UpdateProviderDetailVO {
+public class UpdateProviderParam {
 
     private String name;
 

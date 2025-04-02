@@ -35,13 +35,15 @@ public class LLMOpsApiToolController {
     }
 
     @PostMapping("/create")
-    public ApiResponse<Void> createApiToolProvider(@RequestBody CreateToolProviderDetailVO createToolProviderDetailVO) {
+    public ApiResponse<Void> createApiToolProvider(@RequestBody CreateToolProviderParam createToolProviderParam) {
+        llmOpsApiToolProviderService.createApiToolProvider(createToolProviderParam);
         return ApiResponse.success(null);
     }
 
     @PostMapping("/update/{provider_id}")
     public ApiResponse<Void> updateApiToolProvider(@PathVariable("provider_id") String providerId,
-                                                   @RequestBody UpdateProviderDetailVO updateProviderDetailVO) {
+                                                   @RequestBody UpdateProviderParam updateProviderParam) {
+        llmOpsApiToolProviderService.updateApiToolProvider(providerId, updateProviderParam);
         return ApiResponse.success(null);
     }
 
@@ -54,11 +56,5 @@ public class LLMOpsApiToolController {
     @GetMapping("/detail/{provider_id}")
     public ApiResponse<ApiToolProviderDetailVO> getApiToolProvider(@PathVariable("provider_id") String providerId) {
         return ApiResponse.success(llmOpsApiToolProviderService.getApiToolProvider(providerId));
-    }
-
-    @GetMapping("/{provider_id}/{tool_name}")
-    public ApiResponse<GetApiToolVO> getApiTool(@PathVariable("provider_id") String providerId,
-                                                @PathVariable("tool_name") String toolName) {
-        return ApiResponse.success(llmOpsApiToolProviderService.getApiTool(providerId, toolName));
     }
 }

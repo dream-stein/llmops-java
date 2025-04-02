@@ -2,16 +2,16 @@ package com.emcikem.llm.service.service.apitool;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
-import com.emcikem.llm.common.vo.tools.ApiToolProviderVO;
-import com.emcikem.llm.common.vo.tools.ApiToolProviderDetailVO;
-import com.emcikem.llm.common.vo.tools.GetApiToolVO;
+import com.emcikem.llm.common.vo.tools.*;
 import com.emcikem.llm.dao.entity.LlmOpsApiToolProviderDO;
 import com.emcikem.llm.service.convert.LLMOpsApiToolConvert;
 import com.emcikem.llm.service.provider.LLMOpsApiToolProvider;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Create with Emcikem on 2025/3/28
@@ -59,11 +59,34 @@ public class LLMOpsApiToolProviderService {
         llmOpsApiToolProvider.deleteApiToolProvider(accountId, providerId);
     }
 
-    private String getAccountId() {
-        return "1";
+    public void createApiToolProvider(CreateToolProviderParam createToolProviderParam) {
+        // 1. 获取当前账号
+        String accountId = getAccountId();
+
+        // 2. 创建数据
+        LlmOpsApiToolProviderDO llmOpsApiToolProviderDO = new LlmOpsApiToolProviderDO();
+        llmOpsApiToolProviderDO.setAccountId(accountId);
+        llmOpsApiToolProviderDO.setCreatedAt(new Date());
+        llmOpsApiToolProviderDO.setIcon(createToolProviderParam.getIcon());
+        llmOpsApiToolProviderDO.setName(createToolProviderParam.getName());
+        llmOpsApiToolProviderDO.setUpdatedAt(new Date());
+        llmOpsApiToolProviderDO.setId(UUID.randomUUID().toString());
+        llmOpsApiToolProvider.createApiToolProvider(llmOpsApiToolProviderDO);
     }
 
-    public GetApiToolVO getApiTool(String providerId, String toolName) {
-        return null;
+    public void updateApiToolProvider(String providerId, UpdateProviderParam updateProviderParam) {
+        // 1. 获取当前账号
+        String accountId = getAccountId();
+
+        // 2. 更新数据
+        LlmOpsApiToolProviderDO llmOpsApiToolProviderDO = new LlmOpsApiToolProviderDO();
+        llmOpsApiToolProviderDO.setIcon(updateProviderParam.getIcon());
+        llmOpsApiToolProviderDO.setName(updateProviderParam.getName());
+
+//        llmOpsApiToolProvider.updateApiToolProvider(providerId, accountId, llmOpsApiToolProviderDO);
+    }
+
+    private String getAccountId() {
+        return "1";
     }
 }

@@ -61,12 +61,17 @@ public class LLMOpsApiToolProvider {
         return llmOpsApiToolProviderDOMapper.selectByExample(example);
     }
 
-    public void deleteApiToolProvider(String accountId, String providerId) {
+    public boolean deleteApiToolProvider(String accountId, String providerId) {
         LlmOpsApiToolProviderDOExample example = new LlmOpsApiToolProviderDOExample();
         LlmOpsApiToolProviderDOExample.Criteria criteria = example.createCriteria();
         criteria.andAccountIdEqualTo(accountId);
         criteria.andIdEqualTo(providerId);
 
-        llmOpsApiToolProviderDOMapper.deleteByExample(example);
+        return llmOpsApiToolProviderDOMapper.deleteByExample(example) == 1;
+    }
+
+    public boolean createApiToolProvider(LlmOpsApiToolProviderDO llmOpsApiToolProviderDO) {
+//        return llmOpsApiToolProviderDOMapper.insert(llmOpsApiToolProviderDO) == 1;
+        return true;
     }
 }

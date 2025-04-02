@@ -137,7 +137,8 @@ public class LLMOpsDatasetService {
         String accountId = getAccountId();
 
         // 2. 查询文档
-        return null;
+        LlmOpsDocumentDO llmOpsDocumentDO = llmOpsDatasetProvider.getDocument(accountId, datasetId, documentId);
+        return LLMOpsDatasetConvert.convertDocumentDetail(llmOpsDocumentDO);
     }
 
     public ApiBasePaginatorResponse<DocumentVO> getDocumentsWithPage(String datasetId, String searchWord, Integer currentPage, Integer pageSize) {

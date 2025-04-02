@@ -1,9 +1,6 @@
 package com.emcikem.llm.service.convert;
 
-import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
-import com.emcikem.llm.common.vo.dataset.DatasetQueryVO;
-import com.emcikem.llm.common.vo.dataset.DatasetVO;
-import com.emcikem.llm.common.vo.dataset.DocumentVO;
+import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
@@ -107,5 +104,24 @@ public class LLMOpsDatasetConvert {
 //        documentVO.setHit_count(documentDO.get());
         documentVO.setPosition(documentDO.getPosition());
         return documentVO;
+    }
+
+    public static DocumentDetailVO convertDocumentDetail(LlmOpsDocumentDO documentDO) {
+        if (documentDO == null) {
+            return null;
+        }
+        DocumentDetailVO documentDetailVO = new DocumentDetailVO();
+        documentDetailVO.setId(documentDO.getId());
+        documentDetailVO.setEnabled(documentDO.getEnabled());
+        documentDetailVO.setName(documentDO.getName());
+        documentDetailVO.setCreated_at(documentDO.getCreatedAt().getTime());
+        documentDetailVO.setUpdated_at(documentDO.getUpdatedAt().getTime());
+        documentDetailVO.setEnabled(documentDO.getEnabled());
+        documentDetailVO.setStatus(documentDO.getStatus());
+        documentDetailVO.setCharacter_count(documentDO.getCharacterCount());
+        documentDetailVO.setHit_count(2);
+        documentDetailVO.setSegment_count(10);
+        documentDetailVO.setPosition(documentDO.getPosition());
+        return documentDetailVO;
     }
 }

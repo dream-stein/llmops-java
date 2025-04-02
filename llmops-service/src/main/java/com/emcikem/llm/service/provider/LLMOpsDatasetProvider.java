@@ -124,4 +124,17 @@ public class LLMOpsDatasetProvider {
         }
         return llmOpsDocumentDOMapper.selectByExampleWithBLOBs(example);
     }
+
+    public LlmOpsDocumentDO getDocument(String accountId, String datasetId, String documentId) {
+        LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
+        LlmOpsDocumentDOExample.Criteria criteria = example.createCriteria();
+        criteria.andAccountIdEqualTo(accountId);
+        criteria.andDatasetIdEqualTo(datasetId);
+        criteria.andIdEqualTo(documentId);
+        List<LlmOpsDocumentDO> llmOpsDocumentList = llmOpsDocumentDOMapper.selectByExampleWithBLOBs(example);
+        if (CollectionUtils.isEmpty(llmOpsDocumentList)) {
+            return null;
+        }
+        return llmOpsDocumentList.get(0);
+    }
 }

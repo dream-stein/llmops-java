@@ -34,7 +34,7 @@ public class LLMOpsAppConvert {
         AppVO appVO = new AppVO();
         appVO.setId(appDO.getId());
         appVO.setName(appDO.getName());
-        appVO.setDescription("122112");
+        appVO.setDescription(appDO.getDescription());
         appVO.setStatus(appDO.getStatus());
         appVO.setIcon(appDO.getIcon());
         appVO.setPreset_prompt("2121");
@@ -55,7 +55,7 @@ public class LLMOpsAppConvert {
         AppDetailVO detailVO = new AppDetailVO();
         detailVO.setId(appDO.getId());
         detailVO.setName(appDO.getName());
-        detailVO.setDescription("122112");
+        detailVO.setDescription(appDO.getDescription());
         detailVO.setStatus(appDO.getStatus());
         detailVO.setIcon(appDO.getIcon());
         detailVO.setCreated_at(appDO.getCreatedAt().getTime());

@@ -32,7 +32,7 @@ public class LLMOpsWorkflowConvert {
         WorkflowVO workflowVO = new WorkflowVO();
         workflowVO.setId(datasetDO.getId());
         workflowVO.setName(datasetDO.getName());
-//        workflowVO.setDescription(da);
+        workflowVO.setDescription(datasetDO.getDescription());
         workflowVO.setIcon(datasetDO.getIcon());
         workflowVO.setStatus(datasetDO.getStatus());
         workflowVO.setUpdated_at(datasetDO.getUpdatedAt().getTime());

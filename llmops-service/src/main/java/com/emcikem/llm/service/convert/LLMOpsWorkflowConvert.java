@@ -51,7 +51,7 @@ public class LLMOpsWorkflowConvert {
         WorkflowDetailVO workflowDetailVO = new WorkflowDetailVO();
         workflowDetailVO.setId(datasetDO.getId());
         workflowDetailVO.setName(datasetDO.getName());
-//        workflowDetailVO.setDescription(da);
+        workflowDetailVO.setDescription(datasetDO.getDescription());
         workflowDetailVO.setIcon(datasetDO.getIcon());
         workflowDetailVO.setStatus(datasetDO.getStatus());
         workflowDetailVO.setUpdated_at(datasetDO.getUpdatedAt().getTime());

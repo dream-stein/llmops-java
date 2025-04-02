@@ -36,7 +36,7 @@ public class LLMOpsDatasetProvider {
         LlmOpsDatasetDOExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(datasetId);
         criteria.andAccountIdEqualTo(accountId);
-        List<LlmOpsDatasetDO> llmOpsDatasetList = llmOpsDatasetDOMapper.selectByExample(example);
+        List<LlmOpsDatasetDO> llmOpsDatasetList = llmOpsDatasetDOMapper.selectByExampleWithBLOBs(example);
         if (CollectionUtils.isEmpty(llmOpsDatasetList)) {
             return null;
         }
@@ -62,7 +62,7 @@ public class LLMOpsDatasetProvider {
         if (StringUtils.isNoneBlank(searchWord)) {
             criteria.andNameLike("%" + searchWord + "%");
         }
-        return llmOpsDatasetDOMapper.selectByExample(example);
+        return llmOpsDatasetDOMapper.selectByExampleWithBLOBs(example);
     }
 
     public boolean deleteDataset(String accountId, String datasetId) {
@@ -122,6 +122,6 @@ public class LLMOpsDatasetProvider {
         if (StringUtils.isNoneBlank(searchWord)) {
             criteria.andNameLike("%" + searchWord + "%");
         }
-        return llmOpsDocumentDOMapper.selectByExample(example);
+        return llmOpsDocumentDOMapper.selectByExampleWithBLOBs(example);
     }
 }

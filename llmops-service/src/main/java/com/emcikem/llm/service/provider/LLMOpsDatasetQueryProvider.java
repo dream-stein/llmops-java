@@ -25,6 +25,6 @@ public class LLMOpsDatasetQueryProvider {
         example.setOrderByClause("id desc");
         LlmOpsDatasetQueryDOExample.Criteria criteria = example.createCriteria();
         criteria.andDatasetIdEqualTo(datasetId);
-        return llmOpsDatasetQueryDOMapper.selectByExample(example);
+        return llmOpsDatasetQueryDOMapper.selectByExampleWithBLOBs(example);
     }
 }

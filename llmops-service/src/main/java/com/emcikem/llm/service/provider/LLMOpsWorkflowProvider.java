@@ -29,7 +29,7 @@ public class LLMOpsWorkflowProvider {
         criteria.andIdEqualTo(workflowId);
         criteria.andAccountIdEqualTo(accountId);
 
-        List<LlmOpsWorkflowDO> llmOpsWorkflowList = llmOpsWorkflowDOMapper.selectByExample(example);
+        List<LlmOpsWorkflowDO> llmOpsWorkflowList = llmOpsWorkflowDOMapper.selectByExampleWithBLOBs(example);
         if (CollectionUtils.isEmpty(llmOpsWorkflowList)) {
             return null;
         }
@@ -61,6 +61,6 @@ public class LLMOpsWorkflowProvider {
         if (StringUtils.isNoneEmpty(status)) {
             criteria.andStatusEqualTo(status);
         }
-        return llmOpsWorkflowDOMapper.selectByExample(example);
+        return llmOpsWorkflowDOMapper.selectByExampleWithBLOBs(example);
     }
 }

@@ -31,7 +31,7 @@ public class LLMOpsAppProvider {
         LlmOpsAppDOExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(appId);
         criteria.andAccountIdEqualTo(accountId);
-        List<LlmOpsAppDO> llmOpsAppList = llmOpsAppDOMapper.selectByExample(example);
+        List<LlmOpsAppDO> llmOpsAppList = llmOpsAppDOMapper.selectByExampleWithBLOBs(example);
         if (CollectionUtils.isEmpty(llmOpsAppList)) {
             return null;
         }
@@ -57,7 +57,7 @@ public class LLMOpsAppProvider {
         if (StringUtils.isNoneBlank(searchWord)) {
             criteria.andNameLike("%" + searchWord + "%");
         }
-        return llmOpsAppDOMapper.selectByExample(example);
+        return llmOpsAppDOMapper.selectByExampleWithBLOBs(example);
     }
 
     public boolean deleteApp(String accountId, String appId) {

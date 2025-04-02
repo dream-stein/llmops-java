@@ -42,7 +42,7 @@ public class LLMOpsApiToolProvider {
         LlmOpsApiToolProviderDOExample.Criteria criteria = example.createCriteria();
         criteria.andAccountIdEqualTo(accountId);
         criteria.andIdEqualTo(providerId);
-        List<LlmOpsApiToolProviderDO> llmOpsApiToolProviderList = llmOpsApiToolProviderDOMapper.selectByExample(example);
+        List<LlmOpsApiToolProviderDO> llmOpsApiToolProviderList = llmOpsApiToolProviderDOMapper.selectByExampleWithBLOBs(example);
         if (CollectionUtils.isEmpty(llmOpsApiToolProviderList)) {
             return null;
         }
@@ -58,7 +58,7 @@ public class LLMOpsApiToolProvider {
         if (StringUtils.isNoneEmpty(searchWord)) {
             criteria.andNameLike("%" + searchWord + "%");
         }
-        return llmOpsApiToolProviderDOMapper.selectByExample(example);
+        return llmOpsApiToolProviderDOMapper.selectByExampleWithBLOBs(example);
     }
 
     public boolean deleteApiToolProvider(String accountId, String providerId) {

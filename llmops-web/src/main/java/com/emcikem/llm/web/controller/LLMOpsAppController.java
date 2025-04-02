@@ -3,13 +3,9 @@ package com.emcikem.llm.web.controller;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.vo.apps.*;
-import com.emcikem.llm.common.vo.dataset.DatasetVO;
 import com.emcikem.llm.service.service.app.LLMOpsAppService;
-import com.google.protobuf.Api;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.RegEx;
 
 /**
  * Create with Emcikem on 2025/3/28
@@ -43,7 +39,8 @@ public class LLMOpsAppController {
     }
 
     @PostMapping("/{app_id}")
-    public ApiResponse<Void> updateApp(@PathVariable("app_id") String appId, @RequestBody UpdateAppParam updateAppParam) {
+    public ApiResponse<Void> updateApp(@PathVariable("app_id") String appId,
+                                       @RequestBody UpdateAppParam updateAppParam) {
         llmOpsAppService.updateApp(appId, updateAppParam);
         return ApiResponse.success(null);
     }

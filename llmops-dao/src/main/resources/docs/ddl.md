@@ -336,6 +336,21 @@ CREATE TABLE IF NOT EXISTS `llmops_message_agent_thought` (
     INDEX `idx_message_id` (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='智能体消息推理表';
 
+CREATE TABLE IF NOT EXISTS `llmops_conversation` (
+    `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
+    `app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '应用id',
+    `name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '会话名称',
+    `summary` TEXT COMMENT '会话概要',
+    `is_pinned` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否置顶',
+    `is_delete` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否删除',
+    `invoke_from` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '来源',
+    `created_by` VARCHAR(36) NOT NULL COMMENT '创建会话的id',
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    INDEX `idx_app_id` (`app_id`),
+    INDEX `idx_is_delete` (`is_delete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会话表';
+
 --------------------------
 apikey
 --------------------------

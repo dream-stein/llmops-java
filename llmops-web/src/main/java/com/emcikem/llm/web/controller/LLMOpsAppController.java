@@ -49,4 +49,12 @@ public class LLMOpsAppController {
     public ApiResponse<CreateAppVO> createApp(@RequestBody CreateAppParam createAppParam) {
         return ApiResponse.success(llmOpsAppService.createApp(createAppParam));
     }
+
+    @GetMapping("/{app_id}/conversations/messages/{}")
+    public ApiBasePaginatorResponse<DebugConversationMessagesVO> getDebugConversationMessagesWithPage(@PathVariable("app_id") String appId,
+                                                                           @RequestParam("current_page") Integer currentPage,
+                                                                           @RequestParam("page_size") Integer pageSize,
+                                                                           @RequestParam("created_at") Long createdAt) {
+        return llmOpsAppService.getDebugConversationMessagesWithPage(appId, currentPage, pageSize, createdAt);
+    }
 }

@@ -96,8 +96,14 @@ public class LLMOpsAppService {
         return createAppVO;
     }
 
+    public ApiBasePaginatorResponse<DebugConversationMessagesVO> getDebugConversationMessagesWithPage(String appId, Integer currentPage, Integer pageSize, Long createdAt) {
+        // 1. 获取账号
+        String accountId = getAccountId();
+
+        return null;
+    }
+
     private String getAccountId() {
         return "1";
     }
-
 }

@@ -157,4 +157,27 @@ public class LLMOpsDatasetConvert {
         segmentVO.setDataset_id(segmentDO.getDatasetId());
         return segmentVO;
     }
+
+    public static SegmentDetailVO convert2SegmentDetail(LlmOpsSegmentDO segmentDO) {
+        if (segmentDO == null) {
+            return null;
+        }
+        SegmentDetailVO segmentDetailVO = new SegmentDetailVO();
+        segmentDetailVO.setId(segmentDO.getId());
+        segmentDetailVO.setEnabled(segmentDO.getEnabled());
+        segmentDetailVO.setContent(segmentDO.getContent());
+        segmentDetailVO.setError(segmentDO.getError());
+        segmentDetailVO.setStatus(segmentDO.getStatus());
+        segmentDetailVO.setCharacter_count(segmentDO.getCharacterCount());
+        segmentDetailVO.setHit_count(segmentDO.getHitCount());
+        segmentDetailVO.setToken_count(segmentDO.getTokenCount());
+        segmentDetailVO.setDataset_id(segmentDO.getDatasetId());
+        segmentDetailVO.setDocument_id(segmentDO.getDocumentId());
+        segmentDetailVO.setHash(segmentDO.getHash());
+        segmentDetailVO.setCreated_at(segmentDO.getCreatedAt().getTime());
+        segmentDetailVO.setUpdated_at(segmentDO.getUpdatedAt().getTime());
+        segmentDetailVO.setKeywords(GsonUtil.parseList(segmentDO.getKeywords(), String.class));
+        segmentDetailVO.setPosition(segmentDO.getPosition());
+        return segmentDetailVO;
+    }
 }

@@ -1,10 +1,8 @@
 package com.emcikem.llm.service.provider;
 
-import com.emcikem.llm.dao.entity.LlmOpsApiKeyDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
-import com.emcikem.llm.dao.example.LlmOpsApiKeyDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDatasetDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDocumentDOExample;
 import com.emcikem.llm.dao.example.LlmOpsSegmentDOExample;
@@ -14,7 +12,6 @@ import com.emcikem.llm.dao.mapper.LlmOpsSegmentDOMapper;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -165,9 +162,49 @@ public class LLMOpsDatasetProvider {
         criteria.andDatasetIdEqualTo(datasetId);
         criteria.andAccountIdEqualTo(accountId);
         criteria.andDocumentIdEqualTo(documentId);
-//        if (StringUtils.isNoneBlank(searchWord)) {
-//            criteria.andCon
-//        }
+        // TODO：修改
+        if (StringUtils.isNoneBlank(searchWord)) {
+//            criteria.and
+        }
         return llmOpsSegmentDOMapper.selectByExampleWithBLOBs(example);
+    }
+
+    public LlmOpsSegmentDO getSegment(String datasetId, String documentId, String segmentId, String accountId) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        LlmOpsSegmentDOExample.Criteria criteria = example.createCriteria();
+        criteria.andDatasetIdEqualTo(datasetId);
+        criteria.andDocumentIdEqualTo(documentId);
+        criteria.andIdEqualTo(segmentId);
+        criteria.andAccountIdEqualTo(accountId);
+        List<LlmOpsSegmentDO> llmOpsSegmentList = llmOpsSegmentDOMapper.selectByExampleWithBLOBs(example);
+        if (CollectionUtils.isEmpty(llmOpsSegmentList)) {
+            return null;
+        }
+        return llmOpsSegmentList.get(0);
+    }
+
+    public boolean updateSegment(String datasetId, String documentId, String segmentId, String accountId, LlmOpsSegmentDO llmOpsSegmentDO) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        LlmOpsSegmentDOExample.Criteria criteria = example.createCriteria();
+        criteria.andDatasetIdEqualTo(datasetId);
+        criteria.andDocumentIdEqualTo(documentId);
+        criteria.andIdEqualTo(segmentId);
+        criteria.andAccountIdEqualTo(accountId);
+
+        return llmOpsSegmentDOMapper.updateByExampleSelective(llmOpsSegmentDO, example) == 1;
+    }
+
+    public boolean deleteSegment(String datasetId, String documentId, String segmentId, String accountId) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        LlmOpsSegmentDOExample.Criteria criteria = example.createCriteria();
+        criteria.andDatasetIdEqualTo(datasetId);
+        criteria.andDocumentIdEqualTo(documentId);
+        criteria.andIdEqualTo(segmentId);
+        criteria.andAccountIdEqualTo(accountId);
+        return llmOpsSegmentDOMapper.deleteByExample(example) == 1;
+    }
+
+    public boolean createSegment(LlmOpsSegmentDO llmOpsSegmentDO) {
+        return llmOpsSegmentDOMapper.insert(llmOpsSegmentDO) == 1;
     }
 }

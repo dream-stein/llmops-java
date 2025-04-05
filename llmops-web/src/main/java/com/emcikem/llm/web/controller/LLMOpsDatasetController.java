@@ -164,6 +164,15 @@ public class LLMOpsDatasetController {
         return ApiResponse.success(null);
     }
 
+    /**
+     * 片段列表
+     * @param datasetId
+     * @param documentId
+     * @param searchWord
+     * @param currentPage
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/{dataset_id}/documents/{document_id}/segments")
     public ApiBasePaginatorResponse<SegmentVO> getSegmentsWithPage(@PathVariable("dataset_id") String datasetId,
                                                                    @PathVariable("document_id") String documentId,
@@ -171,5 +180,53 @@ public class LLMOpsDatasetController {
                                                                    @RequestParam("current_page") Integer currentPage,
                                                                    @RequestParam("page_size") Integer pageSize) {
         return llmOpsDatasetService.getSegmentsWithPage(datasetId, documentId, searchWord, currentPage, pageSize);
+    }
+
+    /**
+     * 片段详情
+     * @param datasetId
+     * @param documentId
+     * @param segmentId
+     * @return
+     */
+    @GetMapping("/{dataset_id}/documents/{document_id}/segments/{segment_id}")
+    public ApiResponse<SegmentDetailVO> getSegment(@PathVariable("dataset_id") String datasetId,
+                                                   @PathVariable("document_id") String documentId,
+                                                   @PathVariable("segment_id") String segmentId) {
+        return ApiResponse.success(llmOpsDatasetService.getSegment(datasetId, documentId, segmentId));
+    }
+
+    @PostMapping("/{dataset_id}/documents/{document_id}/segments/{segment_id}/enabled")
+    public ApiResponse<Void> updateSegmentEnabled(@PathVariable("dataset_id") String datasetId,
+                                                  @PathVariable("document_id") String documentId,
+                                                  @PathVariable("segment_id") String segmentId,
+                                                  @RequestBody UpdateSegmentEnabledParam param) {
+        llmOpsDatasetService.updateSegmentEnabled(datasetId, documentId, segmentId, param);
+        return ApiResponse.success(null);
+    }
+
+    @PostMapping("/{dataset_id}/documents/{document_id}/segments/{segment_id}/delete")
+    public ApiResponse<Void> deleteSegment(@PathVariable("dataset_id") String datasetId,
+                                           @PathVariable("document_id") String documentId,
+                                           @PathVariable("segment_id") String segmentId) {
+        llmOpsDatasetService.deleteSegment(datasetId, documentId, segmentId);
+        return ApiResponse.success(null);
+    }
+
+    @PostMapping("/{dataset_id}/documents/{document_id}/segments")
+    public ApiResponse<Void> createSegment(@PathVariable("dataset_id") String datasetId,
+                                           @PathVariable("document_id") String documentId,
+                                           @RequestBody CreateSegmentParam param) {
+        llmOpsDatasetService.createSegment(datasetId, documentId, param);
+        return ApiResponse.success(null);
+    }
+
+    @PostMapping("/{dataset_id}/documents/{document_id}/segments/{segment_id}")
+    public ApiResponse<Void> createSegment(@PathVariable("dataset_id") String datasetId,
+                                           @PathVariable("document_id") String documentId,
+                                           @PathVariable("segment_id") String segmentId,
+                                           @RequestBody CreateSegmentParam param) {
+        llmOpsDatasetService.updateSegment(datasetId, documentId, segmentId, param);
+        return ApiResponse.success(null);
     }
 }

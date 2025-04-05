@@ -2,6 +2,7 @@ package com.emcikem.llm.service.service.dataset;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
@@ -178,7 +179,80 @@ public class LLMOpsDatasetService {
         return ApiBasePaginatorResponse.success(LLMOpsDatasetConvert.convertSegmentList(segmentList), paginator);
     }
 
+    public SegmentDetailVO getSegment(String datasetId, String documentId, String segmentId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 数据查询
+        LlmOpsSegmentDO segment = llmOpsDatasetProvider.getSegment(datasetId, documentId, segmentId, accountId);
+        return LLMOpsDatasetConvert.convert2SegmentDetail(segment);
+    }
+
+    public void updateSegmentEnabled(String datasetId, String documentId, String segmentId, UpdateSegmentEnabledParam param) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 修改数据
+        LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+        llmOpsSegmentDO.setEnabled(param.getEnabled());
+        llmOpsSegmentDO.setUpdatedAt(new Date());
+        boolean result = llmOpsDatasetProvider.updateSegment(datasetId, documentId, segmentId, accountId, llmOpsSegmentDO);
+    }
+
+    public void deleteSegment(String datasetId, String documentId, String segmentId) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 删除数据
+        boolean result = llmOpsDatasetProvider.deleteSegment(datasetId, documentId, segmentId, accountId);
+    }
+
+    public void createSegment(String datasetId, String documentId, CreateSegmentParam param) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 添加数据
+        LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+        llmOpsSegmentDO.setId(UUID.randomUUID().toString());
+        llmOpsSegmentDO.setCreatedAt(new Date());
+        llmOpsSegmentDO.setUpdatedAt(new Date());
+        llmOpsSegmentDO.setDocumentId(documentId);
+        llmOpsSegmentDO.setDatasetId(datasetId);
+        llmOpsSegmentDO.setAccountId(accountId);
+        llmOpsSegmentDO.setKeywords(GsonUtil.toJSONString(param.getKeywords()));
+        llmOpsSegmentDO.setContent(param.getContent());
+
+        // TOOD:
+        llmOpsSegmentDO.setEnabled(true);
+        llmOpsSegmentDO.setCompletedAt(new Date());
+        llmOpsSegmentDO.setNodeId("11");
+        llmOpsSegmentDO.setHitCount(1);
+        llmOpsSegmentDO.setCharacterCount(1);
+        llmOpsSegmentDO.setTokenCount(1);
+        llmOpsSegmentDO.setPosition(1);
+        llmOpsSegmentDO.setHash(UUID.randomUUID().toString());
+        llmOpsSegmentDO.setStatus("completed");
+        llmOpsSegmentDO.setDisabledAt(new Date());
+        llmOpsSegmentDO.setProcessingStartedAt(new Date());
+        llmOpsSegmentDO.setIndexCompletedAt(new Date());
+        llmOpsSegmentDO.setStoppedAt(new Date());
+        boolean resul = llmOpsDatasetProvider.createSegment(llmOpsSegmentDO);
+    }
+
+    public void updateSegment(String datasetId, String documentId, String segmentId, CreateSegmentParam param) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 修改数据
+        LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+        llmOpsSegmentDO.setUpdatedAt(new Date());
+        llmOpsSegmentDO.setContent(param.getContent());
+        llmOpsSegmentDO.setKeywords(GsonUtil.toJSONString(param.getKeywords()));
+        boolean resul = llmOpsDatasetProvider.updateSegment(datasetId, documentId, segmentId, accountId, llmOpsSegmentDO);
+    }
+
     private String getAccountId() {
         return "1";
     }
+
 }

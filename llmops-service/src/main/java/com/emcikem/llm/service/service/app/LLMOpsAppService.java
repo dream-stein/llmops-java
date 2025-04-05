@@ -3,9 +3,12 @@ package com.emcikem.llm.service.service.app;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
 import com.emcikem.llm.common.vo.apps.*;
+import com.emcikem.llm.dao.entity.LlmOpsAppConfigDO;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
 import com.emcikem.llm.dao.entity.LlmOpsConversationDO;
+import com.emcikem.llm.service.convert.LLMOpsAppConfigConvert;
 import com.emcikem.llm.service.convert.LLMOpsAppConvert;
+import com.emcikem.llm.service.provider.LLMOpsAppConfigProvider;
 import com.emcikem.llm.service.provider.LLMOpsAppProvider;
 import com.emcikem.llm.service.provider.LLMOpsConversationProvider;
 import jakarta.annotation.Resource;
@@ -29,6 +32,9 @@ public class LLMOpsAppService {
 
     @Resource
     private LLMOpsConversationProvider llmOpsConversationProvider;
+
+    @Resource
+    private LLMOpsAppConfigProvider llmOpsAppConfigProvider;
 
     public ApiBasePaginatorResponse<AppVO> getDatasetsWithPage(String searchWord, Integer currentPage, Integer pageSize) {
         // 1. 查询当前账号
@@ -125,6 +131,11 @@ public class LLMOpsAppService {
         llmOpsConversationDO.setUpdatedAt(new Date());
 
         boolean result = llmOpsConversationProvider.updateConversation(appId, llmOpsConversationDO);
+    }
+
+    public DraftAppConfigVO getDraftAppConfig(String appId) {
+        LlmOpsAppConfigDO appConfigDO = llmOpsAppConfigProvider.getDraftAppConfig(appId);
+        return LLMOpsAppConfigConvert.convertAppConfig(appConfigDO);
     }
 
     private String getAccountId() {

@@ -81,5 +81,15 @@ public class LLMOpsAppController {
         return ApiResponse.success(null);
     }
 
+    /**
+     * 获取应用配置
+     * @param appId
+     * @return
+     */
+    @GetMapping("/{app_id}/draft-app-config")
+    public ApiResponse<DraftAppConfigVO> getDraftAppConfig(@PathVariable("app_id") String appId) {
+        return ApiResponse.success(llmOpsAppService.getDraftAppConfig(appId));
+    }
+
 
 }

@@ -27,7 +27,9 @@ public class LLMOpsAssistantAgentController {
     }
 
     @GetMapping("/messages")
-    public ApiBasePaginatorResponse<GetAssistantAgentMessagesVO> getAssistantAgentMessagesWithPage(@RequestBody GetAssistantAgentMessagesWithPageParam param) {
+    public ApiBasePaginatorResponse<GetAssistantAgentMessagesVO> getAssistantAgentMessagesWithPage(@RequestParam("current_page") Integer currentPage,
+                                                                                                   @RequestParam("page_size") Integer pageSize,
+                                                                                                   @RequestParam("created_at") Long createdAt) {
         return new ApiBasePaginatorResponse<>();
     }
 

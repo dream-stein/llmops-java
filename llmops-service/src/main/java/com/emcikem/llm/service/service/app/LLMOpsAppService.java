@@ -4,8 +4,10 @@ import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
 import com.emcikem.llm.common.vo.apps.*;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
+import com.emcikem.llm.dao.entity.LlmOpsConversationDO;
 import com.emcikem.llm.service.convert.LLMOpsAppConvert;
 import com.emcikem.llm.service.provider.LLMOpsAppProvider;
+import com.emcikem.llm.service.provider.LLMOpsConversationProvider;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class LLMOpsAppService {
 
     @Resource
     private LLMOpsAppProvider llmOpsAppProvider;
+
+    @Resource
+    private LLMOpsConversationProvider llmOpsConversationProvider;
 
     public ApiBasePaginatorResponse<AppVO> getDatasetsWithPage(String searchWord, Integer currentPage, Integer pageSize) {
         // 1. 查询当前账号
@@ -97,13 +102,33 @@ public class LLMOpsAppService {
     }
 
     public ApiBasePaginatorResponse<DebugConversationMessagesVO> getDebugConversationMessagesWithPage(String appId, Integer currentPage, Integer pageSize, Long createdAt) {
-        // 1. 获取账号
-        String accountId = getAccountId();
+
 
         return null;
+    }
+
+    public DebugConversationSummaryVO getDebugConversationSummary(String appId) {
+        LlmOpsConversationDO llmOpsConversationDO = llmOpsConversationProvider.getConversation(appId);
+
+        DebugConversationSummaryVO summaryVO = new DebugConversationSummaryVO();
+        if (llmOpsConversationDO == null) {
+            summaryVO.setSummary("");
+            return summaryVO;
+        }
+        summaryVO.setSummary(llmOpsConversationDO.getSummary());
+        return summaryVO;
+    }
+
+    public void updateDebugConversationSummary(String appId, UpdateDebugConversationSummaryParam param) {
+        LlmOpsConversationDO llmOpsConversationDO = new LlmOpsConversationDO();
+        llmOpsConversationDO.setSummary(param.getSummary());
+        llmOpsConversationDO.setUpdatedAt(new Date());
+
+        boolean result = llmOpsConversationProvider.updateConversation(appId, llmOpsConversationDO);
     }
 
     private String getAccountId() {
         return "1";
     }
+
 }

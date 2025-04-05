@@ -10,7 +10,7 @@ import lombok.Data;
  * @mbg.generated do_not_delete_during_merge
  */
 @Data
-public class LlmOpsConversation {
+public class LlmOpsConversationDO {
     /**
      * Database Column Remarks:
      *   主键UUID

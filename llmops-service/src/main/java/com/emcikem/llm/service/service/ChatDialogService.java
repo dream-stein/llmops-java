@@ -32,7 +32,7 @@ public class ChatDialogService {
         example.setOffset(0);
         example.setRows(100);
         example.orderBy("id desc");
-        List<LlmOpsChatDialogDO> llmOpsChatDialogDOS = llmOpsChatDialogDOMapper.selectByExample(example);
+        List<LlmOpsChatDialogDO> llmOpsChatDialogDOS = llmOpsChatDialogDOMapper.selectByExampleWithBLOBs(example);
 
         return ChatDialogConvert.convert2ChatDialogVOList(llmOpsChatDialogDOS);
     }

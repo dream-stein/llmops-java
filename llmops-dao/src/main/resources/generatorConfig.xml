@@ -93,9 +93,11 @@
         </table>
         <table tableName="llmops_segment" domainObjectName="LlmOpsSegmentDO">
         </table>
-        <table tableName="llmops_message" domainObjectName="LlmOpsMessage">
+        <table tableName="llmops_message" domainObjectName="LlmOpsMessageDO">
         </table>
-        <table tableName="llmops_conversation" domainObjectName="LlmOpsConversation">
+        <table tableName="llmops_conversation" domainObjectName="LlmOpsConversationDO">
+        </table>
+        <table tableName="llmops_app_config" domainObjectName="LlmOpsAppConfigDO">
         </table>
     </context>
 </generatorConfiguration>

@@ -5,12 +5,12 @@ import lombok.Data;
 
 /**
  * Database Table Remarks:
- *   消息表
+ *   应用配置表
  *
  * @mbg.generated do_not_delete_during_merge
  */
 @Data
-public class LlmOpsMessage {
+public class LlmOpsAppConfigDO {
     /**
      * Database Column Remarks:
      *   主键UUID
@@ -21,7 +21,7 @@ public class LlmOpsMessage {
 
     /**
      * Database Column Remarks:
-     *   应用id
+     *   关联的应用id
      *
      * @mbg.generated
      */
@@ -29,107 +29,27 @@ public class LlmOpsMessage {
 
     /**
      * Database Column Remarks:
-     *   会话id
+     *   上下文对话轮数
      *
      * @mbg.generated
      */
-    private String conversation;
+    private Integer dialogRound;
 
     /**
      * Database Column Remarks:
-     *   调用来源
+     *   对话开场白
      *
      * @mbg.generated
      */
-    private String invokeFrom;
+    private String openingStatement;
 
     /**
      * Database Column Remarks:
-     *   创建账号id
+     *   配置类型
      *
      * @mbg.generated
      */
-    private String createdBy;
-
-    /**
-     * Database Column Remarks:
-     *   token数
-     *
-     * @mbg.generated
-     */
-    private Integer messageTokenCount;
-
-    /**
-     * Database Column Remarks:
-     *   单价
-     *
-     * @mbg.generated
-     */
-    private Float messageUnitPrice;
-
-    /**
-     * Database Column Remarks:
-     *   价格单位
-     *
-     * @mbg.generated
-     */
-    private Float messagePriceUnit;
-
-    /**
-     * Database Column Remarks:
-     *   token数
-     *
-     * @mbg.generated
-     */
-    private Integer answerTokenCount;
-
-    /**
-     * Database Column Remarks:
-     *   单价
-     *
-     * @mbg.generated
-     */
-    private Float answerUnitPrice;
-
-    /**
-     * Database Column Remarks:
-     *   价格单位
-     *
-     * @mbg.generated
-     */
-    private Float answerPriceUnit;
-
-    /**
-     * Database Column Remarks:
-     *   响应耗时
-     *
-     * @mbg.generated
-     */
-    private Float latency;
-
-    /**
-     * Database Column Remarks:
-     *   总token数
-     *
-     * @mbg.generated
-     */
-    private Integer totalTokenCount;
-
-    /**
-     * Database Column Remarks:
-     *   消息总价格
-     *
-     * @mbg.generated
-     */
-    private Float totalPrice;
-
-    /**
-     * Database Column Remarks:
-     *   状态
-     *
-     * @mbg.generated
-     */
-    private String status;
+    private Boolean configType;
 
     /**
      * Database Column Remarks:
@@ -149,33 +69,89 @@ public class LlmOpsMessage {
 
     /**
      * Database Column Remarks:
-     *   消息的原始问题
+     *   模型配置
      *
      * @mbg.generated
      */
-    private String query;
+    private String modelConfig;
 
     /**
      * Database Column Remarks:
-     *   最终消息列表
+     *   人设与回复逻辑
      *
      * @mbg.generated
      */
-    private String message;
+    private String presetPrompt;
 
     /**
      * Database Column Remarks:
-     *   AI内容消息
+     *   关联工具列表
      *
      * @mbg.generated
      */
-    private String answer;
+    private String tools;
 
     /**
      * Database Column Remarks:
-     *   错误日志
+     *   关联工作流列表
      *
      * @mbg.generated
      */
-    private String error;
+    private String workflows;
+
+    /**
+     * Database Column Remarks:
+     *   知识库检索配置
+     *
+     * @mbg.generated
+     */
+    private String retrievalConfig;
+
+    /**
+     * Database Column Remarks:
+     *   长期记忆配置
+     *
+     * @mbg.generated
+     */
+    private String longTermMemory;
+
+    /**
+     * Database Column Remarks:
+     *   开场建议问题
+     *
+     * @mbg.generated
+     */
+    private String openingQuestions;
+
+    /**
+     * Database Column Remarks:
+     *   回答后建议问题
+     *
+     * @mbg.generated
+     */
+    private String suggestedAfterAnswer;
+
+    /**
+     * Database Column Remarks:
+     *   语音转文本配置
+     *
+     * @mbg.generated
+     */
+    private String speechToText;
+
+    /**
+     * Database Column Remarks:
+     *   文本转语音配置
+     *
+     * @mbg.generated
+     */
+    private String textToSpeech;
+
+    /**
+     * Database Column Remarks:
+     *   内容审核配置
+     *
+     * @mbg.generated
+     */
+    private String reviewConfig;
 }

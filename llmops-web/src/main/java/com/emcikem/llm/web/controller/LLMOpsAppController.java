@@ -57,4 +57,29 @@ public class LLMOpsAppController {
                                                                            @RequestParam("created_at") Long createdAt) {
         return llmOpsAppService.getDebugConversationMessagesWithPage(appId, currentPage, pageSize, createdAt);
     }
+
+    /**
+     * 获取应用中的概要
+     * @param appId
+     * @return
+     */
+    @GetMapping("/{app_id}/summary")
+    public ApiResponse<DebugConversationSummaryVO> getDebugConversationSummary(@PathVariable("app_id") String appId) {
+        return ApiResponse.success(llmOpsAppService.getDebugConversationSummary(appId));
+    }
+
+    /**
+     * 更新概要
+     * @param appId
+     * @param param
+     * @return
+     */
+    @PostMapping("/{app_id}/summary")
+    public ApiResponse<Void> updateDebugConversationSummary(@PathVariable("app_id") String appId,
+                                                            @RequestBody UpdateDebugConversationSummaryParam param) {
+        llmOpsAppService.updateDebugConversationSummary(appId, param);
+        return ApiResponse.success(null);
+    }
+
+
 }

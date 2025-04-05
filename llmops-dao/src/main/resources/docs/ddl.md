@@ -50,24 +50,25 @@ CREATE TABLE IF NOT EXISTS `llmops_upload_file` (
 CREATE TABLE IF NOT EXISTS `llmops_app_config` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
     `app_id` VARCHAR(36) NOT NULL DEFAULT '' COMMENT '关联的应用id',
-    `model_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '模型配置（默认空对象）',
+    `model_config` JSON NOT NULL COMMENT '模型配置',
     `dialog_round` INT NOT NULL DEFAULT 0 COMMENT '上下文对话轮数',
-    `preset_prompt` TEXT NOT NULL DEFAULT '' COMMENT '人设与回复逻辑（默认空）',
-    `tools` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联工具列表（默认空数组）',
-    `workflows` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '关联工作流列表（默认空数组）',
-    `retrieval_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '知识库检索配置（默认空对象）',
-    `long_term_memory` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '长期记忆配置（默认空对象）',
+    `preset_prompt` TEXT NOT NULL COMMENT '人设与回复逻辑',
+    `tools` JSON NOT NULL COMMENT '关联工具列表',
+    `workflows` JSON NOT NULL COMMENT '关联工作流列表',
+    `retrieval_config` JSON NOT NULL COMMENT '知识库检索配置',
+    `long_term_memory` JSON NOT NULL COMMENT '长期记忆配置',
     `opening_statement` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '对话开场白',
-    `opening_questions` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '开场建议问题（默认空数组）',
-    `suggested_after_answer` JSON NOT NULL DEFAULT (JSON_ARRAY()) COMMENT '回答后建议问题（默认空数组）',
-    `speech_to_text` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '语音转文本配置（默认空对象）',
-    `text_to_speech` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '文本转语音配置（默认空对象）',
-    `review_config` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '内容审核配置（默认空对象）',
-    `config_type` ENUM('release', 'draft') NOT NULL DEFAULT 'draft' COMMENT '配置类型',
+    `opening_questions` JSON NOT NULL COMMENT '开场建议问题',
+    `suggested_after_answer` JSON NOT NULL COMMENT '回答后建议问题',
+    `speech_to_text` JSON NOT NULL COMMENT '语音转文本配置',
+    `text_to_speech` JSON NOT NULL COMMENT '文本转语音配置',
+    `review_config` JSON NOT NULL COMMENT '内容审核配置',
+    `config_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '配置类型',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    INDEX `idx_app_config_type` (`app_id`, `config_type`) 
+    INDEX `idx_app_config_type` (`app_id`, `config_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='应用配置表';
+
 
 CREATE TABLE IF NOT EXISTS `llmops_app_config_version` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',

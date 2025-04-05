@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class LlmOpsConversationExample {
+public class LlmOpsConversationDOExample {
     /**
      * @mbg.generated
      */
@@ -34,7 +34,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample() {
+    public LlmOpsConversationDOExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -100,7 +100,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample orderBy(String orderByClause) {
+    public LlmOpsConversationDOExample orderBy(String orderByClause) {
         this.setOrderByClause(orderByClause);
         return this;
     }
@@ -109,7 +109,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample orderBy(String ... orderByClauses) {
+    public LlmOpsConversationDOExample orderBy(String ... orderByClauses) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < orderByClauses.length; i++) {
             sb.append(orderByClauses[i]);
@@ -190,7 +190,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample limit(Integer rows) {
+    public LlmOpsConversationDOExample limit(Integer rows) {
         this.rows = rows;
         return this;
     }
@@ -199,7 +199,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample limit(Integer offset, Integer rows) {
+    public LlmOpsConversationDOExample limit(Integer offset, Integer rows) {
         this.offset = offset;
         this.rows = rows;
         return this;
@@ -209,7 +209,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample page(Integer page, Integer pageSize) {
+    public LlmOpsConversationDOExample page(Integer page, Integer pageSize) {
         this.offset = page * pageSize;
         this.rows = pageSize;
         return this;
@@ -220,7 +220,7 @@ public class LlmOpsConversationExample {
      * @mbg.generated
      */
     public static Criteria newAndCreateCriteria() {
-        LlmOpsConversationExample example = new LlmOpsConversationExample();
+        LlmOpsConversationDOExample example = new LlmOpsConversationDOExample();
         return example.createCriteria();
     }
 
@@ -228,7 +228,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample when(boolean condition, IExampleWhen then) {
+    public LlmOpsConversationDOExample when(boolean condition, IExampleWhen then) {
         if (condition) {
             then.example(this);
         }
@@ -239,7 +239,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample when(boolean condition, IExampleWhen then, IExampleWhen otherwise) {
+    public LlmOpsConversationDOExample when(boolean condition, IExampleWhen then, IExampleWhen otherwise) {
         if (condition) {
             then.example(this);
         } else {
@@ -252,7 +252,7 @@ public class LlmOpsConversationExample {
      *
      * @mbg.generated
      */
-    public LlmOpsConversationExample distinct(boolean distinct) {
+    public LlmOpsConversationDOExample distinct(boolean distinct) {
         this.setDistinct(distinct);
         return this;
     }
@@ -901,13 +901,13 @@ public class LlmOpsConversationExample {
         /**
          * @mbg.generated
          */
-        private LlmOpsConversationExample example;
+        private LlmOpsConversationDOExample example;
 
         /**
          *
          * @mbg.generated
          */
-        protected Criteria(LlmOpsConversationExample example) {
+        protected Criteria(LlmOpsConversationDOExample example) {
             super();
             this.example = example;
         }
@@ -916,7 +916,7 @@ public class LlmOpsConversationExample {
          *
          * @mbg.generated
          */
-        public LlmOpsConversationExample example() {
+        public LlmOpsConversationDOExample example() {
             return this.example;
         }
 
@@ -1081,6 +1081,6 @@ public class LlmOpsConversationExample {
          *
          * @mbg.generated
          */
-        void example(com.emcikem.llm.dao.example.LlmOpsConversationExample example);
+        void example(com.emcikem.llm.dao.example.LlmOpsConversationDOExample example);
     }
 }

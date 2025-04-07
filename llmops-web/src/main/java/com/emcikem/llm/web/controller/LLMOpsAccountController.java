@@ -5,7 +5,9 @@ import com.emcikem.llm.common.vo.account.CurrentUserVO;
 import com.emcikem.llm.common.vo.account.UpdateAvatarParam;
 import com.emcikem.llm.common.vo.account.UpdateNameParam;
 import com.emcikem.llm.common.vo.account.UpdatePasswordParam;
+import com.emcikem.llm.service.service.account.LLMOpsAccountService;
 import com.google.protobuf.Api;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,27 +20,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/account")
 public class LLMOpsAccountController {
 
-    @GetMapping()
-    public ApiResponse<CurrentUserVO> getCurrent() {
-        CurrentUserVO currentUserVO = new CurrentUserVO();
-        currentUserVO.setAvatar("https://img1.baidu.com/it/u=416942531,3513038533&fm=253&fmt=auto&app=138&f=JPEG?w=376&h=342");
-        currentUserVO.setEmail("2287698754@qq.com");
-        currentUserVO.setCreated_at(System.currentTimeMillis());
-        currentUserVO.setId("11");
-        currentUserVO.setLast_login_ip("广东");
-        currentUserVO.setLast_login_at(System.currentTimeMillis());
-        currentUserVO.setName("Emcikem");
+    @Resource
+    private LLMOpsAccountService llmOpsAccountService;
 
-        return ApiResponse.success(currentUserVO);
+    @GetMapping
+    public ApiResponse<CurrentUserVO> getCurrent() {
+        return ApiResponse.success(llmOpsAccountService.getCurrent());
     }
 
     @PostMapping("/password")
     public ApiResponse<Void> updatePassword(@RequestBody UpdatePasswordParam param) {
+        llmOpsAccountService.updatePassword(param);
         return ApiResponse.success(null);
     }
 
     @PostMapping("/name")
     public ApiResponse<Void> updateName(@RequestBody UpdateNameParam param) {
+        llmOpsAccountService.updateName(param);
         return ApiResponse.success(null);
     }
 

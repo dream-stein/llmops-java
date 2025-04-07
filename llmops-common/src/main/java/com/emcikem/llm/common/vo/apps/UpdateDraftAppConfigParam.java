@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class UpdateDraftAppConfigParam {
 
-//    private String model;
+//    private String model_config;
 
     private Integer dialog_round;
 

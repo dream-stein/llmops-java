@@ -91,5 +91,11 @@ public class LLMOpsAppController {
         return ApiResponse.success(llmOpsAppService.getDraftAppConfig(appId));
     }
 
+    @PostMapping("/{app_id}/draft-app-config")
+    public ApiResponse<Void> updateDraftAppConfig(@PathVariable("app_id") String appId,
+                                                  @RequestBody UpdateDraftAppConfigParam param) {
+        llmOpsAppService.updateDraftAppConfig(appId, param);
+        return ApiResponse.success(null);
+    }
 
 }

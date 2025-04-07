@@ -32,4 +32,11 @@ public class LLMOpsAppConfigProvider {
         }
         return llmOpsAppConfigList.get(0);
     }
+
+    public boolean updateDraftAppConfig(String appId, LlmOpsAppConfigDO appConfigDO) {
+        LlmOpsAppConfigDOExample example = new LlmOpsAppConfigDOExample();
+        LlmOpsAppConfigDOExample.Criteria criteria = example.createCriteria();
+        criteria.andAppIdEqualTo(appId);
+        return llmOpsAppConfigDOMapper.updateByExampleSelective(appConfigDO, example) == 1;
+    }
 }

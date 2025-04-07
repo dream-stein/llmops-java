@@ -2,6 +2,7 @@ package com.emcikem.llm.service.service.app;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.apps.*;
 import com.emcikem.llm.dao.entity.LlmOpsAppConfigDO;
 import com.emcikem.llm.dao.entity.LlmOpsAppDO;
@@ -12,6 +13,8 @@ import com.emcikem.llm.service.provider.LLMOpsAppConfigProvider;
 import com.emcikem.llm.service.provider.LLMOpsAppProvider;
 import com.emcikem.llm.service.provider.LLMOpsConversationProvider;
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -138,8 +141,31 @@ public class LLMOpsAppService {
         return LLMOpsAppConfigConvert.convertAppConfig(appConfigDO);
     }
 
+    public void updateDraftAppConfig(String appId, UpdateDraftAppConfigParam param) {
+        LlmOpsAppConfigDO appConfigDO = new LlmOpsAppConfigDO();
+        appConfigDO.setUpdatedAt(new Date());
+        appConfigDO.setDialogRound(param.getDialog_round());
+        appConfigDO.setOpeningStatement(param.getOpening_statement());
+        appConfigDO.setPresetPrompt(param.getPreset_prompt());
+        if (CollectionUtils.isNotEmpty(param.getOpening_questions())) {
+            appConfigDO.setOpeningQuestions(GsonUtil.toJSONString(param.getOpening_questions()));
+        }
+        if (param.getRetrieval_config() != null) {
+            appConfigDO.setRetrievalConfig(GsonUtil.toJSONString(param.getRetrieval_config()));
+        }
+        if (param.getLong_term_memory() != null) {
+            appConfigDO.setLongTermMemory(GsonUtil.toJSONString(param.getLong_term_memory()));
+        }
+        if (param.getReview_config() != null) {
+            appConfigDO.setReviewConfig(GsonUtil.toJSONString(param.getReview_config()));
+        }
+        if (param.getSuggested_after_answer() != null) {
+            appConfigDO.setSuggestedAfterAnswer(GsonUtil.toJSONString(param.getSuggested_after_answer()));
+        }
+        boolean result = llmOpsAppConfigProvider.updateDraftAppConfig(appId, appConfigDO);
+    }
+
     private String getAccountId() {
         return "1";
     }
-
 }

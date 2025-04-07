@@ -1,9 +1,7 @@
 package com.emcikem.llm.common.vo.apps;
 
-import com.emcikem.llm.common.vo.apps.config.DatasetConfigVO;
-import com.emcikem.llm.common.vo.apps.config.EnableConfigVO;
-import com.emcikem.llm.common.vo.apps.config.RetrievalConfigVO;
-import com.emcikem.llm.common.vo.apps.config.ReviewConfigVO;
+import com.emcikem.llm.common.vo.apps.config.*;
+import com.emcikem.llm.common.vo.workflow.WorkflowVO;
 import lombok.Data;
 
 import java.util.List;
@@ -38,6 +36,10 @@ public class DraftAppConfigVO {
     private EnableConfigVO suggested_after_answer;
 
     private List<DatasetConfigVO> datasets;
+
+    private List<WorkflowConfigVO> workflows;
+
+    private List<ToolsConfigVO> tools;
 
     private Long updated_at;
 

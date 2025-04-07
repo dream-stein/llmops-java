@@ -4,7 +4,9 @@ import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.apps.DraftAppConfigVO;
 import com.emcikem.llm.common.vo.apps.config.*;
 import com.emcikem.llm.dao.entity.LlmOpsAppConfigDO;
+import org.apache.commons.compress.utils.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +33,9 @@ public class LLMOpsAppConfigConvert {
         draftAppConfigVO.setReview_config(GsonUtil.parseObject(appConfigDO.getReviewConfig(), ReviewConfigVO.class));
         draftAppConfigVO.setLong_term_memory(GsonUtil.parseObject(appConfigDO.getLongTermMemory(), EnableConfigVO.class));
         draftAppConfigVO.setSuggested_after_answer(GsonUtil.parseObject(appConfigDO.getSuggestedAfterAnswer(), EnableConfigVO.class));
-//        draftAppConfigVO.setDatasets(GsonUtil.parseList(appConfigDO.get));
+        draftAppConfigVO.setDatasets(Lists.newArrayList());
+        draftAppConfigVO.setWorkflows(GsonUtil.parseList(appConfigDO.getWorkflows(), WorkflowConfigVO.class));
+        draftAppConfigVO.setTools(GsonUtil.parseList(appConfigDO.getTools(), ToolsConfigVO.class));
         return draftAppConfigVO;
     }
 
@@ -57,5 +61,33 @@ public class LLMOpsAppConfigConvert {
         EnableConfigVO enableConfigVO = new EnableConfigVO();
         enableConfigVO.setEnable(true);
         System.out.println(GsonUtil.toJSONString(enableConfigVO));
+
+        WorkflowConfigVO workflowConfigVO = new WorkflowConfigVO();
+        workflowConfigVO.setId("2122112");
+        workflowConfigVO.setName("小红书文案生成");
+        workflowConfigVO.setIcon("https://www.yimiaotui.com/d/image/20230427/98ed757ec1b322e69fb9e5afcfb275c2.jpg");
+        workflowConfigVO.setDescription("这是一个可以根据特定主体生成小红书文案的工作流，传递对应的query即可。");
+        List<WorkflowConfigVO> workflowConfigVOList = new ArrayList<>();
+        workflowConfigVOList.add(workflowConfigVO);
+        System.out.println(GsonUtil.toJSONString(workflowConfigVOList));
+
+        ToolsConfigVO toolsConfigVO = new ToolsConfigVO();
+        toolsConfigVO.setType("api_tool");
+        ToolsProviderConfigVO providerConfigVO = new ToolsProviderConfigVO();
+        providerConfigVO.setId("12121");
+        providerConfigVO.setName("谷歌");
+        providerConfigVO.setLabel("谷歌");
+        providerConfigVO.setIcon("https://q2.itc.cn/q_70/images03/20240329/84cca9641e9444e5b3fe9256f095da6b.png");
+        providerConfigVO.setDescription("我是谷歌的介绍");
+        toolsConfigVO.setProvider(providerConfigVO);
+        ToolsToolConfigVO toolsToolConfigVO = new ToolsToolConfigVO();
+        toolsToolConfigVO.setId("211122");
+        toolsToolConfigVO.setName("2121212");
+        toolsToolConfigVO.setLabel("2121212");
+        toolsToolConfigVO.setDescription("我是工具介绍");
+        toolsConfigVO.setTool(toolsToolConfigVO);
+        List<ToolsConfigVO> toolsConfigVOList = new ArrayList<>();
+        toolsConfigVOList.add(toolsConfigVO);
+        System.out.println(GsonUtil.toJSONString(toolsConfigVOList));
     }
 }

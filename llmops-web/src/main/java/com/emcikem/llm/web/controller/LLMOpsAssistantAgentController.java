@@ -2,8 +2,9 @@ package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
-import com.emcikem.llm.common.vo.assistantagent.GetAssistantAgentMessagesVO;
-import com.emcikem.llm.common.vo.assistantagent.GetAssistantAgentMessagesWithPageParam;
+import com.emcikem.llm.common.vo.assistantagent.AssistantAgentMessagesVO;
+import com.emcikem.llm.service.service.assistantagent.LLMOpsAssistantAgentService;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/assistant-agent")
 public class LLMOpsAssistantAgentController {
 
+    @Resource
+    private LLMOpsAssistantAgentService llmOpsAssistantAgentService;
+
     @PostMapping("/chat")
     public void assistantAgentChat() {
 
@@ -27,10 +31,10 @@ public class LLMOpsAssistantAgentController {
     }
 
     @GetMapping("/messages")
-    public ApiBasePaginatorResponse<GetAssistantAgentMessagesVO> getAssistantAgentMessagesWithPage(@RequestParam("current_page") Integer currentPage,
-                                                                                                   @RequestParam("page_size") Integer pageSize,
-                                                                                                   @RequestParam("created_at") Long createdAt) {
-        return new ApiBasePaginatorResponse<>();
+    public ApiBasePaginatorResponse<AssistantAgentMessagesVO> getAssistantAgentMessagesWithPage(@RequestParam("current_page") Integer currentPage,
+                                                                                                @RequestParam("page_size") Integer pageSize,
+                                                                                                @RequestParam("created_at") Long createdAt) {
+        return llmOpsAssistantAgentService.getAssistantAgentMessagesWithPage(currentPage, pageSize, createdAt);
     }
 
     @PostMapping("/delete-conversation")

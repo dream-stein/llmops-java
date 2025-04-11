@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
-public class GetAssistantAgentMessagesVO {
+public class AssistantAgentMessagesVO {
 
     private String id;
 

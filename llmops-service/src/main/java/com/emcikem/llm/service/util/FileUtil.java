@@ -1,5 +1,7 @@
 package com.emcikem.llm.service.util;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -9,6 +11,27 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class FileUtil {
+
+    public static File convertMultipartFileToFile(MultipartFile multipartFile) {
+        try {
+            // 创建临时文件
+            File file = File.createTempFile("temp", null);
+            try (InputStream inputStream = multipartFile.getInputStream();
+                 FileOutputStream outputStream = new FileOutputStream(file)) {
+                // 缓冲区大小
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                // 循环读取输入流中的数据并写入输出流
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+            return file;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public static File pngConverter(URI uri) {
         File outputFile = null;
         try (InputStream inputStream = uri.toURL().openStream();

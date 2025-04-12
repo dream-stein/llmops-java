@@ -1,6 +1,7 @@
 package com.emcikem.llm.service.service.account;
 
 import com.emcikem.llm.common.vo.account.CurrentUserVO;
+import com.emcikem.llm.common.vo.account.UpdateAvatarParam;
 import com.emcikem.llm.common.vo.account.UpdateNameParam;
 import com.emcikem.llm.common.vo.account.UpdatePasswordParam;
 import com.emcikem.llm.dao.entity.LlmOpsAccountDO;
@@ -52,6 +53,15 @@ public class LLMOpsAccountService {
         boolean result = llmOpsAccountProvider.updateAccount(accountId, llmOpsAccountDO);
     }
 
+    public void updateAvatar(UpdateAvatarParam param) {
+        // 1.获取当且账号
+        String accountId = getAccountId();
+
+        LlmOpsAccountDO llmOpsAccountDO = new LlmOpsAccountDO();
+        llmOpsAccountDO.setAvatar(param.getAvatar());
+        llmOpsAccountDO.setUpdatedAt(new Date());
+        boolean result = llmOpsAccountProvider.updateAccount(accountId, llmOpsAccountDO);
+    }
 
     public String getAccountId() {
         return "1";

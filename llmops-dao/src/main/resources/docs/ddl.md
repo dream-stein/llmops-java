@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `llmops_account` (
     `id` VARCHAR(36) PRIMARY KEY COMMENT '主键UUID',
     `name` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '账号名称',
     `email` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '绑定邮箱（唯一）',
+    `varchar` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '头像',
     `password` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码哈希值（非明文）',
     `password_salt` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码盐值',
     `assistant_conversation_id` VARCHAR(36) DEFAULT NULL COMMENT '关联的辅助会话ID',

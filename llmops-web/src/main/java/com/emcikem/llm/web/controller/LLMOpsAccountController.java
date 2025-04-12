@@ -42,6 +42,7 @@ public class LLMOpsAccountController {
 
     @PostMapping("/avatar")
     public ApiResponse<Void> updateAvatar(@RequestBody UpdateAvatarParam param) {
+        llmOpsAccountService.updateAvatar(param);
         return ApiResponse.success(null);
     }
 }

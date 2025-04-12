@@ -90,4 +90,12 @@ public class LlmOpsAccountDO {
      * @mbg.generated
      */
     private Date updatedAt;
+
+    /**
+     * Database Column Remarks:
+     *   头像
+     *
+     * @mbg.generated
+     */
+    private String avatar;
 }

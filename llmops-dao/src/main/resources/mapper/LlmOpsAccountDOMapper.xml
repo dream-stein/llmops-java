@@ -17,6 +17,7 @@
     <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -93,7 +94,7 @@
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
     id, name, email, password, password_salt, assistant_conversation_id, last_login_at, 
-    last_login_ip, created_at, updated_at
+    last_login_ip, created_at, updated_at, avatar
   </sql>
   <select id="selectByExample" parameterType="com.emcikem.llm.dao.example.LlmOpsAccountDOExample" resultMap="BaseResultMap">
     <!--
@@ -162,11 +163,11 @@
     insert into llmops_account (id, name, email, 
       password, password_salt, assistant_conversation_id, 
       last_login_at, last_login_ip, created_at, 
-      updated_at)
+      updated_at, avatar)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{passwordSalt,jdbcType=VARCHAR}, #{assistantConversationId,jdbcType=VARCHAR}, 
       #{lastLoginAt,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{updatedAt,jdbcType=TIMESTAMP}, #{avatar,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.emcikem.llm.dao.entity.LlmOpsAccountDO">
     <!--
@@ -206,6 +207,9 @@
       <if test="updatedAt != null">
         updated_at,
       </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -237,6 +241,9 @@
       </if>
       <if test="updatedAt != null">
         #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -289,6 +296,9 @@
       <if test="record.updatedAt != null">
         updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.avatar != null">
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -310,7 +320,8 @@
       last_login_at = #{record.lastLoginAt,jdbcType=TIMESTAMP},
       last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
       created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      avatar = #{record.avatar,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -350,6 +361,9 @@
       <if test="updatedAt != null">
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -368,7 +382,8 @@
       last_login_at = #{lastLoginAt,jdbcType=TIMESTAMP},
       last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      avatar = #{avatar,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

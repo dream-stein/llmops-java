@@ -19,7 +19,7 @@ public class LLMOpsAccountConvert {
         currentUserVO.setId(llmOpsAccountDO.getId());
         currentUserVO.setEmail(llmOpsAccountDO.getEmail());
         currentUserVO.setName(llmOpsAccountDO.getName());
-//        currentUserVO.setAvatar(llmOpsAccountDO.get);
+        currentUserVO.setAvatar(llmOpsAccountDO.getAvatar());
         currentUserVO.setCreated_at(llmOpsAccountDO.getCreatedAt().getTime());
         currentUserVO.setLast_login_ip(llmOpsAccountDO.getLastLoginIp());
         currentUserVO.setLast_login_at(llmOpsAccountDO.getLastLoginAt().getTime());

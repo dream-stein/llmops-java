@@ -53,7 +53,7 @@ public class LLMOpsDatasetController {
      * @param createDatasetParam
      * @return
      */
-    @PostMapping("/create")
+    @PostMapping
     public ApiResponse<Void> createDataset(@RequestBody CreateDatasetParam createDatasetParam) {
         llmOpsDatasetService.createDataset(createDatasetParam);
         return ApiResponse.success(null);

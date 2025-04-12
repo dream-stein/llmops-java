@@ -1,13 +1,12 @@
 package com.emcikem.llm.service.util;
 
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-
-import static com.emcikem.llm.service.constant.LLMOpsConstant.SEARCH_FAILED;
 
 public class CacheUtil {
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
@@ -25,7 +24,7 @@ public class CacheUtil {
             }
         }
         T result = function.apply(null);
-        if (result != null && !SEARCH_FAILED.equals(String.valueOf(result))) {
+        if (result != null && !LLMOpsConstant.SEARCH_FAILED.equals(String.valueOf(result))) {
             cache.put(key, current + "&" + gson.toJson(result));
         }
         return result;

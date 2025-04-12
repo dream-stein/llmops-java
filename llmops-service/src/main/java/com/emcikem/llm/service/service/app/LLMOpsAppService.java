@@ -103,6 +103,8 @@ public class LLMOpsAppService {
         llmOpsAppDO.setDescription(createAppParam.getDescription());
         llmOpsAppDO.setAccountId(accountId);
         llmOpsAppDO.setStatus("draft");
+        llmOpsAppDO.setPublishedAppConfigId(UUID.randomUUID().toString());
+        llmOpsAppDO.setDraftedAppConfigId(UUID.randomUUID().toString());
         llmOpsAppProvider.createApp(llmOpsAppDO);
 
         CreateAppVO createAppVO = new CreateAppVO();

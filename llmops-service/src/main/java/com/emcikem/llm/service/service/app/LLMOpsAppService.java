@@ -114,7 +114,7 @@ public class LLMOpsAppService {
         llmOpsAppConfigDO.setTools("[]");
         llmOpsAppConfigDO.setWorkflows("[]");
         llmOpsAppConfigDO.setDialogRound(0);
-        llmOpsAppConfigDO.setOpeningStatement("[]");
+        llmOpsAppConfigDO.setOpeningStatement("");
         llmOpsAppConfigDO.setConfigType(true);
         llmOpsAppConfigDO.setModelConfig("{}");
         llmOpsAppConfigDO.setPresetPrompt("");

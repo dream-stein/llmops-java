@@ -106,22 +106,24 @@ public class LLMOpsDatasetProvider {
         return llmOpsDocumentDOMapper.deleteByExample(example) == 1;
     }
 
-    public Long countDocumentList(String accountId, String searchWord) {
+    public Long countDocumentList(String accountId, String searchWord, String datasetId) {
         LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
         LlmOpsDocumentDOExample.Criteria criteria = example.createCriteria();
         criteria.andAccountIdEqualTo(accountId);
+        criteria.andDatasetIdEqualTo(datasetId);
         if (StringUtils.isNoneBlank(searchWord)) {
             criteria.andNameLike("%" + searchWord + "%");
         }
         return llmOpsDocumentDOMapper.countByExample(example);
     }
 
-    public List<LlmOpsDocumentDO> getDocumentList(Integer pageSize, Integer offset, String accountId, String searchWord) {
+    public List<LlmOpsDocumentDO> getDocumentList(Integer pageSize, Integer offset, String accountId, String datasetId, String searchWord) {
         LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
         example.setOffset(offset);
         example.setRows(pageSize);
         LlmOpsDocumentDOExample.Criteria criteria = example.createCriteria();
         criteria.andAccountIdEqualTo(accountId);
+        criteria.andDatasetIdEqualTo(datasetId);
         if (StringUtils.isNoneBlank(searchWord)) {
             criteria.andNameLike("%" + searchWord + "%");
         }

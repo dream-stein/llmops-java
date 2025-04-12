@@ -7962,7 +7962,7 @@ package com.emcikem.llm.service.aiservice.factory;
 
 import com.emcikem.llm.common.enums.ChatModelEnum;
 import com.emcikem.llm.service.aiservice.Assistant;
-import com.emcikem.llm.service.aiservice.AssistantTools;
+import com.emcikem.llm.service.aiservice.tools.AssistantTools;
 import com.emcikem.llm.service.aiservice.PersistentChatMemoryStore;
 import com.google.common.collect.Lists;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;

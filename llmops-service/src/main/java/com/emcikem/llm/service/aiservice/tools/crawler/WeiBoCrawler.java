@@ -23,6 +23,10 @@ import java.util.stream.Collectors;
 public class WeiBoCrawler {
     private static final Gson gson = new Gson();
 
+    /**
+     * 获取微博热搜
+     * @return
+     */
     public static String crawlWeiboTops() {
         String html = "";
         try {
@@ -102,5 +106,9 @@ public class WeiBoCrawler {
             }
         }
         return tid;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(crawlWeiboTops());
     }
 }

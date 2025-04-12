@@ -1,58 +1,27 @@
-package com.emcikem.llm.service.aiservice;
+package com.emcikem.llm.service.aiservice.tools;
 
-import dev.langchain4j.agent.tool.P;
-import dev.langchain4j.agent.tool.Tool;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalTime;
-import java.util.Date;
-
+/**
+ * Create with Emcikem on 2025/4/13
+ *
+ * @author Emcikem
+ * @version 1.0.0
+ */
+@Service
 @Slf4j
-@Component
-public class AssistantTools {
+public class AiToolsWebService {
 
-    /**
-     * This tool is available to {@link Assistant}
-     */
     @Resource
     private RestTemplate restTemplate;
 
-    @Tool("获取当前时间")
-    String currentTime() {
-        return new Date().toString();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new Date().toString());
-    }
-
-    @Tool("获取当前时间戳")
-    Long getCurrentTime() {
-        return System.currentTimeMillis();
-    }
-
-    @Tool("获取城市的天气")
-    String GetWhetherTool(@P("城市名") String city) {
-        return "今天有龙卷风";
-    }
-
-    @Tool("运算给定数学表达式")
-    String calculate(@P("表达式") String expression) {
-        try {
-            return String.valueOf(new javax.script.ScriptEngineManager().getEngineByName("JavaScript").eval(expression));
-        } catch (Exception e) {
-            return "计算失败: " + e.getMessage();
-        }
-    }
-
-    @Tool("请求并返回网页内容")
-    String fetchWebContent(@P("链接") String url) {
+    public String getWebContent(String url) {
         try {
             // 设置请求头和超时
             org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
@@ -112,6 +81,4 @@ public class AssistantTools {
             return "获取内容失败: " + e.getMessage();
         }
     }
-
-
 }

@@ -44,10 +44,10 @@ public class LLMOpsAssistantAgentController {
     @Resource
     private AssistantFactory assistantFactory;
 
-    @PostMapping(value = "/chat", produces = "text/stream;charset=UTF-8")
-    public Flux<String> assistantAgentChat(AssistantAgentChatParam param) {
+    @GetMapping(value = "/chat", produces = "text/stream;charset=UTF-8")
+    public Flux<String> assistantAgentChat(String message) {
         Assistant assistant = assistantFactory.getAssistant(ChatModelEnum.DEEP_SEEK.getModelName());
-        TokenStream tokenStream = assistant.streamChat(1L, param.getQuery());
+        TokenStream tokenStream = assistant.streamChat(1L, message);
         return Flux.create(sink -> {
             tokenStream.onPartialResponse(sink::next)
                     .onCompleteResponse(c -> sink.complete())

@@ -148,9 +148,9 @@ public class LLMOpsDatasetService {
         String accountId = getAccountId();
 
         // 2. 数据查询
-        Long count = llmOpsDatasetProvider.countDocumentList(accountId, searchWord);
+        Long count = llmOpsDatasetProvider.countDocumentList(accountId, datasetId, searchWord);
         Integer offset = (currentPage - 1) * pageSize;
-        List<LlmOpsDocumentDO> documentList = llmOpsDatasetProvider.getDocumentList(pageSize, offset, accountId, searchWord);
+        List<LlmOpsDocumentDO> documentList = llmOpsDatasetProvider.getDocumentList(pageSize, offset, accountId, datasetId, searchWord);
 
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(currentPage);

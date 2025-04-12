@@ -2,8 +2,9 @@ package com.emcikem.llm.service.aiservice.factory;
 
 import com.emcikem.llm.common.enums.ChatModelEnum;
 import com.emcikem.llm.service.aiservice.Assistant;
-import com.emcikem.llm.service.aiservice.AssistantTools;
+import com.emcikem.llm.service.aiservice.tools.AssistantTools;
 import com.emcikem.llm.service.aiservice.PersistentChatMemoryStore;
+import com.google.common.collect.Maps;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
@@ -24,6 +25,8 @@ import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
+import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 
@@ -32,6 +35,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -126,4 +130,36 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
     abstract String getApiKey();
 
     abstract ChatModelEnum getChatModelEnum();
+
+
+    public static void main(String[] args) {
+        Map<String, TextSegment> textSegmentMap = Maps.newHashMap();
+
+        // embedding
+        InMemoryEmbeddingStore<Embedding> embeddingStore = new InMemoryEmbeddingStore<>();
+        EmbeddingModel embeddingModel = new BgeSmallEnV15QuantizedEmbeddingModel();
+
+        TextSegment segment1 = TextSegment.from("预定航班：通过我们的网站或者移动应用程序");
+        Embedding embedding1 = embeddingModel.embed(segment1).content();
+        String segmentId1 = embeddingStore.add(embedding1);
+        textSegmentMap.put(segmentId1, segment1);
+
+        TextSegment segment2 = TextSegment.from("取消航班：最晚在航班起飞前48小时取消; 取消费用：经济舱75美元");
+        Embedding embedding2 = embeddingModel.embed(segment2).content();
+        String segmentId2 = embeddingStore.add(embedding2);
+        textSegmentMap.put(segmentId2, segment2);
+
+        // retriever
+        Embedding queryEmbedding = embeddingModel.embed("取消费用要多少钱").content();
+        EmbeddingSearchRequest request = EmbeddingSearchRequest.builder()
+                .queryEmbedding(queryEmbedding)
+                .maxResults(20)
+                .build();
+
+        EmbeddingSearchResult<Embedding> searchResult = embeddingStore.search(request);
+        searchResult.matches().forEach(embeddingMatch -> {
+            System.out.println(embeddingMatch.score());
+            System.out.println(textSegmentMap.get(embeddingMatch.embeddingId()));
+        });
+    }
 }

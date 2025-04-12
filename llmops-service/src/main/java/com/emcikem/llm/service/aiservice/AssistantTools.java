@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalTime;
+import java.util.Date;
 
 @Slf4j
 @Component
@@ -21,14 +22,26 @@ public class AssistantTools {
      */
     @Resource
     private RestTemplate restTemplate;
-    @Tool
+
+    @Tool("获取当前时间")
     String currentTime() {
-        return LocalTime.now().toString();
+        return new Date().toString();
     }
+
+    public static void main(String[] args) {
+        System.out.println(new Date().toString());
+    }
+
+    @Tool("获取当前时间戳")
+    Long getCurrentTime() {
+        return System.currentTimeMillis();
+    }
+
     @Tool("获取城市的天气")
     String GetWhetherTool(@P("城市名") String city) {
         return "今天有龙卷风";
     }
+
     @Tool("运算给定数学表达式")
     String calculate(@P("表达式") String expression) {
         try {
@@ -37,6 +50,7 @@ public class AssistantTools {
             return "计算失败: " + e.getMessage();
         }
     }
+
     @Tool("请求并返回网页内容")
     String fetchWebContent(@P("链接") String url) {
         try {

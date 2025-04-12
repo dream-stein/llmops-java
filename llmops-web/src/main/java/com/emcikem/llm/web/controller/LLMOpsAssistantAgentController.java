@@ -3,6 +3,7 @@ package com.emcikem.llm.web.controller;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.enums.ChatModelEnum;
+import com.emcikem.llm.common.vo.assistantagent.AssistantAgentChatParam;
 import com.emcikem.llm.common.vo.assistantagent.AssistantAgentMessagesVO;
 import com.emcikem.llm.service.aiservice.Assistant;
 import com.emcikem.llm.service.aiservice.factory.AssistantFactory;
@@ -43,10 +44,10 @@ public class LLMOpsAssistantAgentController {
     @Resource
     private AssistantFactory assistantFactory;
 
-    @GetMapping(value = "/chat", produces = "text/stream;charset=UTF-8")
-    public Flux<String> assistantAgentChat(String message) {
+    @PostMapping(value = "/chat", produces = "text/stream;charset=UTF-8")
+    public Flux<String> assistantAgentChat(AssistantAgentChatParam param) {
         Assistant assistant = assistantFactory.getAssistant(ChatModelEnum.DEEP_SEEK.getModelName());
-        TokenStream tokenStream = assistant.streamChat(1L, message);
+        TokenStream tokenStream = assistant.streamChat(1L, param.getQuery());
         return Flux.create(sink -> {
             tokenStream.onPartialResponse(sink::next)
                     .onCompleteResponse(c -> sink.complete())

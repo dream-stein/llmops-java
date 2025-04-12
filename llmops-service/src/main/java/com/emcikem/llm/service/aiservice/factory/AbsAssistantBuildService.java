@@ -47,8 +47,10 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
 
     @Resource
     private AssistantTools assistantTools;
+
     @Resource
     private OpenAiTokenizer openAiTokenizer;
+
     @Override
     public String getModelName() {
         return getChatModelEnum().getModelName();

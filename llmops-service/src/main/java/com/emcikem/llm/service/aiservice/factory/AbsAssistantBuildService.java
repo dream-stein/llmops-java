@@ -15,9 +15,11 @@ import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.TokenWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.embedding.onnx.bgesmallenv15q.BgeSmallEnV15QuantizedEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
@@ -61,19 +63,27 @@ public abstract class AbsAssistantBuildService implements AssistantBuildService 
                 .build();
 
         ChatLanguageModel model = getLanguageModel();
+        StreamingChatLanguageModel streamModel = getStreamingLanguageModel();
 
         return AiServices.builder(Assistant.class)
                 .chatLanguageModel(model)
+                .streamingChatLanguageModel(streamModel)
                 .chatMemoryProvider(chatMemoryProvider)
                 .tools(assistantTools)
 //                .contentRetriever(getContentRetriever())
                 .build();
     }
 
-
-
     protected ChatLanguageModel getLanguageModel() {
         return OpenAiChatModel.builder()
+                .baseUrl(getChatModelEnum().getBaseUrl())
+                .apiKey(getApiKey())
+                .modelName(getChatModelEnum().getModelName())
+                .build();
+    }
+
+    protected StreamingChatLanguageModel getStreamingLanguageModel() {
+        return OpenAiStreamingChatModel.builder()
                 .baseUrl(getChatModelEnum().getBaseUrl())
                 .apiKey(getApiKey())
                 .modelName(getChatModelEnum().getModelName())

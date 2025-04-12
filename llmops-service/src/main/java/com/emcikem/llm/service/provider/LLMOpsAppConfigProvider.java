@@ -39,4 +39,8 @@ public class LLMOpsAppConfigProvider {
         criteria.andAppIdEqualTo(appId);
         return llmOpsAppConfigDOMapper.updateByExampleSelective(appConfigDO, example) == 1;
     }
+
+    public boolean createAppConfig(LlmOpsAppConfigDO llmOpsAppConfigDO) {
+        return llmOpsAppConfigDOMapper.insert(llmOpsAppConfigDO) == 1;
+    }
 }

@@ -96,8 +96,6 @@ public class LLMOpsAppService {
         llmOpsAppDO.setCreatedAt(new Date());
         llmOpsAppDO.setUpdatedAt(new Date());
         llmOpsAppDO.setId(UUID.randomUUID().toString());
-        llmOpsAppDO.setDraftedAppConfigId(null);
-        llmOpsAppDO.setPublishedAppConfigId(null);
         llmOpsAppDO.setIcon(createAppParam.getIcon());
         llmOpsAppDO.setName(createAppParam.getName());
         llmOpsAppDO.setDescription(createAppParam.getDescription());
@@ -106,6 +104,28 @@ public class LLMOpsAppService {
         llmOpsAppDO.setPublishedAppConfigId(UUID.randomUUID().toString());
         llmOpsAppDO.setDraftedAppConfigId(UUID.randomUUID().toString());
         llmOpsAppProvider.createApp(llmOpsAppDO);
+
+        LlmOpsAppConfigDO llmOpsAppConfigDO = new LlmOpsAppConfigDO();
+        llmOpsAppConfigDO.setAppId(llmOpsAppDO.getId());
+        llmOpsAppConfigDO.setId(llmOpsAppDO.getDraftedAppConfigId());
+        llmOpsAppConfigDO.setCreatedAt(new Date());
+        llmOpsAppConfigDO.setUpdatedAt(new Date());
+        llmOpsAppConfigDO.setReviewConfig("{}");
+        llmOpsAppConfigDO.setTools("[]");
+        llmOpsAppConfigDO.setWorkflows("[]");
+        llmOpsAppConfigDO.setDialogRound(0);
+        llmOpsAppConfigDO.setOpeningStatement("[]");
+        llmOpsAppConfigDO.setConfigType(true);
+        llmOpsAppConfigDO.setModelConfig("{}");
+        llmOpsAppConfigDO.setPresetPrompt("");
+        llmOpsAppConfigDO.setRetrievalConfig("{}");
+        llmOpsAppConfigDO.setReviewConfig("{}");
+        llmOpsAppConfigDO.setLongTermMemory("{}");
+        llmOpsAppConfigDO.setOpeningQuestions("[]");
+        llmOpsAppConfigDO.setSuggestedAfterAnswer("{}");
+        llmOpsAppConfigDO.setSpeechToText("{}");
+        llmOpsAppConfigDO.setTextToSpeech("{}");
+        llmOpsAppConfigProvider.createAppConfig(llmOpsAppConfigDO);
 
         CreateAppVO createAppVO = new CreateAppVO();
         createAppVO.setId(llmOpsAppDO.getId());

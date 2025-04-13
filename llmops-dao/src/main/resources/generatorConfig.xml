@@ -10,6 +10,9 @@
             <!-- 通过配置startPage影响Example中的page方法开始分页的页码，默认分页从0开始 -->
             <property name="startPage" value="0"/>
         </plugin>
+        <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">
+            <property name="allowMultiQueries" value="true"/>
+        </plugin>
         <!-- Example Criteria 增强插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin">
             <!-- 是否支持已经过时的andIf方法（推荐使用when代替），默认支持 -->

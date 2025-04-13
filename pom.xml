@@ -201,6 +201,11 @@
                 <artifactId>cos_api</artifactId>
                 <version>5.6.245</version>
             </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-document-loader-tencent-cos</artifactId>
+                <version>${langchain4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

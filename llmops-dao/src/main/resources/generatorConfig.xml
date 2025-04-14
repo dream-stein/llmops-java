@@ -10,8 +10,13 @@
             <!-- 通过配置startPage影响Example中的page方法开始分页的页码，默认分页从0开始 -->
             <property name="startPage" value="0"/>
         </plugin>
+        <!-- 批量插入插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.BatchInsertPlugin">
-            <property name="allowMultiQueries" value="true"/>
+            <!--
+            开启后可以实现官方插件根据属性是否为空决定是否插入该字段功能
+            ！需开启allowMultiQueries=true多条sql提交操作，所以不建议使用！插件默认不开启
+            -->
+            <property name="allowMultiQueries" value="false"/>
         </plugin>
         <!-- Example Criteria 增强插件 -->
         <plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin">

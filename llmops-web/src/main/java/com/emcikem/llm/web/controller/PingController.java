@@ -18,6 +18,6 @@ public class PingController {
 
     @GetMapping("/x")
     public void get(String name) {
-        llmOpsDatabaseFileService.loadDocument(name);
+        llmOpsDatabaseFileService.loadDocument(name, "1");
     }
 }

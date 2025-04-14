@@ -2,7 +2,11 @@ package com.emcikem.llm.service.service.dataset;
 
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessRule;
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessVO;
+import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
+import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.service.constant.LLMOpsConstant;
+import com.emcikem.llm.service.provider.LLMOpsDocumentProvider;
+import com.emcikem.llm.service.provider.LLMOpsSegmentProvider;
 import com.google.common.collect.Lists;
 import com.qcloud.cos.COSClient;
 import dev.langchain4j.data.document.Document;
@@ -19,8 +23,10 @@ import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -41,7 +47,13 @@ public class LLMOpsDatabaseFileService {
     @Resource
     private EmbeddingModel embeddingModel;
 
-    public void loadDocument(String fileName) {
+    @Resource
+    private LLMOpsSegmentProvider llmOpsSegmentProvider;
+
+    @Resource
+    private LLMOpsDocumentProvider llmOpsDocumentProvider;
+
+    public void loadDocument(String fileName, String datasetId) {
         // 1.解析器
         TencentCosDocumentLoader documentLoader = new TencentCosDocumentLoader(cosClient);
         Document document = documentLoader.loadDocument(LLMOpsConstant.BUCKET_NAME, fileName, new ApacheTikaDocumentParser());
@@ -62,8 +74,34 @@ public class LLMOpsDatabaseFileService {
                 .map(textSegment -> embeddingModel.embed(textSegment).content())
                 .toList();
 
+        // 4.创建document
+        LlmOpsDocumentDO llmOpsDocumentDO = new LlmOpsDocumentDO();
+        llmOpsDocumentProvider.insert(llmOpsDocumentDO);
+
+        // 5.创建向量数据库
         List<String> embeddingIdList = inMemoryEmbeddingStore.addAll(embeddingList);
 
+        // 6.创建segment
+        List<LlmOpsSegmentDO> llmOpsSegmentList = Lists.newArrayList();
+        for (int i = 0; i < embeddingIdList.size(); i++) {
+            String embeddingId = embeddingIdList.get(i);
+            String text = textSegmentList.get(i).text();
+
+            LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+            llmOpsSegmentDO.setContent(text);
+            llmOpsSegmentDO.setId(UUID.randomUUID().toString());
+            llmOpsSegmentDO.setNodeId(embeddingId);
+            llmOpsSegmentDO.setPosition(i);
+            llmOpsSegmentDO.setUpdatedAt(new Date());
+            llmOpsSegmentDO.setCreatedAt(new Date());
+            llmOpsSegmentDO.setCharacterCount(text.length());
+            llmOpsSegmentDO.setDatasetId(datasetId);
+            llmOpsSegmentDO.setEnabled(true);
+            llmOpsSegmentDO.setDocumentId(llmOpsDocumentDO.getId());
+
+            llmOpsSegmentList.add(llmOpsSegmentDO);
+        }
+        boolean result = llmOpsSegmentProvider.batchInsertSegmentList(llmOpsSegmentList);
 
         // 4.检索增强
         System.out.println(embeddingIdList);

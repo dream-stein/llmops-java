@@ -19,7 +19,7 @@ public class UploadFileVO {
 
     private String key;
 
-    private Integer size;
+    private Long size;
 
     private String extension;
 

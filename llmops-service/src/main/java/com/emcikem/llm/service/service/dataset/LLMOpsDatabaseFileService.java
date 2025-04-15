@@ -41,8 +41,7 @@ public class LLMOpsDatabaseFileService {
     @Resource
     private COSClient cosClient;
 
-    @Resource
-    private InMemoryEmbeddingStore<Embedding> inMemoryEmbeddingStore;
+    private final InMemoryEmbeddingStore<Embedding> inMemoryEmbeddingStore = new InMemoryEmbeddingStore<>();
 
     @Resource
     private EmbeddingModel embeddingModel;
@@ -104,7 +103,6 @@ public class LLMOpsDatabaseFileService {
         boolean result = llmOpsSegmentProvider.batchInsertSegmentList(llmOpsSegmentList);
 
         // 4.检索增强
-        System.out.println(embeddingIdList);
     }
 
     /**

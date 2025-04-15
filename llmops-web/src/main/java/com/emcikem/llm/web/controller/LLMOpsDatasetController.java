@@ -109,6 +109,12 @@ public class LLMOpsDatasetController {
         return llmOpsDatasetService.getDocumentsWithPage(datasetId, searchWord, currentPage, pageSize);
     }
 
+    @PostMapping("/{dataset_id}/documents")
+    public ApiResponse<CreatedDocumentsVO> createDocuments(@PathVariable("dataset_id") String datasetId,
+                                         @RequestBody CreateDocumentsParam param) {
+        return ApiResponse.success(llmOpsDatasetService.createDocuments(datasetId, param));
+    }
+
     /**
      * 获取指定文档详情
      * @param datasetId

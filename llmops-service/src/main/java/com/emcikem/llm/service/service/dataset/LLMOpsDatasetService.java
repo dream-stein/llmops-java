@@ -251,8 +251,15 @@ public class LLMOpsDatasetService {
         boolean resul = llmOpsDatasetProvider.updateSegment(datasetId, documentId, segmentId, accountId, llmOpsSegmentDO);
     }
 
+    public CreatedDocumentsVO createDocuments(String datasetId, CreateDocumentsParam param) {
+        // 1. 查询当前账号
+        String accountId = getAccountId();
+
+        // 2. 创建
+        LlmOpsSegmentDO segmentDO = new LlmOpsSegmentDO();
+    }
+
     private String getAccountId() {
         return "1";
     }
-
 }

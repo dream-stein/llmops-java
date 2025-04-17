@@ -11,6 +11,10 @@ import lombok.Data;
 @Data
 public class CreateDocumentPreProcessRuleVO {
 
+    /**
+     * remove_extra_space
+     * remove_url_and_email
+     */
     private String id;
 
     private Boolean enabled;

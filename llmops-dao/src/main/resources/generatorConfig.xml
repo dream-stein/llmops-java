@@ -107,5 +107,7 @@
         </table>
         <table tableName="llmops_app_config" domainObjectName="LlmOpsAppConfigDO">
         </table>
+        <table tableName="llmops_upload_file" domainObjectName="LlmOpsUploadFile">
+        </table>
     </context>
 </generatorConfiguration>

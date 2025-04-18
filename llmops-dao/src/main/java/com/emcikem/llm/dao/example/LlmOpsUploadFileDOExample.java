@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class LlmOpsUploadFileExample {
+public class LlmOpsUploadFileDOExample {
     /**
      * @mbg.generated
      */
@@ -34,7 +34,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample() {
+    public LlmOpsUploadFileDOExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -100,7 +100,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample orderBy(String orderByClause) {
+    public LlmOpsUploadFileDOExample orderBy(String orderByClause) {
         this.setOrderByClause(orderByClause);
         return this;
     }
@@ -109,7 +109,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample orderBy(String ... orderByClauses) {
+    public LlmOpsUploadFileDOExample orderBy(String ... orderByClauses) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < orderByClauses.length; i++) {
             sb.append(orderByClauses[i]);
@@ -190,7 +190,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample limit(Integer rows) {
+    public LlmOpsUploadFileDOExample limit(Integer rows) {
         this.rows = rows;
         return this;
     }
@@ -199,7 +199,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample limit(Integer offset, Integer rows) {
+    public LlmOpsUploadFileDOExample limit(Integer offset, Integer rows) {
         this.offset = offset;
         this.rows = rows;
         return this;
@@ -209,7 +209,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample page(Integer page, Integer pageSize) {
+    public LlmOpsUploadFileDOExample page(Integer page, Integer pageSize) {
         this.offset = page * pageSize;
         this.rows = pageSize;
         return this;
@@ -220,7 +220,7 @@ public class LlmOpsUploadFileExample {
      * @mbg.generated
      */
     public static Criteria newAndCreateCriteria() {
-        LlmOpsUploadFileExample example = new LlmOpsUploadFileExample();
+        LlmOpsUploadFileDOExample example = new LlmOpsUploadFileDOExample();
         return example.createCriteria();
     }
 
@@ -228,7 +228,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample when(boolean condition, IExampleWhen then) {
+    public LlmOpsUploadFileDOExample when(boolean condition, IExampleWhen then) {
         if (condition) {
             then.example(this);
         }
@@ -239,7 +239,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample when(boolean condition, IExampleWhen then, IExampleWhen otherwise) {
+    public LlmOpsUploadFileDOExample when(boolean condition, IExampleWhen then, IExampleWhen otherwise) {
         if (condition) {
             then.example(this);
         } else {
@@ -252,7 +252,7 @@ public class LlmOpsUploadFileExample {
      *
      * @mbg.generated
      */
-    public LlmOpsUploadFileExample distinct(boolean distinct) {
+    public LlmOpsUploadFileDOExample distinct(boolean distinct) {
         this.setDistinct(distinct);
         return this;
     }
@@ -981,13 +981,13 @@ public class LlmOpsUploadFileExample {
         /**
          * @mbg.generated
          */
-        private LlmOpsUploadFileExample example;
+        private LlmOpsUploadFileDOExample example;
 
         /**
          *
          * @mbg.generated
          */
-        protected Criteria(LlmOpsUploadFileExample example) {
+        protected Criteria(LlmOpsUploadFileDOExample example) {
             super();
             this.example = example;
         }
@@ -996,7 +996,7 @@ public class LlmOpsUploadFileExample {
          *
          * @mbg.generated
          */
-        public LlmOpsUploadFileExample example() {
+        public LlmOpsUploadFileDOExample example() {
             return this.example;
         }
 
@@ -1161,6 +1161,6 @@ public class LlmOpsUploadFileExample {
          *
          * @mbg.generated
          */
-        void example(com.emcikem.llm.dao.example.LlmOpsUploadFileExample example);
+        void example(com.emcikem.llm.dao.example.LlmOpsUploadFileDOExample example);
     }
 }

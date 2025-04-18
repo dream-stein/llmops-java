@@ -1,6 +1,7 @@
 package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiResponse;
+import com.emcikem.llm.common.enums.ResponseStatusEnum;
 import com.emcikem.llm.common.vo.file.UploadFileVO;
 import com.emcikem.llm.common.vo.file.UploadImageVO;
 import com.emcikem.llm.service.service.uploadfile.LLMOpsUploadFileService;
@@ -34,6 +35,12 @@ public class LLMOpsUploadFileController {
 
     @PostMapping("/file")
     public ApiResponse<UploadFileVO> uploadFile(MultipartFile file) {
-        return ApiResponse.success(llmOpsUploadFileService.uploadFile(file));
+        // 文档大小校验
+        // 文档格式校验
+        try {
+            return ApiResponse.success(llmOpsUploadFileService.uploadFile(file));
+        } catch (Exception ex) {
+            return ApiResponse.error(ResponseStatusEnum.SYSTEM_ERROR);
+        }
     }
 }

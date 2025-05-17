@@ -4,16 +4,17 @@ import com.emcikem.llm.common.vo.dataset.process.DocumentProcessRule;
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessVO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
+import com.emcikem.llm.dao.entity.LlmOpsUploadFileDO;
 import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.provider.LLMOpsDocumentProvider;
 import com.emcikem.llm.service.provider.LLMOpsSegmentProvider;
+import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
+import com.emcikem.llm.service.util.AccountUtil;
 import com.google.common.collect.Lists;
 import com.qcloud.cos.COSClient;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.tencent.cos.TencentCosDocumentLoader;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
-import dev.langchain4j.data.document.splitter.DocumentByCharacterSplitter;
 import dev.langchain4j.data.document.splitter.DocumentByRegexSplitter;
 import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
 import dev.langchain4j.data.embedding.Embedding;
@@ -52,21 +53,21 @@ public class LLMOpsDatabaseFileService {
     @Resource
     private LLMOpsDocumentProvider llmOpsDocumentProvider;
 
-    public void loadDocument(String fileName, String datasetId) {
-        // 1.解析器
-        TencentCosDocumentLoader documentLoader = new TencentCosDocumentLoader(cosClient);
-        Document document = documentLoader.loadDocument(LLMOpsConstant.BUCKET_NAME, fileName, new ApacheTikaDocumentParser());
+    @Resource
+    private LlmOpsUploadFileProvider llmOpsUploadFileProvider;
 
-        // 2.分词器
-        DocumentProcessVO documentProcessVO = new DocumentProcessVO();
-        documentProcessVO.setProcessType("custom");
-        DocumentProcessRule documentProcessRule = new DocumentProcessRule();
-        documentProcessRule.setChunk_overlap(50);
-        documentProcessRule.setChunk_size(500);
-        documentProcessRule.setRegex("\\n\\d+\\.");
-        documentProcessRule.setSeparators("\n");
-        documentProcessVO.setRule(documentProcessRule);
-        List<TextSegment> textSegmentList = documentProcess(document, documentProcessVO);
+    public void loadDocument(String fileId, String datasetId) {
+        LlmOpsUploadFileDO llmOpsUploadFileDO = llmOpsUploadFileProvider.selectFileByFileId(fileId);
+        if (llmOpsUploadFileDO == null) {
+            return;
+        }
+        String fileName = llmOpsUploadFileDO.getName();
+
+        // 1.解析器解析文档
+        Document document = loadDocument(fileName);
+
+        // 2.分词器文档分词
+        List<TextSegment> textSegmentList = documentProcess(document, buildDocumentProcessVO());
 
         // 3.文本向量化
         List<Embedding> embeddingList = textSegmentList.stream()
@@ -74,7 +75,7 @@ public class LLMOpsDatabaseFileService {
                 .toList();
 
         // 4.创建document
-        LlmOpsDocumentDO llmOpsDocumentDO = new LlmOpsDocumentDO();
+        LlmOpsDocumentDO llmOpsDocumentDO = buildLLMOpsDocument(fileName, datasetId, llmOpsUploadFileDO.getId());
         llmOpsDocumentProvider.insert(llmOpsDocumentDO);
 
         // 5.创建向量数据库
@@ -85,24 +86,73 @@ public class LLMOpsDatabaseFileService {
         for (int i = 0; i < embeddingIdList.size(); i++) {
             String embeddingId = embeddingIdList.get(i);
             String text = textSegmentList.get(i).text();
-
-            LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
-            llmOpsSegmentDO.setContent(text);
-            llmOpsSegmentDO.setId(UUID.randomUUID().toString());
-            llmOpsSegmentDO.setNodeId(embeddingId);
-            llmOpsSegmentDO.setPosition(i);
-            llmOpsSegmentDO.setUpdatedAt(new Date());
-            llmOpsSegmentDO.setCreatedAt(new Date());
-            llmOpsSegmentDO.setCharacterCount(text.length());
-            llmOpsSegmentDO.setDatasetId(datasetId);
-            llmOpsSegmentDO.setEnabled(true);
-            llmOpsSegmentDO.setDocumentId(llmOpsDocumentDO.getId());
+            LlmOpsSegmentDO llmOpsSegmentDO = buildLlmOpsSegmentDO(text, i, datasetId, embeddingId, llmOpsDocumentDO.getId());
 
             llmOpsSegmentList.add(llmOpsSegmentDO);
         }
         boolean result = llmOpsSegmentProvider.batchInsertSegmentList(llmOpsSegmentList);
 
         // 4.检索增强
+
+    }
+
+    private LlmOpsDocumentDO buildLLMOpsDocument(String fileName, String datasetId, String fileId) {
+        LlmOpsDocumentDO llmOpsDocumentDO = new LlmOpsDocumentDO();
+        llmOpsDocumentDO.setName(fileName);
+        llmOpsDocumentDO.setId(UUID.randomUUID().toString());
+        llmOpsDocumentDO.setAccountId(AccountUtil.getAccountId());
+        llmOpsDocumentDO.setUpdatedAt(new Date());
+        llmOpsDocumentDO.setCreatedAt(new Date());
+//        llmOpsDocumentDO.setEnabled();
+//        llmOpsDocumentDO.setBatch();
+//        llmOpsDocumentDO.setPosition();
+//        llmOpsDocumentDO.setCharacterCount();
+//        llmOpsDocumentDO.setCompletedAt();
+        llmOpsDocumentDO.setDatasetId(datasetId);
+        llmOpsDocumentDO.setUploadFileId(fileId);
+//        llmOpsDocumentDO.setStoppedAt();
+//        llmOpsDocumentDO.setStatus();
+//        llmOpsDocumentDO.setSplittingCompletedAt();
+//        llmOpsDocumentDO.setParsingCompletedAt();
+//        llmOpsDocumentDO.setIndexCompletedAt();
+        llmOpsDocumentDO.setDisabledAt(new Date());
+        llmOpsDocumentDO.setError("");
+//        llmOpsDocumentDO.setTokenCount();
+//        llmOpsDocumentDO.setProcessingStartedAt();
+        return llmOpsDocumentDO;
+    }
+
+    private Document loadDocument(String fileName) {
+        TencentCosDocumentLoader documentLoader = new TencentCosDocumentLoader(cosClient);
+        return documentLoader.loadDocument(LLMOpsConstant.BUCKET_NAME, fileName, new ApacheTikaDocumentParser());
+    }
+
+    private LlmOpsSegmentDO buildLlmOpsSegmentDO(String text, Integer position, String datasetId, String embeddingId, String documentId) {
+        LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+        llmOpsSegmentDO.setContent(text);
+        llmOpsSegmentDO.setId(UUID.randomUUID().toString());
+        llmOpsSegmentDO.setNodeId(embeddingId);
+        llmOpsSegmentDO.setPosition(position);
+        llmOpsSegmentDO.setUpdatedAt(new Date());
+        llmOpsSegmentDO.setCreatedAt(new Date());
+        llmOpsSegmentDO.setCharacterCount(text.length());
+        llmOpsSegmentDO.setDatasetId(datasetId);
+        llmOpsSegmentDO.setEnabled(true);
+        llmOpsSegmentDO.setDocumentId(documentId);
+
+        return llmOpsSegmentDO;
+    }
+
+    private DocumentProcessVO buildDocumentProcessVO() {
+        DocumentProcessVO documentProcessVO = new DocumentProcessVO();
+        documentProcessVO.setProcessType("custom");
+        DocumentProcessRule documentProcessRule = new DocumentProcessRule();
+        documentProcessRule.setChunk_overlap(50);
+        documentProcessRule.setChunk_size(500);
+        documentProcessRule.setRegex("\\n\\d+\\.");
+        documentProcessRule.setSeparators("\n");
+        documentProcessVO.setRule(documentProcessRule);
+        return documentProcessVO;
     }
 
     /**

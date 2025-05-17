@@ -16,4 +16,7 @@ public class LLMOpsConstant {
     public static String BUCKET_NAME = "test-1259211792";
 
 
+
+
+    public static String DEFAULT_DATASET_DESCRIPTION_FORMATTER = "当你需要回答管理《%s》的时候可以引用该知识库。";
 }

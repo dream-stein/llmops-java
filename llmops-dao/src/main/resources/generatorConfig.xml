@@ -109,5 +109,11 @@
         </table>
         <table tableName="llmops_upload_file" domainObjectName="LlmOpsUploadFileDO">
         </table>
+        <table tableName="llmops_keyword_table" domainObjectName="LlmOpsKeywordTableDO">
+        </table>
+        <table tableName="llmops_process_rule" domainObjectName="LlmOpsProcessRuleDO">
+        </table>
+        <table tableName="llmops_app_dataset_join" domainObjectName="LlmOpsAppDatasetJoinDO">
+        </table>
     </context>
 </generatorConfiguration>

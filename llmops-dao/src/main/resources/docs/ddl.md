@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `llmops_keyword_table` (
     `keyword_table` JSON NOT NULL DEFAULT (JSON_OBJECT()) COMMENT '关键词表',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    INDEX `idx_dataset_id` (`dataset_id`),
+    INDEX `idx_dataset_id` (`dataset_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='关键词配置表';
 
 CREATE TABLE IF NOT EXISTS `llmops_process_rule` (

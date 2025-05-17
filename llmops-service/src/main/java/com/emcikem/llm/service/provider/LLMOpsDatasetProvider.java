@@ -6,9 +6,7 @@ import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.dao.example.LlmOpsDatasetDOExample;
 import com.emcikem.llm.dao.example.LlmOpsDocumentDOExample;
 import com.emcikem.llm.dao.example.LlmOpsSegmentDOExample;
-import com.emcikem.llm.dao.mapper.LlmOpsDatasetDOMapper;
-import com.emcikem.llm.dao.mapper.LlmOpsDocumentDOMapper;
-import com.emcikem.llm.dao.mapper.LlmOpsSegmentDOMapper;
+import com.emcikem.llm.dao.mapper.*;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +31,22 @@ public class LLMOpsDatasetProvider {
 
     @Resource
     private LlmOpsSegmentDOMapper llmOpsSegmentDOMapper;
+
+    @Resource
+    private LlmOpsSegmentDOExtMapper llmOpsSegmentDOExtMapper;
+
+    @Resource
+    private LlmOpsDocumentDOExtMapper llmOpsDocumentDOExtMapper;
+
+    public LlmOpsDatasetDO getDatasetByAccountAndName(String accountId, String name) {
+        LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
+        example.createCriteria().andAccountIdEqualTo(accountId).andNameEqualTo(name);
+        List<LlmOpsDatasetDO> llmOpsDatasetDOList = llmOpsDatasetDOMapper.selectByExampleWithBLOBs(example);
+        if (CollectionUtils.isEmpty(llmOpsDatasetDOList)) {
+            return null;
+        }
+        return llmOpsDatasetDOList.get(0);
+    }
 
     public LlmOpsDatasetDO getDataset(String datasetId, String accountId) {
         LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
@@ -208,5 +222,13 @@ public class LLMOpsDatasetProvider {
 
     public boolean createSegment(LlmOpsSegmentDO llmOpsSegmentDO) {
         return llmOpsSegmentDOMapper.insert(llmOpsSegmentDO) == 1;
+    }
+
+    public Long sumSegmentHitCount(String accountId, String datasetId) {
+        return llmOpsSegmentDOExtMapper.sumSegmentHitCount(accountId, datasetId);
+    }
+
+    public Long sumDocumentCharacterCount(String accountId, String datasetId) {
+        return llmOpsDocumentDOExtMapper.sumDocumentCharacterCount(accountId, datasetId);
     }
 }

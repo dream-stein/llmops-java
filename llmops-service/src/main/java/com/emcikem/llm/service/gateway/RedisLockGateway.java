@@ -1,4 +1,6 @@
-package com.emcikem.llm.common.gateway;
+package com.emcikem.llm.service.gateway;
+
+import org.springframework.stereotype.Service;
 
 /**
  * Create with Emcikem on 2024/11/21
@@ -6,5 +8,6 @@ package com.emcikem.llm.common.gateway;
  * @author Emcikem
  * @version 1.0.0
  */
+@Service
 public class RedisLockGateway {
 }

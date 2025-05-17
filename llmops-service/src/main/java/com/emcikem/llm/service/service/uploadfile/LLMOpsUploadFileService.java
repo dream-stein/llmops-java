@@ -66,7 +66,7 @@ public class LLMOpsUploadFileService {
         }
 
         // 3. 生成一个随机的名字
-        String randomFileName = UUID.randomUUID().toString() + "." + fileName;
+        String randomFileName = UUID.randomUUID() + "." + fileName;
         Date now = new Date();
         String uploadFileName = String.format("%s/%s", new SimpleDateFormat("yyyy/MM/dd").format(now), randomFileName);
 

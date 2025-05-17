@@ -2,16 +2,21 @@ package com.emcikem.llm.service.service.dataset;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.Paginator;
+import com.emcikem.llm.common.enums.LlmOpsResultEnum;
+import com.emcikem.llm.common.exception.LlmOpsException;
 import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
+import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.convert.LLMOpsDatasetConvert;
+import com.emcikem.llm.service.provider.LLMOpsAppDatasetJoinProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetQueryProvider;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,6 +37,9 @@ public class LLMOpsDatasetService {
 
     @Resource
     private LLMOpsDatasetQueryProvider llmOpsDatasetQueryProvider;
+
+    @Resource
+    private LLMOpsAppDatasetJoinProvider llmOpsAppDatasetJoinProvider;
 
     public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(String searchWord, Integer currentPage, Integer pageSize) {
         // 1. 查询当前账号
@@ -57,8 +65,18 @@ public class LLMOpsDatasetService {
 
         // 2. 查询数据
         LlmOpsDatasetDO llmOpsDatasetDO = llmOpsDatasetProvider.getDataset(datasetId, accountId);
+        Long documentCount = llmOpsDatasetProvider.countDocumentList(accountId, "", datasetId);
+        Long hitCount = llmOpsDatasetProvider.sumSegmentHitCount(accountId, datasetId);
+        Long characterCount = llmOpsDatasetProvider.sumDocumentCharacterCount(accountId, datasetId);
+        Long relatedAppCount = llmOpsAppDatasetJoinProvider.countAppDatasetJoin(datasetId);
 
-        return LLMOpsDatasetConvert.convert2DetailVO(llmOpsDatasetDO);
+        DatasetDetailVO datasetDetailVO = LLMOpsDatasetConvert.convert2DetailVO(llmOpsDatasetDO);
+        datasetDetailVO.setDocument_count(Math.toIntExact(documentCount));
+        datasetDetailVO.setHit_count(Math.toIntExact(hitCount));
+        datasetDetailVO.setCharacter_count(Math.toIntExact(characterCount));
+        datasetDetailVO.setRelated_app_count(Math.toIntExact(relatedAppCount));
+
+        return datasetDetailVO;
     }
 
     public List<DatasetQueryVO> getDatasetQueries(String datasetId) {
@@ -88,23 +106,40 @@ public class LLMOpsDatasetService {
 
     }
 
-    public void createDataset(CreateDatasetParam createDatasetParam) {
+    public void createDataset(CreateDatasetParam param) {
         // 1. 查询当前账号
         String accountId = getAccountId();
 
-        // 2. 创建数据
+        // 2. 检测该账号下是否存在同名知识库
+        LlmOpsDatasetDO datasetByAccountAndName = llmOpsDatasetProvider.getDatasetByAccountAndName(accountId, param.getName());
+        if (datasetByAccountAndName != null) {
+            throw new LlmOpsException(LlmOpsResultEnum.DATASET_HAS_SAME_NAME);
+        }
+
+        // 3. 检测是否传递了描述信息，如果没有传递续页补充上
+        if (StringUtils.isEmpty(param.getDescription())) {
+            param.setDescription(String.format(LLMOpsConstant.DEFAULT_DATASET_DESCRIPTION_FORMATTER, param.getDescription()));
+        }
+
+        // 4. 创建知识库记录并返回
+        LlmOpsDatasetDO llmOpsDatasetDO = buildDatasetDO(accountId, param);
+        llmOpsDatasetProvider.createDataset(llmOpsDatasetDO);
+    }
+
+    private LlmOpsDatasetDO buildDatasetDO(String accountId, CreateDatasetParam parm) {
         LlmOpsDatasetDO llmOpsDatasetDO = new LlmOpsDatasetDO();
         llmOpsDatasetDO.setCreatedAt(new Date());
         llmOpsDatasetDO.setId(UUID.randomUUID().toString());
         llmOpsDatasetDO.setAccountId(accountId);
         llmOpsDatasetDO.setUpdatedAt(new Date());
-        llmOpsDatasetDO.setName(createDatasetParam.getName());
-        llmOpsDatasetDO.setDescription(createDatasetParam.getDescription());
-        llmOpsDatasetDO.setIcon(createDatasetParam.getIcon());
-        llmOpsDatasetProvider.createDataset(llmOpsDatasetDO);
+        llmOpsDatasetDO.setName(parm.getName());
+        llmOpsDatasetDO.setDescription(parm.getDescription());
+        llmOpsDatasetDO.setIcon(parm.getIcon());
+
+        return llmOpsDatasetDO;
     }
 
-    public void updateDocumentName(String datasetId, String documentId, UpdateDocumentNameParam param) {
+    public void updateDocument(String datasetId, String documentId, UpdateDocumentNameParam param) {
         // 1. 查询当前账号
         String accountId = getAccountId();
 
@@ -239,7 +274,7 @@ public class LLMOpsDatasetService {
         boolean resul = llmOpsDatasetProvider.createSegment(llmOpsSegmentDO);
     }
 
-    public void updateSegment(String datasetId, String documentId, String segmentId, CreateSegmentParam param) {
+    public void updateSegment(String datasetId, String documentId, String segmentId, UpdateSegmentParam param) {
         // 1. 查询当前账号
         String accountId = getAccountId();
 

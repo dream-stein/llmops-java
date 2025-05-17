@@ -3,7 +3,6 @@ package com.emcikem.llm.service.service;
 import com.emcikem.llm.common.enums.ChatMessageRoleTypeEnum;
 import com.emcikem.llm.common.enums.ChatModelEnum;
 import com.emcikem.llm.common.util.GsonUtil;
-import com.emcikem.llm.common.vo.ChatHistoryVO;
 import com.emcikem.llm.common.vo.ChatVO;
 import com.emcikem.llm.dao.entity.LlmOpsChatDialogDO;
 import com.emcikem.llm.dao.entity.LlmOpsChatHistoryDO;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**

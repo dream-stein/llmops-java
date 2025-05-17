@@ -206,6 +206,20 @@
                 <artifactId>langchain4j-document-loader-tencent-cos</artifactId>
                 <version>${langchain4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.huaban</groupId>
+                <artifactId>jieba-analysis</artifactId>
+                <version>1.0.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

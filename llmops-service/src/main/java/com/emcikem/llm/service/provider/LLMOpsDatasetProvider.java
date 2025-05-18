@@ -231,4 +231,14 @@ public class LLMOpsDatasetProvider {
     public Long sumDocumentCharacterCount(String accountId, String datasetId) {
         return llmOpsDocumentDOExtMapper.sumDocumentCharacterCount(accountId, datasetId);
     }
+
+    public LlmOpsDatasetDO getDatasetByAccountAndNameAndId(String datasetId, String accountId, String name) {
+        LlmOpsDatasetDOExample example = new LlmOpsDatasetDOExample();
+        example.createCriteria().andNameEqualTo(name).andAccountIdEqualTo(accountId).andIdNotEqualTo(datasetId);
+        List<LlmOpsDatasetDO> llmOpsDatasetDOList = llmOpsDatasetDOMapper.selectByExampleWithBLOBs(example);
+        if (CollectionUtils.isEmpty(llmOpsDatasetDOList)) {
+            return null;
+        }
+        return llmOpsDatasetDOList.get(0);
+    }
 }

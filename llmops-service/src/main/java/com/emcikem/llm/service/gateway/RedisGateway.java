@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -19,6 +21,18 @@ import java.util.concurrent.TimeUnit;
 @Service
 @Slf4j
 public class RedisGateway {
+
+    private static final String COMPARE_AND_DELETE =
+            "local cV = redis.call('get', KEYS[1]); "
+                    + "if cV == ARGV[1] "
+                    + "or (tonumber(ARGV[1]) == 0 and cV == false) then "
+                    + " redis.call('del', KEYS[1]); "
+                    + "return 1 "
+                    + " else "
+                    + " return 0 "
+                    + " end";
+
+    public static final RedisScript<Boolean> COMPARE_AND_DELETE_SCRIPT = new DefaultRedisScript<>(COMPARE_AND_DELETE, Boolean.class);
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -129,13 +143,12 @@ public class RedisGateway {
      * @param value
      * @return
      */
-//    public boolean compareAndDelete(String key, Object value) {
-//        try {
-//            return Boolean.TRUE.equals(redisTemplate.execute(RedisLuaConstant.COMPARE_AND_DELETE_SCRIPT, Collections.singletonList(key), value));
-//        } catch (Exception e) {
-//            log.error("compareAndDelete failed, key:{}, value:{}", key, value, e);
-//            return Boolean.FALSE;
-//        }
-//    }
-
+    public boolean compareAndDelete(String key, Object value) {
+        try {
+            return Boolean.TRUE.equals(redisTemplate.execute(COMPARE_AND_DELETE_SCRIPT, Collections.singletonList(key), value));
+        } catch (Exception e) {
+            log.error("compareAndDelete failed, key:{}, value:{}", key, value, e);
+            return Boolean.FALSE;
+        }
+    }
 }

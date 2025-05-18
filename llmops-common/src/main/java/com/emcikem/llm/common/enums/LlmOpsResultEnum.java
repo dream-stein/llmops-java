@@ -20,6 +20,8 @@ public enum LlmOpsResultEnum {
      * 业务异常，知识库
      */
     DATASET_HAS_SAME_NAME(10001, "dataset has same name"),
+    DATASET_NOT_FOUND(10002, "dataset not found"),
+    UPDATE_DATASET_FAILED(10003, "update dataset failed"),
     ;
 
     private final Integer code;

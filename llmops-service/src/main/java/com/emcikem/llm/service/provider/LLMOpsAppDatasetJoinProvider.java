@@ -2,6 +2,7 @@ package com.emcikem.llm.service.provider;
 
 import com.emcikem.llm.dao.example.LlmOpsAppDatasetJoinDOExample;
 import com.emcikem.llm.dao.mapper.LlmOpsAppDatasetJoinDOMapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LLMOpsAppDatasetJoinProvider {
 
+    @Resource
     private LlmOpsAppDatasetJoinDOMapper llmOpsAppDatasetJoinDOMapper;
 
     public Long countAppDatasetJoin(String datasetId) {

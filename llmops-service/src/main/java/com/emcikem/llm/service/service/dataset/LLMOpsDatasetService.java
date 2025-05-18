@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -50,6 +51,7 @@ public class LLMOpsDatasetService {
         Integer offset = (currentPage - 1) * pageSize;
         List<LlmOpsDatasetDO> datasetList = llmOpsDatasetProvider.getDatasetList(pageSize, offset, accountId, searchWord);
 
+        // 3. 构建返回参数
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(currentPage);
         paginator.setPage_size(pageSize);
@@ -70,11 +72,12 @@ public class LLMOpsDatasetService {
         Long characterCount = llmOpsDatasetProvider.sumDocumentCharacterCount(accountId, datasetId);
         Long relatedAppCount = llmOpsAppDatasetJoinProvider.countAppDatasetJoin(datasetId);
 
+        // 3. 构建返回参数
         DatasetDetailVO datasetDetailVO = LLMOpsDatasetConvert.convert2DetailVO(llmOpsDatasetDO);
-        datasetDetailVO.setDocument_count(Math.toIntExact(documentCount));
-        datasetDetailVO.setHit_count(Math.toIntExact(hitCount));
-        datasetDetailVO.setCharacter_count(Math.toIntExact(characterCount));
-        datasetDetailVO.setRelated_app_count(Math.toIntExact(relatedAppCount));
+        datasetDetailVO.setDocument_count(Optional.ofNullable(documentCount).map(Math::toIntExact).orElse(0));
+        datasetDetailVO.setHit_count(Optional.ofNullable(hitCount).map(Math::toIntExact).orElse(0));
+        datasetDetailVO.setCharacter_count(Optional.ofNullable(characterCount).map(Math::toIntExact).orElse(0));
+        datasetDetailVO.setRelated_app_count(Optional.ofNullable(relatedAppCount).map(Math::toIntExact).orElse(0));
 
         return datasetDetailVO;
     }
@@ -92,18 +95,42 @@ public class LLMOpsDatasetService {
         boolean result = llmOpsDatasetProvider.deleteDataset(accountId, datasetId);
     }
 
-    public void updateDataset(String datasetId, UpdateDatasetParam updateDatasetParam) {
+    public void updateDataset(String datasetId, UpdateDatasetParam param) {
         // 1. 查询当前账号
         String accountId = getAccountId();
 
-        // 2. 更新数据
-        LlmOpsDatasetDO llmOpsDatasetDO = new LlmOpsDatasetDO();
-        llmOpsDatasetDO.setIcon(updateDatasetParam.getIcon());
-        llmOpsDatasetDO.setDescription(updateDatasetParam.getDescription());
-        llmOpsDatasetDO.setName(updateDatasetParam.getName());
-        llmOpsDatasetDO.setUpdatedAt(new Date());
-        llmOpsDatasetProvider.updateDataset(datasetId, accountId, llmOpsDatasetDO);
+        // 2. 查询数据
+        LlmOpsDatasetDO llmOpsDatasetDO = llmOpsDatasetProvider.getDataset(datasetId, accountId);
+        if (llmOpsDatasetDO == null) {
+            throw new LlmOpsException(LlmOpsResultEnum.DATASET_NOT_FOUND);
+        }
 
+        // 3. 检测名称是否出现重名
+        LlmOpsDatasetDO datasetByAccountAndNameAndId = llmOpsDatasetProvider.getDatasetByAccountAndNameAndId(datasetId, accountId, param.getName());
+        if (datasetByAccountAndNameAndId != null) {
+            throw new LlmOpsException(LlmOpsResultEnum.DATASET_HAS_SAME_NAME);
+        }
+
+        // 4. 检测是否传递了描述信息，如果没有传递则补充上
+        if (StringUtils.isEmpty(param.getDescription())) {
+            param.setDescription(String.format(LLMOpsConstant.DEFAULT_DATASET_DESCRIPTION_FORMATTER, param.getName()));
+        }
+
+        // 5. 更新数据
+        LlmOpsDatasetDO updateDatasetDO = buildUpdateDatasetDO(param);
+        boolean result = llmOpsDatasetProvider.updateDataset(datasetId, accountId, updateDatasetDO);
+        if (!result) {
+            throw new LlmOpsException(LlmOpsResultEnum.UPDATE_DATASET_FAILED);
+        }
+    }
+
+    private LlmOpsDatasetDO buildUpdateDatasetDO(UpdateDatasetParam param) {
+        LlmOpsDatasetDO llmOpsDatasetDO = new LlmOpsDatasetDO();
+        llmOpsDatasetDO.setIcon(param.getIcon());
+        llmOpsDatasetDO.setDescription(param.getDescription());
+        llmOpsDatasetDO.setName(param.getName());
+        llmOpsDatasetDO.setUpdatedAt(new Date());
+        return llmOpsDatasetDO;
     }
 
     public void createDataset(CreateDatasetParam param) {
@@ -116,14 +143,17 @@ public class LLMOpsDatasetService {
             throw new LlmOpsException(LlmOpsResultEnum.DATASET_HAS_SAME_NAME);
         }
 
-        // 3. 检测是否传递了描述信息，如果没有传递续页补充上
+        // 3. 检测是否传递了描述信息，如果没有传递则补充上
         if (StringUtils.isEmpty(param.getDescription())) {
             param.setDescription(String.format(LLMOpsConstant.DEFAULT_DATASET_DESCRIPTION_FORMATTER, param.getDescription()));
         }
 
         // 4. 创建知识库记录并返回
         LlmOpsDatasetDO llmOpsDatasetDO = buildDatasetDO(accountId, param);
-        llmOpsDatasetProvider.createDataset(llmOpsDatasetDO);
+        boolean result = llmOpsDatasetProvider.createDataset(llmOpsDatasetDO);
+        if (!result) {
+            throw new LlmOpsException(LlmOpsResultEnum.UPDATE_DATASET_FAILED);
+        }
     }
 
     private LlmOpsDatasetDO buildDatasetDO(String accountId, CreateDatasetParam parm) {

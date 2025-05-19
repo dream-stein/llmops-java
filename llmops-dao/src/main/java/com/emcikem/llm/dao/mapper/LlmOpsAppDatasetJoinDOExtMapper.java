@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface LlmOpsAppDatasetJoinDOExtMapper {
 
-    List<Map<String, Object>> countAppJoinByDatasetIdList(List<String> databaseIdList);
+    List<Map<String, Object>> countAppJoinByDatasetIdList(List<String> datasetIdList);
 
 }

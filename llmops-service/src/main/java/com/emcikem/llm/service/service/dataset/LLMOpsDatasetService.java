@@ -16,6 +16,7 @@ import com.emcikem.llm.service.provider.LLMOpsAppDatasetJoinProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetQueryProvider;
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -71,9 +72,9 @@ public class LLMOpsDatasetService {
     private List<DatasetVO> buildDatasetVOList(List<LlmOpsDatasetDO> datasetDOList, Map<String, Long> characterCountMap, Map<String, Integer> relationAppCountMap, Map<String, Integer> documentCountMap) {
         List<DatasetVO> datasetVOList = LLMOpsDatasetConvert.convert(datasetDOList);
         datasetVOList.stream().forEach(datasetVO -> {
-            datasetVO.setCharacter_count(Math.toIntExact(characterCountMap.get(datasetVO.getId())));
-            datasetVO.setRelated_app_count(relationAppCountMap.get(datasetVO.getId()));
-            datasetVO.setDocument_count(documentCountMap.get(datasetVO.getId()));
+            datasetVO.setCharacter_count(MapUtils.getInteger(characterCountMap, datasetVO.getId(), 0));
+            datasetVO.setRelated_app_count(MapUtils.getInteger(relationAppCountMap, datasetVO.getId(), 0));
+            datasetVO.setDocument_count(MapUtils.getInteger(documentCountMap, datasetVO.getId(), 0));
         });
 
         return datasetVOList;

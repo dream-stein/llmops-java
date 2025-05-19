@@ -9,5 +9,5 @@ public interface LlmOpsDocumentDOExtMapper {
 
     List<Map<String, Object>> sumDocumentCharacterCountByDataBaseIdList(String accountId, List<String> datasetIdList);
 
-    List<Map<String, Object>> countDocumentByDataBaseIdList(String accountId, List<String> databaseIdList);
+    List<Map<String, Object>> countDocumentByDataBaseIdList(String accountId, List<String> datasetIdList);
 }

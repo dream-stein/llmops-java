@@ -4,8 +4,8 @@
 
   <select id="countAppJoinByDatasetIdList" resultType="map" parameterType="map">
     select count(*) as total, dataset_id as datasetId
-    from llmops_document
-    AND dataset_id IN
+    from llmops_app_dataset_join
+    where dataset_id IN
     <foreach item="datasetId" collection="datasetIdList" open="(" separator="," close=")">
       #{datasetId}
     </foreach>

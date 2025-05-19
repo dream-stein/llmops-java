@@ -54,13 +54,29 @@ public class LLMOpsDatasetService {
         Map<String, Integer> documentCountMap = llmOpsDatasetProvider.countDocumentByDataBaseIdList(accountId, databaseIdList);
 
         // 3. 构建返回参数
+        List<DatasetVO> datasetVOList = buildDatasetVOList(datasetList, characterCountMap, relationAppCountMap, documentCountMap);
+        return ApiBasePaginatorResponse.success(datasetVOList, buildPaginator(currentPage, pageSize, count));
+    }
+
+    private Paginator buildPaginator(Integer currentPage, Integer pageSize, Long count) {
         Paginator paginator = new Paginator();
         paginator.setCurrent_page(currentPage);
         paginator.setPage_size(pageSize);
         paginator.setTotal_record(count);
         paginator.setTotal_page((int) ((count + pageSize - 1) / pageSize));
 
-        return ApiBasePaginatorResponse.success(LLMOpsDatasetConvert.convert(datasetList), paginator);
+        return paginator;
+    }
+
+    private List<DatasetVO> buildDatasetVOList(List<LlmOpsDatasetDO> datasetDOList, Map<String, Long> characterCountMap, Map<String, Integer> relationAppCountMap, Map<String, Integer> documentCountMap) {
+        List<DatasetVO> datasetVOList = LLMOpsDatasetConvert.convert(datasetDOList);
+        datasetVOList.stream().forEach(datasetVO -> {
+            datasetVO.setCharacter_count(Math.toIntExact(characterCountMap.get(datasetVO.getId())));
+            datasetVO.setRelated_app_count(relationAppCountMap.get(datasetVO.getId()));
+            datasetVO.setDocument_count(documentCountMap.get(datasetVO.getId()));
+        });
+
+        return datasetVOList;
     }
 
     public DatasetDetailVO getDataset(String datasetId) {

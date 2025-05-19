@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emcikem.llm.dao.mapper.LlmOpsAppDatasetJoinDOExtMapper">
+
+  <select id="countAppJoinByDatasetIdList" resultType="map" parameterType="map">
+    select count(*) as total, dataset_id as datasetId
+    from llmops_document
+    AND dataset_id IN
+    <foreach item="datasetId" collection="datasetIdList" open="(" separator="," close=")">
+      #{datasetId}
+    </foreach>
+    GROUP BY dataset_id
+  </select>
+</mapper>

@@ -35,8 +35,13 @@ public class LLMOpsDatasetController {
     public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(@RequestParam(value = "search_word", required = false) String searchWord,
                                                                    @RequestParam("current_page") Integer currentPage,
                                                                    @RequestParam("page_size") Integer pageSize) {
-
-        return llmOpsDatasetService.getDatasetsWithPage(searchWord, currentPage, pageSize);
+        try {
+            return llmOpsDatasetService.getDatasetsWithPage(searchWord, currentPage, pageSize);
+        } catch (IllegalArgumentException ex) {
+            return ApiBasePaginatorResponse.error(ResponseStatusEnum.VALIDATE_ERROR);
+        } catch (Exception ex) {
+            return ApiBasePaginatorResponse.error(ResponseStatusEnum.SYSTEM_ERROR);
+        }
     }
 
     /**
@@ -65,8 +70,14 @@ public class LLMOpsDatasetController {
     @PostMapping("/{dataset_id}")
     public ApiResponse<Void> updateDataset(@PathVariable("dataset_id") String datasetId,
                                            @RequestBody UpdateDatasetParam updateDatasetParam) {
-        llmOpsDatasetService.updateDataset(datasetId, updateDatasetParam);
-        return ApiResponse.success(null);
+        try {
+            llmOpsDatasetService.updateDataset(datasetId, updateDatasetParam);
+            return ApiResponse.success(null);
+        } catch (IllegalArgumentException ex) {
+            return ApiResponse.error(ResponseStatusEnum.VALIDATE_ERROR);
+        } catch (Exception ex) {
+            return ApiResponse.error(ResponseStatusEnum.SYSTEM_ERROR);
+        }
     }
 
     /**

@@ -19,10 +19,8 @@ import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Create with Emcikem on 2025/3/28
@@ -50,6 +48,10 @@ public class LLMOpsDatasetService {
         Long count = llmOpsDatasetProvider.countDatasetList(accountId, searchWord);
         Integer offset = (currentPage - 1) * pageSize;
         List<LlmOpsDatasetDO> datasetList = llmOpsDatasetProvider.getDatasetList(pageSize, offset, accountId, searchWord);
+        List<String> databaseIdList = datasetList.stream().map(LlmOpsDatasetDO::getId).collect(Collectors.toList());
+        Map<String, Long> characterCountMap = llmOpsDatasetProvider.sumDocumentCharacterCountByDataBaseIdList(accountId, databaseIdList);
+        Map<String, Integer> relationAppCountMap = llmOpsAppDatasetJoinProvider.countAppDatasetJoinByDataBaseIdList(databaseIdList);
+        Map<String, Integer> documentCountMap = llmOpsDatasetProvider.countDocumentByDataBaseIdList(accountId, databaseIdList);
 
         // 3. 构建返回参数
         Paginator paginator = new Paginator();

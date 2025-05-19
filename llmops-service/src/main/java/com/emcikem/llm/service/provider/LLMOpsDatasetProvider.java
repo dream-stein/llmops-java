@@ -9,10 +9,14 @@ import com.emcikem.llm.dao.example.LlmOpsSegmentDOExample;
 import com.emcikem.llm.dao.mapper.*;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Create with Emcikem on 2025/3/30
@@ -240,5 +244,23 @@ public class LLMOpsDatasetProvider {
             return null;
         }
         return llmOpsDatasetDOList.get(0);
+    }
+
+    public Map<String, Long> sumDocumentCharacterCountByDataBaseIdList(String accountId, List<String> datasetIdList) {
+        List<Map<String, Object>> list = llmOpsDocumentDOExtMapper.sumDocumentCharacterCountByDataBaseIdList(accountId, datasetIdList);
+        return list.stream().map(map -> {
+            Long total = MapUtils.getLong(map, "total");
+            String datasetId = MapUtils.getString(map, "datasetId");
+            return Pair.of(datasetId, total);
+        }).collect(Collectors.toMap(Pair::getKey, Pair::getValue, (a, b) -> a));
+    }
+
+    public Map<String, Integer> countDocumentByDataBaseIdList(String accountId, List<String> databaseIdList) {
+        List<Map<String, Object>> list = llmOpsDocumentDOExtMapper.countDocumentByDataBaseIdList(accountId, databaseIdList);
+        return list.stream().map(map -> {
+            Integer total = MapUtils.getInteger(map, "total");
+            String datasetId = MapUtils.getString(map, "datasetId");
+            return Pair.of(datasetId, total);
+        }).collect(Collectors.toMap(Pair::getKey, Pair::getValue, (a, b) -> a));
     }
 }

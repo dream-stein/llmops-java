@@ -7,4 +7,26 @@
     from llmops_document
     where account_id = #{accountId} and dataset_id = #{datasetId}
   </select>
+
+  <select id="sumDocumentCharacterCountByDataBaseIdList" resultType="map" parameterType="map">
+    select sum(character_count) as total, dataset_id as datasetId
+    from llmops_document
+    where account_id = #{accountId}
+    AND dataset_id IN
+    <foreach item="datasetId" collection="datasetIdList" open="(" separator="," close=")">
+      #{datasetId}
+    </foreach>
+    GROUP BY dataset_id
+  </select>
+
+  <select id="countDocumentByDataBaseIdList" resultType="map" parameterType="map">
+    select count(*) as total, dataset_id as datasetId
+    from llmops_document
+    where account_id = #{accountId}
+    AND dataset_id IN
+    <foreach item="datasetId" collection="datasetIdList" open="(" separator="," close=")">
+      #{datasetId}
+    </foreach>
+    GROUP BY dataset_id
+  </select>
 </mapper>

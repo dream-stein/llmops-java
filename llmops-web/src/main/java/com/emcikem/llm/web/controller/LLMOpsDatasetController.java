@@ -2,6 +2,7 @@ package com.emcikem.llm.web.controller;
 
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
+import com.emcikem.llm.common.enums.ProcessTypeEnum;
 import com.emcikem.llm.common.enums.ResponseStatusEnum;
 import com.emcikem.llm.common.vo.dataset.CreateDatasetParam;
 import com.emcikem.llm.common.vo.dataset.CreateDocumentsParam;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Create with Emcikem on 2025/3/14
@@ -164,7 +166,16 @@ public class LLMOpsDatasetController {
     @PostMapping("/{dataset_id}/documents")
     public ApiResponse<CreatedDocumentsVO> createDocuments(@PathVariable("dataset_id") String datasetId,
                                                            @RequestBody CreateDocumentsParam param) {
-        return ApiResponse.success(llmOpsDatasetService.createDocuments(datasetId, param));
+        try {
+            if (Objects.equals(param.getProcess_type(), ProcessTypeEnum.AUTOMATIC.getDesc())) {
+                param.buildDefaultRule();
+            }
+            return ApiResponse.success(llmOpsDatasetService.createDocuments(datasetId, param));
+        } catch (IllegalArgumentException ex) {
+            return ApiResponse.error(ResponseStatusEnum.VALIDATE_ERROR);
+        } catch (Exception ex) {
+            return ApiResponse.error(ResponseStatusEnum.SYSTEM_ERROR);
+        }
     }
 
     /**

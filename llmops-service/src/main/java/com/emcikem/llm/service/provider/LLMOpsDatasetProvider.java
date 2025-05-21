@@ -124,6 +124,17 @@ public class LLMOpsDatasetProvider {
         return llmOpsDocumentDOMapper.deleteByExample(example) == 1;
     }
 
+    public Integer getLatestDocumentPosition(String datasetId) {
+        LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
+        example.setOrderByClause("position desc");
+        example.createCriteria().andDatasetIdEqualTo(datasetId);
+        List<LlmOpsDocumentDO> llmOpsDocumentList = llmOpsDocumentDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(llmOpsDocumentList)) {
+            return 0;
+        }
+        return llmOpsDocumentList.get(0).getPosition();
+    }
+
     public Long countDocumentList(String accountId, String searchWord, String datasetId) {
         LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
         LlmOpsDocumentDOExample.Criteria criteria = example.createCriteria();

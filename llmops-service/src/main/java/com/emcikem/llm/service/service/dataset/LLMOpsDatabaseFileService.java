@@ -6,7 +6,6 @@ import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.dao.entity.LlmOpsUploadFileDO;
 import com.emcikem.llm.service.constant.LLMOpsConstant;
-import com.emcikem.llm.service.provider.LLMOpsDocumentProvider;
 import com.emcikem.llm.service.provider.LLMOpsSegmentProvider;
 import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
 import com.emcikem.llm.service.util.AccountUtil;
@@ -22,13 +21,13 @@ import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Create with Emcikem on 2025/4/13
@@ -184,5 +183,47 @@ public class LLMOpsDatabaseFileService {
         } else {
             return Lists.newArrayList();
         }
+    }
+
+    /**
+     * 文件提取提，用于将远程文件、upload_file记录加载成LangChain对应的文档或字符串
+     * @param uploadFileDO
+     * @param returnText
+     * @param isUnstructured
+     * @return
+     */
+    public Pair<List<Document>, String> load(LlmOpsUploadFileDO uploadFileDO, boolean returnText, boolean isUnstructured) {
+
+        return null;
+    }
+
+    /**
+     * 从传入的URL中去加载数据，返回LangChain文档列表或者字符串
+     * @param url
+     * @param returnText
+     * @param isUnstructured
+     * @return
+     */
+    public Pair<List<Document>, String> loadFromUrl(String url, boolean returnText, boolean isUnstructured) {
+        // 1. 下载远程URL的文件到本地
+
+        // 2. 将文件下载到本地的临时文件夹
+        return null;
+    }
+
+    /**
+     * 从本地文件中加载数据，返回LangChain文档列表或者字符串
+     * @param filePath
+     * @param returnText
+     * @param isUnstructured
+     * @return
+     */
+    public Pair<List<Document>, String> loadFromFile(String filePath, boolean returnText, boolean isUnstructured) {
+        // 1. 获取文件的扩展名
+
+        // 2. 根据不同的文件扩展名去加载不同的加载器
+
+        // 3. 返回加载的文档列表或者文本
+        return null;
     }
 }

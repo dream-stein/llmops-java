@@ -35,5 +35,6 @@ public class JieBaUtil {
         String text = "为了提倡社交产品的流量，让用户主动分享APP中的内容到社交平台来达到拉新和促活的目的，市场上的绝大多数APP都有第三发分享的功能，它是内容分发的最有效途径，并且大大降低了企";
         List<String> strings = extractKeyWords(text, 10);
         System.out.println(strings);
+        System.out.println(JieBaUtil.extractKeyWords("你好，我是慕小课，喜欢打篮球，你喜欢什么呢？", 3));
     }
 }

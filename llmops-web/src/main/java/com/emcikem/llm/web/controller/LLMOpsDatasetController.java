@@ -3,10 +3,32 @@ package com.emcikem.llm.web.controller;
 import com.emcikem.llm.common.entity.ApiBasePaginatorResponse;
 import com.emcikem.llm.common.entity.ApiResponse;
 import com.emcikem.llm.common.enums.ResponseStatusEnum;
-import com.emcikem.llm.common.vo.dataset.*;
+import com.emcikem.llm.common.vo.dataset.CreateDatasetParam;
+import com.emcikem.llm.common.vo.dataset.CreateDocumentsParam;
+import com.emcikem.llm.common.vo.dataset.CreateSegmentParam;
+import com.emcikem.llm.common.vo.dataset.CreatedDocumentsVO;
+import com.emcikem.llm.common.vo.dataset.DatasetDetailVO;
+import com.emcikem.llm.common.vo.dataset.DatasetQueryVO;
+import com.emcikem.llm.common.vo.dataset.DatasetVO;
+import com.emcikem.llm.common.vo.dataset.DocumentBatchVO;
+import com.emcikem.llm.common.vo.dataset.DocumentDetailVO;
+import com.emcikem.llm.common.vo.dataset.DocumentVO;
+import com.emcikem.llm.common.vo.dataset.SegmentDetailVO;
+import com.emcikem.llm.common.vo.dataset.SegmentVO;
+import com.emcikem.llm.common.vo.dataset.UpdateDatasetParam;
+import com.emcikem.llm.common.vo.dataset.UpdateDocumentEnabledParam;
+import com.emcikem.llm.common.vo.dataset.UpdateDocumentNameParam;
+import com.emcikem.llm.common.vo.dataset.UpdateSegmentEnabledParam;
+import com.emcikem.llm.common.vo.dataset.UpdateSegmentParam;
 import com.emcikem.llm.service.service.dataset.LLMOpsDatasetService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -141,7 +163,7 @@ public class LLMOpsDatasetController {
      */
     @PostMapping("/{dataset_id}/documents")
     public ApiResponse<CreatedDocumentsVO> createDocuments(@PathVariable("dataset_id") String datasetId,
-                                         @RequestBody CreateDocumentsParam param) {
+                                                           @RequestBody CreateDocumentsParam param) {
         return ApiResponse.success(llmOpsDatasetService.createDocuments(datasetId, param));
     }
 
@@ -153,7 +175,7 @@ public class LLMOpsDatasetController {
      */
     @PostMapping("/{dataset_id}/documents/batch:{batch}")
     public ApiResponse<DocumentBatchVO> getBatchProgress(@PathVariable("dataset_id") String datasetId,
-                                              @PathVariable("batch") String batch) {
+                                                         @PathVariable("batch") String batch) {
         return ApiResponse.success(null);
     }
 

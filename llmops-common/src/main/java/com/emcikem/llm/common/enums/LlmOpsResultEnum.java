@@ -22,6 +22,7 @@ public enum LlmOpsResultEnum {
     DATASET_HAS_SAME_NAME(10001, "dataset has same name"),
     DATASET_NOT_FOUND(10002, "dataset not found"),
     UPDATE_DATASET_FAILED(10003, "update dataset failed"),
+    CAN_NOT_FIND_VALID_DOCUMENT(10004, "暂未解析到合法文件，请重新上传"),
     ;
 
     private final Integer code;

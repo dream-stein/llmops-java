@@ -9,17 +9,24 @@ import com.emcikem.llm.common.vo.dataset.*;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetDO;
 import com.emcikem.llm.dao.entity.LlmOpsDatasetQueryDO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
+import com.emcikem.llm.dao.entity.LlmOpsProcessRuleDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
+import com.emcikem.llm.dao.entity.LlmOpsUploadFileDO;
 import com.emcikem.llm.service.constant.LLMOpsConstant;
 import com.emcikem.llm.service.convert.LLMOpsDatasetConvert;
 import com.emcikem.llm.service.provider.LLMOpsAppDatasetJoinProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsDatasetQueryProvider;
+import com.emcikem.llm.service.provider.LLMOpsProcessRuleProvider;
+import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +47,12 @@ public class LLMOpsDatasetService {
 
     @Resource
     private LLMOpsAppDatasetJoinProvider llmOpsAppDatasetJoinProvider;
+
+    @Resource
+    private LlmOpsUploadFileProvider llmOpsUploadFileProvider;
+
+    @Resource
+    private LLMOpsProcessRuleProvider llmOpsProcessRuleProvider;
 
     public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(String searchWord, Integer currentPage, Integer pageSize) {
         // 1. 查询当前账号
@@ -339,9 +352,81 @@ public class LLMOpsDatasetService {
         // 1. 查询当前账号
         String accountId = getAccountId();
 
-        // 2. 创建
-        LlmOpsSegmentDO segmentDO = new LlmOpsSegmentDO();
-        return null;
+        // 2. 检测知识库权限
+        LlmOpsDatasetDO dataset = llmOpsDatasetProvider.getDataset(datasetId, accountId);
+        if (dataset == null) {
+            throw new LlmOpsException(LlmOpsResultEnum.DATASET_NOT_FOUND);
+        }
+
+        // 3. 提取文件并校验文件权限与文件扩展
+        List<LlmOpsUploadFileDO> llmOpsUploadFileList = llmOpsUploadFileProvider.queryUploadFileList(accountId, param.getUpload_file_ids());
+        List<LlmOpsUploadFileDO> uploadFiles = llmOpsUploadFileList.stream()
+                .filter(x -> LLMOpsConstant.ALLOWED_DOCUMENT_EXTENSION.contains(x.getExtension())).toList();
+
+        if (CollectionUtils.isEmpty(uploadFiles)) {
+            throw new LlmOpsException(LlmOpsResultEnum.CAN_NOT_FIND_VALID_DOCUMENT);
+        }
+
+        // 4. 创建批次与处理规则并记录到数据库中
+        String batch = String.format("%s%S", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()), 100000 + new Random().nextInt(900000));
+        LlmOpsProcessRuleDO llmOpsProcessRuleDO = buildProcessRuleDO(datasetId, accountId, param.getProcess_type(), GsonUtil.toJSONString(param.getRule()));
+        boolean result = llmOpsProcessRuleProvider.insert(llmOpsProcessRuleDO);
+
+        // 5. 获取当且知识库的最新文档位置
+        Integer position = getLatestDocumentPosition(datasetId);
+
+        // 6. 循环所有合法的上传文件列表并记录
+        List<LlmOpsDocumentDO> documentList = buildDocumentDOList(batch, position, uploadFiles, accountId, datasetId, llmOpsProcessRuleDO);
+
+        // 7. 调用异步任务，完成后续操作 TODO
+
+        // 8. 返回文档列表与处理批次
+        return buildDocumentVO(documentList, batch);
+    }
+
+    private List<LlmOpsDocumentDO> buildDocumentDOList(String batch, Integer position, List<LlmOpsUploadFileDO> uploadFiles, String accountId, String datasetId, LlmOpsProcessRuleDO llmOpsProcessRuleDO) {
+        List<LlmOpsDocumentDO> llmOpsDocumentList = Lists.newArrayList();
+        for (LlmOpsUploadFileDO uploadFile : uploadFiles) {
+            position += 1;
+            LlmOpsDocumentDO llmOpsDocumentDO = new LlmOpsDocumentDO();
+            llmOpsDocumentDO.setId(UUID.randomUUID().toString());
+            llmOpsDocumentDO.setAccountId(accountId);
+            llmOpsDocumentDO.setDatasetId(datasetId);
+            llmOpsDocumentDO.setUploadFileId(uploadFile.getId());
+            llmOpsDocumentDO.setProcessRuleId(llmOpsProcessRuleDO.getId());
+            llmOpsDocumentDO.setBatch(batch);
+            llmOpsDocumentDO.setName(uploadFile.getName());
+            llmOpsDocumentDO.setPosition(position);
+            llmOpsDocumentDO.setId(UUID.randomUUID().toString());
+
+            llmOpsDocumentList.add(llmOpsDocumentDO);
+        }
+        return llmOpsDocumentList;
+    }
+
+    private Integer getLatestDocumentPosition(String datasetId) {
+        return llmOpsDatasetProvider.getLatestDocumentPosition(datasetId);
+    }
+
+    private LlmOpsProcessRuleDO buildProcessRuleDO(String datasetId, String accountId, String mode, String rule) {
+        LlmOpsProcessRuleDO llmOpsProcessRuleDO = new LlmOpsProcessRuleDO();
+        llmOpsProcessRuleDO.setId(UUID.randomUUID().toString());
+        llmOpsProcessRuleDO.setDatasetId(datasetId);
+        llmOpsProcessRuleDO.setRule(rule);
+        llmOpsProcessRuleDO.setUpdatedAt(new Date());
+        llmOpsProcessRuleDO.setCreatedAt(new Date());
+        llmOpsProcessRuleDO.setAccountId(accountId);
+        llmOpsProcessRuleDO.setMode(mode);
+
+        return llmOpsProcessRuleDO;
+    }
+
+    private CreatedDocumentsVO buildDocumentVO(List<LlmOpsDocumentDO> documents, String batch) {
+        CreatedDocumentsVO createdDocumentsVO = new CreatedDocumentsVO();
+        createdDocumentsVO.setBatch(batch);
+        createdDocumentsVO.setDocument(LLMOpsDatasetConvert.convertDocumentList(documents));
+
+        return createdDocumentsVO;
     }
 
     private String getAccountId() {

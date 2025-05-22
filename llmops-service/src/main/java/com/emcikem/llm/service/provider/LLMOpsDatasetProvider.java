@@ -274,4 +274,10 @@ public class LLMOpsDatasetProvider {
             return Pair.of(datasetId, total);
         }).collect(Collectors.toMap(Pair::getKey, Pair::getValue, (a, b) -> a));
     }
+
+    public List<LlmOpsDocumentDO> getDocumentListByIdList(List<String> documentIdList) {
+        LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
+        example.createCriteria().andIdIn(documentIdList);
+        return llmOpsDocumentDOMapper.selectByExample(example);
+    }
 }

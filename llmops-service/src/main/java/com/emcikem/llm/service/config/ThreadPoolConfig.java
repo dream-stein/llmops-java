@@ -19,4 +19,9 @@ public class ThreadPoolConfig {
     public ExecutorService historyPool() {
         return Executors.newFixedThreadPool(3);
     }
+
+    @Bean("taskPool")
+    public ExecutorService taskPool() {
+        return Executors.newFixedThreadPool(3);
+    }
 }

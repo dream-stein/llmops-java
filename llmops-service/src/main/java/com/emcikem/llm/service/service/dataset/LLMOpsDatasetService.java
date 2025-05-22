@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +54,12 @@ public class LLMOpsDatasetService {
 
     @Resource
     private LLMOpsProcessRuleProvider llmOpsProcessRuleProvider;
+
+    @Resource
+    private ExecutorService taskPool;
+
+    @Resource
+    private LLMOpsDocumentTask llmOpsDocumentTask;
 
     public ApiBasePaginatorResponse<DatasetVO> getDatasetsWithPage(String searchWord, Integer currentPage, Integer pageSize) {
         // 1. 查询当前账号
@@ -378,7 +385,9 @@ public class LLMOpsDatasetService {
         // 6. 循环所有合法的上传文件列表并记录
         List<LlmOpsDocumentDO> documentList = buildDocumentDOList(batch, position, uploadFiles, accountId, datasetId, llmOpsProcessRuleDO);
 
-        // 7. 调用异步任务，完成后续操作 TODO
+        // 7. 调用异步任务，完成后续操作
+        List<String> doucmnetIdList = documentList.stream().map(LlmOpsDocumentDO::getId).toList();
+        taskPool.execute(() -> llmOpsDocumentTask.buildDocumentsAsync(doucmnetIdList));
 
         // 8. 返回文档列表与处理批次
         return buildDocumentVO(documentList, batch);

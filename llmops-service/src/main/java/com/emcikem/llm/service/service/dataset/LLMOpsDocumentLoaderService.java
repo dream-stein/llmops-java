@@ -1,17 +1,22 @@
 package com.emcikem.llm.service.service.dataset;
 
+import com.emcikem.llm.common.enums.PreProcessRuleEnum;
+import com.emcikem.llm.common.vo.dataset.process.DocumentPreProcessRule;
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessRule;
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessVO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.dao.entity.LlmOpsUploadFileDO;
 import com.emcikem.llm.service.constant.LLMOpsConstant;
+import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsSegmentProvider;
 import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
 import com.emcikem.llm.service.util.AccountUtil;
+import com.emcikem.llm.service.util.TextCleanUtil;
 import com.google.common.collect.Lists;
 import com.qcloud.cos.COSClient;
 import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.tencent.cos.TencentCosDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentByRegexSplitter;
@@ -21,6 +26,7 @@ import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import jakarta.annotation.Resource;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +42,7 @@ import java.util.UUID;
  * @version 1.0.0
  */
 @Service
-public class LLMOpsDatabaseFileService {
+public class LLMOpsDocumentLoaderService {
 
     @Resource
     private COSClient cosClient;
@@ -50,10 +56,10 @@ public class LLMOpsDatabaseFileService {
     private LLMOpsSegmentProvider llmOpsSegmentProvider;
 
     @Resource
-    private LLMOpsDocumentProvider llmOpsDocumentProvider;
+    private LlmOpsUploadFileProvider llmOpsUploadFileProvider;
 
     @Resource
-    private LlmOpsUploadFileProvider llmOpsUploadFileProvider;
+    private LLMOpsDatasetProvider llmOpsDatasetProvider;
 
     public void loadDocument(String fileId, String datasetId) {
         LlmOpsUploadFileDO llmOpsUploadFileDO = llmOpsUploadFileProvider.selectFileByFileId(fileId);
@@ -75,7 +81,7 @@ public class LLMOpsDatabaseFileService {
 
         // 4.创建document
         LlmOpsDocumentDO llmOpsDocumentDO = buildLLMOpsDocument(fileName, datasetId, llmOpsUploadFileDO.getId());
-        llmOpsDocumentProvider.insert(llmOpsDocumentDO);
+        boolean documentResult = llmOpsDatasetProvider.createDocument(llmOpsDocumentDO);
 
         // 5.创建向量数据库
         List<String> embeddingIdList = inMemoryEmbeddingStore.addAll(embeddingList);
@@ -155,6 +161,29 @@ public class LLMOpsDatabaseFileService {
     }
 
     /**
+     * 根据传递的处理规则清除多余的字符串
+     * @param text
+     * @param documentProcessRule
+     * @return
+     */
+    public String cleanTextByProcessRule(String text, DocumentProcessRule documentProcessRule) {
+        // 1. 循环遍历所有预处理规则
+        for (DocumentPreProcessRule preProcessRule : documentProcessRule.getPre_process_rules()) {
+            // 2. 删除多余的空格
+            if (PreProcessRuleEnum.REMOVE_EXTRA_SPACE.getDesc().equals(preProcessRule.getId()) && BooleanUtils.isFalse(preProcessRule.getEnabled())) {
+                text = TextCleanUtil.replace(text, "\\n{3,}", "\n\n");
+                text = TextCleanUtil.replace(text, "[\\t\\f\\r\\x20\\u00a0\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000]{2,}", " ");
+            }
+            // 3. 删除多余的URL链接及邮箱
+            if (PreProcessRuleEnum.REMOVE_URL_AND_EMAIL.getDesc().equals(preProcessRule.getId()) && BooleanUtils.isFalse(preProcessRule.getEnabled())) {
+                text = TextCleanUtil.replace(text, "[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+", "");
+                text = TextCleanUtil.replace(text, "https?://[^\\s]+", "");
+            }
+        }
+        return text;
+    }
+
+    /**
      * 分词器
      * 1：automatic：自动分段与清洗
      * 2：custom：自定义分段规则
@@ -183,6 +212,12 @@ public class LLMOpsDatabaseFileService {
         } else {
             return Lists.newArrayList();
         }
+    }
+
+    public Document load(LlmOpsUploadFileDO llmOpsUploadFileDO) {
+        String fileName = llmOpsUploadFileDO.getName();
+        TencentCosDocumentLoader documentLoader = new TencentCosDocumentLoader(cosClient);
+        return documentLoader.loadDocument(LLMOpsConstant.BUCKET_NAME, fileName, new ApacheTikaDocumentParser());
     }
 
     /**

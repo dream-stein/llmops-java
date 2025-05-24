@@ -1,6 +1,6 @@
 package com.emcikem.llm.web.controller;
 
-import com.emcikem.llm.service.service.dataset.LLMOpsDatabaseFileService;
+import com.emcikem.llm.service.service.dataset.LLMOpsDocumentLoaderService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,10 +14,10 @@ public class PingController {
     }
 
     @Resource
-    private LLMOpsDatabaseFileService llmOpsDatabaseFileService;
+    private LLMOpsDocumentLoaderService llmOpsDocumentLoaderService;
 
     @GetMapping("/x")
     public void get(String name) {
-        llmOpsDatabaseFileService.loadDocument(name, "1");
+        llmOpsDocumentLoaderService.loadDocument(name, "1");
     }
 }

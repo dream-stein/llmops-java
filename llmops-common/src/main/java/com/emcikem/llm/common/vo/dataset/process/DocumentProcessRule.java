@@ -21,5 +21,5 @@ public class DocumentProcessRule {
 
     private Integer chunk_overlap;
 
-    private List<String> pre_process_rules;
+    private List<DocumentPreProcessRule> pre_process_rules;
 }

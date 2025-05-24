@@ -20,4 +20,8 @@ public class LLMOpsProcessRuleProvider {
     public boolean insert(LlmOpsProcessRuleDO llmOpsProcessRuleDO) {
         return llmOpsProcessRuleDOMapper.insertSelective(llmOpsProcessRuleDO) == 1;
     }
+
+    public LlmOpsProcessRuleDO getProcessRule(String processRuleId) {
+        return llmOpsProcessRuleDOMapper.selectByPrimaryKey(processRuleId);
+    }
 }

@@ -115,6 +115,10 @@ public class LLMOpsDatasetProvider {
         return llmOpsDocumentDOMapper.updateByExampleSelective(llmOpsDocumentDO, example) == 1;
     }
 
+    public boolean updateDocument(LlmOpsDocumentDO llmOpsDocumentDO) {
+        return llmOpsDocumentDOMapper.updateByPrimaryKeySelective(llmOpsDocumentDO) == 1;
+    }
+
     public boolean deleteDocument(String datasetId, String documentId, String accountId) {
         LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
         LlmOpsDocumentDOExample.Criteria criteria = example.createCriteria();
@@ -134,6 +138,18 @@ public class LLMOpsDatasetProvider {
         }
         return llmOpsDocumentList.get(0).getPosition();
     }
+
+    public Integer getLatestSegmentPosition(String documentId) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        example.setOrderByClause("position desc");
+        example.createCriteria().andDocumentIdEqualTo(documentId);
+        List<LlmOpsSegmentDO> llmOpsSegmentList = llmOpsSegmentDOMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(llmOpsSegmentList)) {
+            return 0;
+        }
+        return llmOpsSegmentList.get(0).getPosition();
+    }
+
 
     public Long countDocumentList(String accountId, String searchWord, String datasetId) {
         LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
@@ -279,5 +295,9 @@ public class LLMOpsDatasetProvider {
         LlmOpsDocumentDOExample example = new LlmOpsDocumentDOExample();
         example.createCriteria().andIdIn(documentIdList);
         return llmOpsDocumentDOMapper.selectByExample(example);
+    }
+
+    public boolean createDocument(LlmOpsDocumentDO llmOpsDocumentDO) {
+        return llmOpsDocumentDOMapper.insertSelective(llmOpsDocumentDO) == 1;
     }
 }

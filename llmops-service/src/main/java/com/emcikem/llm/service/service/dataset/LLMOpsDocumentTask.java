@@ -103,7 +103,7 @@ public class LLMOpsDocumentTask {
         // 2. 按照process_rule规则清除多余的字符串
         lcDocument = Document.from(llmOpsDocumentLoaderService.cleanTextByProcessRule(lcDocument.text(), documentProcessVO.getRule()));
 
-        // 3. 分割文档列表为片段列表
+        // 3. 分割文档列表为片段列表 TODO
         List<TextSegment> textSegmentList = new ArrayList<>();
 
 

@@ -7,18 +7,25 @@ import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessVO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
 import com.emcikem.llm.dao.entity.LlmOpsProcessRuleDO;
+import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.dao.entity.LlmOpsUploadFileDO;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsProcessRuleProvider;
 import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
+import com.emcikem.llm.service.util.FileUtil;
 import com.emcikem.llm.service.util.TextCleanUtil;
+import com.emcikem.llm.service.util.TokenUtil;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.segment.TextSegment;
 import jakarta.annotation.Resource;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Create with Emcikem on 2025/5/22
@@ -97,13 +104,48 @@ public class LLMOpsDocumentTask {
         lcDocument = Document.from(llmOpsDocumentLoaderService.cleanTextByProcessRule(lcDocument.text(), documentProcessVO.getRule()));
 
         // 3. 分割文档列表为片段列表
+        List<TextSegment> textSegmentList = new ArrayList<>();
 
 
         // 4. 获取对应文档下的最大文档位置
         Integer position = llmOpsDatasetProvider.getLatestSegmentPosition(documentDO.getId());
 
         // 5. 循环处理片段数据并添加元数据，他是存储到数据库中
+        List<LlmOpsSegmentDO> llmOpsSegmentList = buildLlmOpsSegmentList(position, documentDO, textSegmentList);
+        boolean result = llmOpsDatasetProvider.createSegmentList(llmOpsSegmentList);
 
+        return textSegmentList;
+    }
+
+    private List<LlmOpsSegmentDO> buildLlmOpsSegmentList(Integer position, LlmOpsDocumentDO documentDO, List<TextSegment> textSegmentList) {
+        if (CollectionUtils.isEmpty(textSegmentList)) {
+            return Lists.newArrayList();
+        }
+        List<LlmOpsSegmentDO> llmOpsSegmentList = Lists.newArrayList();
+        for (TextSegment textSegment : textSegmentList) {
+            position++;
+            LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+            llmOpsSegmentDO.setAccountId(documentDO.getAccountId());
+            llmOpsSegmentDO.setDatasetId(documentDO.getDatasetId());
+            llmOpsSegmentDO.setDocumentId(documentDO.getId());
+            llmOpsSegmentDO.setNodeId(UUID.randomUUID().toString());
+            llmOpsSegmentDO.setContent(textSegment.text());
+            llmOpsSegmentDO.setCharacterCount(textSegment.text().length());
+            llmOpsSegmentDO.setTokenCount(TokenUtil.calculateTokenContent(textSegment.text()));
+            llmOpsSegmentDO.setHash(FileUtil.generateTextHash(textSegment.text()));
+            llmOpsSegmentDO.setStatus(DataBaseStatusEnum.WAITING.getDesc());
+
+            llmOpsSegmentDO.setId(UUID.randomUUID().toString());
+            llmOpsSegmentDO.setPosition(position);
+            // TODO:
+            llmOpsSegmentDO.setEnabled(true);
+            llmOpsSegmentDO.setProcessingStartedAt();
+            llmOpsSegmentDO.setCreatedAt(new Date());
+            llmOpsSegmentDO.setUpdatedAt(new Date());
+
+            llmOpsSegmentList.add(llmOpsSegmentDO);
+        }
+        return llmOpsSegmentList;
     }
 
     /**

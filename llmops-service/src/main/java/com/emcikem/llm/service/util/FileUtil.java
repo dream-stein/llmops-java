@@ -1,5 +1,7 @@
 package com.emcikem.llm.service.util;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -135,5 +137,39 @@ public class FileUtil {
             e.printStackTrace();
             return "";
         }
+    }
+
+    /**
+     * 根据传递的文本计算对应的哈希值
+     * @param text
+     * @return
+     */
+    public static String generateTextHash(String text) {
+        // 1. 将续页计算哈希值的内容加上None这个字符串，避免传递了空字符串导致计算出错
+        text += "None";
+
+        // 2. 实验sha3_256将数据转换成哈希值后返回
+        try {
+            // 创建SHA-3的MessageDigest实例
+            MessageDigest sha3Digest = MessageDigest.getInstance("SHA3-256");
+
+            // 计算哈希值
+            byte[] hashBytes = sha3Digest.digest(text.getBytes());
+
+            // 将哈希值转换为十六进制字符串
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception ex) {
+            return Strings.EMPTY;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(generateTextHash("Hello World!"));
     }
 }

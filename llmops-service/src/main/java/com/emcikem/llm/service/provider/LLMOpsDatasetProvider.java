@@ -300,4 +300,9 @@ public class LLMOpsDatasetProvider {
     public boolean createDocument(LlmOpsDocumentDO llmOpsDocumentDO) {
         return llmOpsDocumentDOMapper.insertSelective(llmOpsDocumentDO) == 1;
     }
+
+    public boolean createSegmentList(List<LlmOpsSegmentDO> llmOpsSegmentList) {
+//        return llmOpsSegmentList.batch
+        return false;
+    }
 }

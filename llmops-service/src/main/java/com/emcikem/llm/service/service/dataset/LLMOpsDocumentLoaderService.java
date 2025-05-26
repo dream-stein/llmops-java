@@ -195,7 +195,7 @@ public class LLMOpsDocumentLoaderService {
      * DocumentByCharacterSplitter 无符号分割，严格根据字数分割
      * DocumentByRegexSplitter 正则表达式分割，根据自定义正则分割
      */
-    private List<TextSegment> documentProcess(Document document, DocumentProcessVO documentProcessVO) {
+    public List<TextSegment> documentProcess(Document document, DocumentProcessVO documentProcessVO) {
         String processType = documentProcessVO.getProcessType();
         if (Objects.equals(processType, "automatic")) {
             DocumentBySentenceSplitter splitter = new DocumentBySentenceSplitter(500, 50);

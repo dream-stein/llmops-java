@@ -15,7 +15,9 @@ import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
 import com.emcikem.llm.service.util.FileUtil;
 import com.emcikem.llm.service.util.TextCleanUtil;
 import com.emcikem.llm.service.util.TokenUtil;
+import com.google.common.collect.Maps;
 import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.segment.TextSegment;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -103,18 +107,24 @@ public class LLMOpsDocumentTask {
         // 2. 按照process_rule规则清除多余的字符串
         lcDocument = Document.from(llmOpsDocumentLoaderService.cleanTextByProcessRule(lcDocument.text(), documentProcessVO.getRule()));
 
-        // 3. 分割文档列表为片段列表 TODO
-        List<TextSegment> textSegmentList = new ArrayList<>();
-
+        // 3. 分割文档列表为片段列表
+        List<TextSegment> lcSegmentList = llmOpsDocumentLoaderService.documentProcess(lcDocument, documentProcessVO);
 
         // 4. 获取对应文档下的最大文档位置
         Integer position = llmOpsDatasetProvider.getLatestSegmentPosition(documentDO.getId());
 
         // 5. 循环处理片段数据并添加元数据，他是存储到数据库中
-        List<LlmOpsSegmentDO> llmOpsSegmentList = buildLlmOpsSegmentList(position, documentDO, textSegmentList);
+        List<LlmOpsSegmentDO> llmOpsSegmentList = buildLlmOpsSegmentList(position, documentDO, lcSegmentList);
         boolean result = llmOpsDatasetProvider.createSegmentList(llmOpsSegmentList);
 
-        return textSegmentList;
+        // 6. 更新文档的数据，涵盖状态，token数等内容
+        documentDO.setTokenCount(llmOpsSegmentList.stream().map(LlmOpsSegmentDO::getTokenCount).reduce(0, Integer::sum));
+        documentDO.setUpdatedAt(new Date());
+        documentDO.setStatus(DataBaseStatusEnum.INDEXING.getDesc());
+        documentDO.setSplittingCompletedAt(new Date());
+        llmOpsDatasetProvider.updateDocument(documentDO);
+
+        return lcSegmentList;
     }
 
     private List<LlmOpsSegmentDO> buildLlmOpsSegmentList(Integer position, LlmOpsDocumentDO documentDO, List<TextSegment> textSegmentList) {
@@ -122,7 +132,8 @@ public class LLMOpsDocumentTask {
             return Lists.newArrayList();
         }
         List<LlmOpsSegmentDO> llmOpsSegmentList = Lists.newArrayList();
-        for (TextSegment textSegment : textSegmentList) {
+        for (int i = 0; i < textSegmentList.size(); i++) {
+            TextSegment textSegment = textSegmentList.get(i);
             position++;
             LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
             llmOpsSegmentDO.setAccountId(documentDO.getAccountId());
@@ -137,12 +148,21 @@ public class LLMOpsDocumentTask {
 
             llmOpsSegmentDO.setId(UUID.randomUUID().toString());
             llmOpsSegmentDO.setPosition(position);
-            // TODO:
             llmOpsSegmentDO.setEnabled(true);
-            llmOpsSegmentDO.setProcessingStartedAt();
             llmOpsSegmentDO.setCreatedAt(new Date());
             llmOpsSegmentDO.setUpdatedAt(new Date());
 
+            Map<String, Object> meta = Maps.newHashMap();
+            meta.put("account_id", documentDO.getAccountId());
+            meta.put("dataset_id", documentDO.getDatasetId());
+            meta.put("document_id", documentDO.getId());
+            meta.put("segment_id", llmOpsSegmentDO.getId());
+            meta.put("node", llmOpsSegmentDO.getNodeId());
+            meta.put("document_enabled", Boolean.FALSE);
+            meta.put("segment_enabled", Boolean.FALSE);
+
+            textSegment = TextSegment.textSegment(textSegment.text(), new Metadata(meta));
+            textSegmentList.set(i, textSegment);
             llmOpsSegmentList.add(llmOpsSegmentDO);
         }
         return llmOpsSegmentList;

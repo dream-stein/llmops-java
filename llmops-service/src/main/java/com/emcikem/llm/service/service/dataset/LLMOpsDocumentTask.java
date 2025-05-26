@@ -13,6 +13,7 @@ import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
 import com.emcikem.llm.service.provider.LLMOpsProcessRuleProvider;
 import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
 import com.emcikem.llm.service.util.FileUtil;
+import com.emcikem.llm.service.util.JieBaUtil;
 import com.emcikem.llm.service.util.TextCleanUtil;
 import com.emcikem.llm.service.util.TokenUtil;
 import com.google.common.collect.Maps;
@@ -76,7 +77,7 @@ public class LLMOpsDocumentTask {
                 List<TextSegment> lcSegmentList = splitting(documentDO, lcDocument);
 
                 // 6. 执行文档索引构建，涵盖关键词提取、向量、并更新数据状态
-
+                indexing(documentDO, lcSegmentList);
 
                 // 7. 存储操作，涵盖文档状态更新，以及向量数据库的存储
 
@@ -87,6 +88,30 @@ public class LLMOpsDocumentTask {
                 documentDO.setUpdatedAt(new Date());
                 boolean result = llmOpsDatasetProvider.updateDocument(documentDO);
             }
+        }
+    }
+
+    /**
+     * 根据传递的信息构建索引，涵盖关键词提取，词表构建
+     * @param documentDO
+     * @param lcSegmentList
+     */
+    private void indexing(LlmOpsDocumentDO documentDO, List<TextSegment> lcSegmentList) {
+        for (TextSegment lcSegment : lcSegmentList) {
+            // 1. 提取每一个片段对应的关键词，关键词的数量最多不超过10个
+            List<String> keyWords = JieBaUtil.extractKeyWords(lcSegment.text(), 10);
+
+            // 2. 逐条更新文档片段的关键词 TODO: 批量更新
+            LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+            llmOpsSegmentDO.setId(lcSegment.metadata().getString("segment_id"));
+            llmOpsSegmentDO.setKeywords(GsonUtil.toJSONString(keyWords));
+            llmOpsSegmentDO.setStatus(DataBaseStatusEnum.INDEXING.getDesc());
+            llmOpsSegmentDO.setUpdatedAt(new Date());
+            llmOpsSegmentDO.setIndexCompletedAt(new Date());
+            llmOpsDatasetProvider.updateSegment(llmOpsSegmentDO);
+
+            // 3. 获取当前知识库的关键词表
+
         }
     }
 
@@ -122,7 +147,7 @@ public class LLMOpsDocumentTask {
         documentDO.setUpdatedAt(new Date());
         documentDO.setStatus(DataBaseStatusEnum.INDEXING.getDesc());
         documentDO.setSplittingCompletedAt(new Date());
-        llmOpsDatasetProvider.updateDocument(documentDO);
+        boolean updateResult = llmOpsDatasetProvider.updateDocument(documentDO);
 
         return lcSegmentList;
     }

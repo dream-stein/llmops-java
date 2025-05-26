@@ -230,6 +230,10 @@ public class LLMOpsDatasetProvider {
         return llmOpsSegmentList.get(0);
     }
 
+    public boolean updateSegment(LlmOpsSegmentDO llmOpsSegmentDO) {
+        return llmOpsSegmentDOMapper.updateByPrimaryKeySelective(llmOpsSegmentDO) == 1;
+    }
+
     public boolean updateSegment(String datasetId, String documentId, String segmentId, String accountId, LlmOpsSegmentDO llmOpsSegmentDO) {
         LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
         LlmOpsSegmentDOExample.Criteria criteria = example.createCriteria();

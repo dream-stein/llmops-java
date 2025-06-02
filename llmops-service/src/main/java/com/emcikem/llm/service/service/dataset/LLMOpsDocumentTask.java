@@ -6,10 +6,12 @@ import com.emcikem.llm.common.exception.LlmOpsException;
 import com.emcikem.llm.common.util.GsonUtil;
 import com.emcikem.llm.common.vo.dataset.process.DocumentProcessVO;
 import com.emcikem.llm.dao.entity.LlmOpsDocumentDO;
+import com.emcikem.llm.dao.entity.LlmOpsKeywordTableDO;
 import com.emcikem.llm.dao.entity.LlmOpsProcessRuleDO;
 import com.emcikem.llm.dao.entity.LlmOpsSegmentDO;
 import com.emcikem.llm.dao.entity.LlmOpsUploadFileDO;
 import com.emcikem.llm.service.provider.LLMOpsDatasetProvider;
+import com.emcikem.llm.service.provider.LLMOpsKeyWordProvider;
 import com.emcikem.llm.service.provider.LLMOpsProcessRuleProvider;
 import com.emcikem.llm.service.provider.LlmOpsUploadFileProvider;
 import com.emcikem.llm.service.util.FileUtil;
@@ -23,13 +25,12 @@ import dev.langchain4j.data.segment.TextSegment;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.compress.utils.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -52,6 +53,12 @@ public class LLMOpsDocumentTask {
 
     @Resource
     private LLMOpsProcessRuleProvider llmOpsProcessRuleProvider;
+
+    @Resource
+    private LLMOpsKeyWordProvider llmOpsKeyWordProvider;
+
+    @Resource
+    private VectorDatabaseService vectorDatabaseService;
 
     /**
      * 根据传递的文档id列表构建文档，涵盖了加载、分割、索引构建、数据村粗等内容
@@ -80,6 +87,7 @@ public class LLMOpsDocumentTask {
                 indexing(documentDO, lcSegmentList);
 
                 // 7. 存储操作，涵盖文档状态更新，以及向量数据库的存储
+                completed(documentDO, lcSegmentList);
 
             } catch (Exception ex) {
                 documentDO.setStatus(DataBaseStatusEnum.ERROR.getDesc());
@@ -89,6 +97,43 @@ public class LLMOpsDocumentTask {
                 boolean result = llmOpsDatasetProvider.updateDocument(documentDO);
             }
         }
+    }
+
+    /**
+     * 村粗文档片段到向量数据库，并完成状态更新
+     * @param llmOpsDocumentDO
+     * @param lcSegmentList
+     */
+    public void completed(LlmOpsDocumentDO llmOpsDocumentDO, List<TextSegment> lcSegmentList) {
+        // 1. 循环遍历片段列表数据，将文档状态以及片段状态设置为True
+        for (TextSegment lcSegment : lcSegmentList) {
+            lcSegment.metadata().put("document_enabled", Boolean.TRUE.toString());
+            lcSegment.metadata().put("segment_enabled", Boolean.TRUE.toString());
+        }
+
+        // 2. 调用向量数据库，每次存储10条数据，避免一次传递过多的数据
+        for (int i = 0; i < lcSegmentList.size(); i += 10) {
+            // 3. 提取需要存储的数据和ids
+            List<TextSegment> textSegments = lcSegmentList.subList(i, Math.min(lcSegmentList.size(), i + 10));
+            List<String> nodeIdxList = textSegments.stream().map(x->x.metadata().getString("node_id")).toList();
+
+            // 4. TODO:调用向量数据库存储对应的数据
+            vectorDatabaseService.addDocuments(textSegments, nodeIdxList);
+
+            // 5. 更新关联片段的状态以及完成时间
+            LlmOpsSegmentDO llmOpsSegmentDO = new LlmOpsSegmentDO();
+            llmOpsSegmentDO.setStatus(DataBaseStatusEnum.COMPLETED.getDesc());
+            llmOpsSegmentDO.setCompletedAt(new Date());
+            llmOpsSegmentDO.setEnabled(true);
+            llmOpsDatasetProvider.updateSegmentByNodeIds(llmOpsSegmentDO, nodeIdxList);
+        }
+
+        // 6. 更新文档的状态
+        llmOpsDocumentDO.setStatus(DataBaseStatusEnum.COMPLETED.getDesc());
+        llmOpsDocumentDO.setCompletedAt(new Date());
+        llmOpsDocumentDO.setEnabled(false);
+        boolean result = llmOpsDatasetProvider.updateDocument(llmOpsDocumentDO);
+
     }
 
     /**
@@ -108,11 +153,51 @@ public class LLMOpsDocumentTask {
             llmOpsSegmentDO.setStatus(DataBaseStatusEnum.INDEXING.getDesc());
             llmOpsSegmentDO.setUpdatedAt(new Date());
             llmOpsSegmentDO.setIndexCompletedAt(new Date());
-            llmOpsDatasetProvider.updateSegment(llmOpsSegmentDO);
+            boolean result = llmOpsDatasetProvider.updateSegment(llmOpsSegmentDO);
 
-            // 3. 获取当前知识库的关键词表
+            // 3. 获取当前知识库的关键词表 
+            LlmOpsKeywordTableDO keyWordTableDO = llmOpsKeyWordProvider.getKeyWordTableByDatasetId(llmOpsSegmentDO.getDatasetId());
+            Map<String, List<String>> keywordTableMap = Maps.newHashMap();
+            if (keyWordTableDO != null && StringUtils.isNoneEmpty(keyWordTableDO.getKeywordTable())) {
+                keywordTableMap = GsonUtil.gsonToMaps(keyWordTableDO.getKeywordTable());
+            }
 
+            // 4. 循环将新的关键词添加到关键词表中
+            for (String keyWord : keyWords) {
+                if (!keywordTableMap.containsKey(keyWord)) {
+                    keywordTableMap.put(keyWord, Lists.newArrayList());
+                }
+                keywordTableMap.get(keyWord).add(llmOpsSegmentDO.getId());
+            }
+
+            // 5. 更新关键词表
+            if (keyWordTableDO == null) {
+                LlmOpsKeywordTableDO llmOpsKeywordTableDO = getKeywordTableDO(keyWordTableDO, keywordTableMap, llmOpsSegmentDO.getDatasetId());
+                boolean insertResult = llmOpsKeyWordProvider.insertKeywordTable(llmOpsKeywordTableDO);
+            } else {
+                boolean updateResult = llmOpsKeyWordProvider.updateKeyword(keyWordTableDO);
+            }
         }
+
+        // 7. 更新文档状态
+        documentDO.setUpdatedAt(new Date());
+        documentDO.setIndexCompletedAt(new Date());
+        llmOpsDatasetProvider.updateDocument(documentDO);
+    }
+
+    private LlmOpsKeywordTableDO getKeywordTableDO(LlmOpsKeywordTableDO keyWordTableDO, Map<String, List<String>> keywordTableMap, String datasetId) {
+        if (keyWordTableDO == null) {
+            LlmOpsKeywordTableDO llmOpsKeywordTableDO = new LlmOpsKeywordTableDO();
+            llmOpsKeywordTableDO.setId(UUID.randomUUID().toString());
+            llmOpsKeywordTableDO.setDatasetId(datasetId);
+            llmOpsKeywordTableDO.setKeywordTable(GsonUtil.toJSONString(keywordTableMap));
+            llmOpsKeywordTableDO.setCreatedAt(new Date());
+            llmOpsKeywordTableDO.setUpdatedAt(new Date());
+            return llmOpsKeywordTableDO;
+        }
+        keyWordTableDO.setUpdatedAt(new Date());
+        keyWordTableDO.setKeywordTable(GsonUtil.toJSONString(keywordTableMap));
+        return keyWordTableDO;
     }
 
     /**

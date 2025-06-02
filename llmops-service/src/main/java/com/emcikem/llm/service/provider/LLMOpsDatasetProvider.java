@@ -309,4 +309,10 @@ public class LLMOpsDatasetProvider {
 //        return llmOpsSegmentList.batch
         return false;
     }
+
+    public boolean updateSegmentByNodeIds(LlmOpsSegmentDO llmOpsSegmentDO, List<String> nodeIdxList) {
+        LlmOpsSegmentDOExample example = new LlmOpsSegmentDOExample();
+        example.createCriteria().andNodeIdIn(nodeIdxList);
+        return llmOpsSegmentDOMapper.updateByExampleSelective(llmOpsSegmentDO, example) == nodeIdxList.size();
+    }
 }
